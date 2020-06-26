@@ -1,0 +1,9 @@
+<vector xmlns:tools="http://schemas.android.com/tools"
+    android:autoMirrored="true" android:height="200dp"
+    android:viewportHeight="308.619" android:viewportWidth="308.619"
+    android:width="200dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="@color/blue_10" android:pathData="@string/ic_sura_vp1"
+        tools:ignore="VectorPath" />
+    <path android:fillColor="@color/green_200" android:pathData="@string/ic_sura_vp2"
+        tools:ignore="VectorPath" />
+</vector>
