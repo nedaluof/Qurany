@@ -33,6 +33,8 @@ android {
 }
 
 dependencies {
+    def room_version = "2.2.5"
+    def lifecycle_version = "2.2.0"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -45,6 +47,15 @@ dependencies {
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
     //Base RecyclerView Adapter Helper
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
+    //room
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    // ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
+    // LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
+    //noinspection LifecycleAnnotationProcessorWithJava8
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
     //Network Connection
     implementation('com.squareup.retrofit2:retrofit:2.8.1') { exclude module: 'okhttp' }
     implementation 'com.squareup.retrofit2:converter-gson:2.8.1'

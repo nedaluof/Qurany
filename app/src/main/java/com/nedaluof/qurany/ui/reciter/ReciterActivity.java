@@ -1,31 +1,26 @@
 package com.nedaluof.qurany.ui.reciter;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
-
 import com.chad.library.adapter.base.animation.ScaleInAnimation;
 import com.nedaluof.qurany.QuranyApplication;
 import com.nedaluof.qurany.R;
 import com.nedaluof.qurany.data.model.Reciters;
-import com.nedaluof.qurany.data.model.Suras;
 import com.nedaluof.qurany.databinding.ActivityReciterBinding;
 import com.nedaluof.qurany.di.components.AppComponent;
-import com.nedaluof.qurany.di.components.DaggerAppComponent;
 import com.nedaluof.qurany.ui.sura.ReciterSurasActivity;
 import com.nedaluof.qurany.util.SurasUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import javax.inject.Inject;
 

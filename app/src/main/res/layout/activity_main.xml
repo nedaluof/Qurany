@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
 
-    <com.nedaluof.qurany.ui.CustomDownload
-        android:id="@+id/view_download"
+    <Button
+        android:id="@+id/test_btn_insert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:download_bg_line_color="@color/green_200"
-        app:download_bg_line_width="9"
-        app:download_line_color="@color/green_200"
-        app:download_line_width="20"
-        app:download_text_color="@color/green_200"
-        app:download_text_size="20"
-        android:onClick="dddd"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/dp_8"
+        android:text="insert data" />
+    <Button
+        android:id="@+id/test_btn_get"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/dp_8"
+        android:text="get Data" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/tv_show_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:layout_margin="@dimen/dp_8"
+        tools:text="dvdvdvdvdvdvdvddddd" />
+
+</LinearLayout>
