@@ -5,7 +5,12 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import com.nedaluof.qurany.data.model.ReciterSuraEntity;
+
 import java.util.List;
+
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
 
 /**
  * Created by nedaluof on 6/26/2020.
@@ -14,23 +19,25 @@ import java.util.List;
 public interface ReciterSuraDAO {
 
     /**
-     * @return ArrayList of ReciterSuraEntity
+     * @return Flowable Stream of Entities
      */
     @Query("SELECT * FROM suras_table ORDER BY suraId")
-    List<ReciterSuraEntity> getReciterSuras();
+    Flowable<List<ReciterSuraEntity>> getReciterSuras();
+
 
     /**
      * @param list insert whole suras to DB
+     * @return Completable indicate process completion
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void addReciterSuras(List<ReciterSuraEntity> list);
+    Completable addReciterSuras(List<ReciterSuraEntity> list);
 
     /**
      * Delete All table content to provide
      * free table to next reciter
      */
     @Query("DELETE FROM suras_table")
-    void deleteAllSuras();
+    Completable deleteAllSuras();
 
 
     /*

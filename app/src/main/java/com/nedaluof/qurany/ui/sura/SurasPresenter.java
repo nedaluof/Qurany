@@ -2,6 +2,7 @@ package com.nedaluof.qurany.ui.sura;
 
 import android.util.Log;
 
+import com.nedaluof.qurany.data.model.Reciter;
 import com.nedaluof.qurany.data.model.Reciters;
 import com.nedaluof.qurany.data.model.Suras;
 import com.nedaluof.qurany.ui.base.BasePresenter;
@@ -25,7 +26,7 @@ public class SurasPresenter extends BasePresenter<SurasView> {
         super.detachView();
     }
 
-    public void loadRecitersSuras(Reciters.Reciter reciterData) {
+    public void loadRecitersSuras(Reciter reciterData) {
         checkViewAttached();
         getMvpView().showProgress(true);
         getMvpView().setReciterName(reciterData.getName().toUpperCase());
@@ -33,7 +34,7 @@ public class SurasPresenter extends BasePresenter<SurasView> {
         getMvpView().showProgress(false);
     }
 
-    private List<Suras> getSuras(Reciters.Reciter reciterData) {
+    private List<Suras> getSuras(Reciter reciterData) {
         List<String> reciterSuras = Arrays.asList(reciterData.getSuras().split("\\s*,\\s*"));
         List<Suras> mainList = new ArrayList<>();
         for (int i = 0; i < reciterSuras.size(); i++) {

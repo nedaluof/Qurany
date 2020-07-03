@@ -1,5 +1,7 @@
 package com.nedaluof.qurany.ui.reciter;
 
+import com.nedaluof.qurany.data.model.Reciter;
+import com.nedaluof.qurany.data.model.ReciterEntity;
 import com.nedaluof.qurany.data.model.Reciters;
 import com.nedaluof.qurany.ui.base.MvpView;
 
@@ -11,9 +13,9 @@ import java.util.List;
 public interface ReciterView extends MvpView {
     void showProgress(boolean show);
 
-    void showReciters(List<Reciters.Reciter> data);
+    void showReciters(List<Reciter> data);
 
     void showError(String message);
 
-    void onClickGetReciterData(Reciters.Reciter reciterData);
+    void onClickGetReciterData(Reciter reciterData);
 }

@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.chad.library.adapter.base.animation.ScaleInAnimation;
 import com.nedaluof.qurany.QuranyApplication;
 import com.nedaluof.qurany.R;
+import com.nedaluof.qurany.data.model.Reciter;
+import com.nedaluof.qurany.data.model.ReciterEntity;
 import com.nedaluof.qurany.data.model.Reciters;
 import com.nedaluof.qurany.databinding.ActivityReciterBinding;
 import com.nedaluof.qurany.di.components.AppComponent;
@@ -27,7 +29,7 @@ import javax.inject.Inject;
 public class ReciterActivity extends AppCompatActivity implements ReciterView {
     private static final String TAG = "ReciterActivity";
     private ActivityReciterBinding binding;
-    RecitersAdapter adapter;
+    private RecitersAdapter adapter;
     @Inject
     ReciterPresenter presenter;
 
@@ -50,7 +52,7 @@ public class ReciterActivity extends AppCompatActivity implements ReciterView {
         adapter = new RecitersAdapter(R.layout.item_reciter, new ArrayList<>(), this);
         adapter.setAdapterAnimation(new ScaleInAnimation());
         binding.recitersRecyclerView.setAdapter(adapter);
-        presenter.loadReciters(SurasUtil.getLanguage());
+        presenter.loadReciters();
 
     }
 
@@ -64,7 +66,7 @@ public class ReciterActivity extends AppCompatActivity implements ReciterView {
     }
 
     @Override
-    public void showReciters(List<Reciters.Reciter> list) {
+    public void showReciters(List<Reciter> list) {
         adapter.addData(list);
     }
 
@@ -74,10 +76,10 @@ public class ReciterActivity extends AppCompatActivity implements ReciterView {
     }
 
     @Override
-    public void onClickGetReciterData(Reciters.Reciter reciterData) {
-        startActivity(
+    public void onClickGetReciterData(Reciter reciterData) {
+        /*startActivity(
                 new Intent(this, ReciterSurasActivity.class)
                         .putExtra("reciterData", reciterData)
-        );
+        );*/
     }
 }

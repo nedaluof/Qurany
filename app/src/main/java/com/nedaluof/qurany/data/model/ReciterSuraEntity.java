@@ -1,4 +1,4 @@
-package com.nedaluof.qurany.data.room;
+package com.nedaluof.qurany.data.model;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;

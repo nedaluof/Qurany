@@ -2,11 +2,10 @@ package com.nedaluof.qurany.di.modules;
 
 import android.content.Context;
 
+import com.nedaluof.qurany.data.room.QuranyDatabase;
+import com.nedaluof.qurany.data.room.ReciterDao;
 import com.nedaluof.qurany.data.room.ReciterSuraDAO;
-import com.nedaluof.qurany.data.room.ReciterSuraDatabase;
-import com.nedaluof.qurany.data.room.ReciterSuraDatabase_Impl;
 import com.nedaluof.qurany.di.ApplicationContext;
-import com.nedaluof.qurany.di.DatabaseScope;
 
 import javax.inject.Singleton;
 
@@ -27,15 +26,20 @@ public class DatabaseModule {
 
     @Singleton
     @Provides
-    ReciterSuraDatabase provideDatabase() {
-        return ReciterSuraDatabase.getInstance(context);
+    QuranyDatabase provideDatabase() {
+        return QuranyDatabase.getInstance(context);
     }
 
     @Singleton
     @Provides
-    ReciterSuraDAO provideDao(ReciterSuraDatabase database) {
-        return database.getDao();
+    ReciterSuraDAO provideReciterSuraDao(QuranyDatabase database) {
+        return database.getReciterSuraDao();
     }
 
+    @Singleton
+    @Provides
+    ReciterDao provideReciterDao(QuranyDatabase database) {
+        return database.getRecitersDao();
+    }
 
 }

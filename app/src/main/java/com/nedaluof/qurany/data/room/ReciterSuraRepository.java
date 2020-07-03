@@ -1,10 +1,14 @@
 package com.nedaluof.qurany.data.room;
 
+import com.nedaluof.qurany.data.model.ReciterSuraEntity;
 import com.nedaluof.qurany.util.Executor;
 
 import java.util.List;
 
 import javax.inject.Inject;
+
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
 
 /**
  * Created by nedaluof on 6/26/2020.
@@ -12,27 +16,29 @@ import javax.inject.Inject;
 public class ReciterSuraRepository {
 
     private ReciterSuraDAO reciterSuraDAO;
-    private ReciterSuraDatabase reciterSuraDatabase;
 
     @Inject
-    public ReciterSuraRepository(ReciterSuraDAO reciterSuraDAO, ReciterSuraDatabase reciterSuraDatabase) {
+    public ReciterSuraRepository(ReciterSuraDAO reciterSuraDAO) {
         this.reciterSuraDAO = reciterSuraDAO;
-        this.reciterSuraDatabase = reciterSuraDatabase;
     }
 
-    public void insertReciterSuras(List<ReciterSuraEntity> list) {
-        Executor.IOThread(() -> reciterSuraDAO.addReciterSuras(list));
+    public Completable insertReciterSuras(List<ReciterSuraEntity> list) {
+        return reciterSuraDAO.addReciterSuras(list);
     }
 
+    public Completable deleteAllSuras() {
+        return reciterSuraDAO.deleteAllSuras();
+    }
+
+    public Flowable<List<ReciterSuraEntity>> getReciterSuras() {
+        return reciterSuraDAO.getReciterSuras();
+    }
+
+    /*
+    * test usage only
+    * */
     public void insertToDb(ReciterSuraEntity entity) {
         Executor.IOThread(() -> reciterSuraDAO.insertToDb(entity));
     }
 
-    public void deleteAllSuras() {
-        Executor.IOThread(() -> reciterSuraDAO.deleteAllSuras());
-    }
-
-    public List<ReciterSuraEntity> getReciterSuras() {
-        return reciterSuraDAO.getReciterSuras();
-    }
 }

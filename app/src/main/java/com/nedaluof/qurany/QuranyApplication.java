@@ -23,6 +23,9 @@ public class QuranyApplication extends Application {
         component.inject(this);
     }
 
+    /*public AppComponent getComponent() {
+        return ((QuranyApplication)this.getApplicationContext()).component;
+    }*/
     public AppComponent getComponent() {
         return component;
     }

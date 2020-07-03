@@ -3,15 +3,22 @@ package com.nedaluof.qurany.ui.reciter;
 import android.util.Log;
 
 import com.nedaluof.qurany.data.DataManager;
+import com.nedaluof.qurany.data.model.Reciter;
+import com.nedaluof.qurany.data.model.ReciterEntity;
 import com.nedaluof.qurany.data.model.Reciters;
 import com.nedaluof.qurany.ui.base.BasePresenter;
 import com.nedaluof.qurany.util.RxUtil;
+import com.nedaluof.qurany.util.SurasUtil;
+
+import org.reactivestreams.Subscription;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Flowable;
+import io.reactivex.FlowableSubscriber;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -44,55 +51,96 @@ public class ReciterPresenter extends BasePresenter<ReciterView> {
         }
     }
 
-    public void loadReciters(String language) {
+    public void loadReciters() {
+        String language = SurasUtil.getLanguage();
         checkViewAttached();
         getMvpView().showProgress(true);
-        RxUtil.dispose(disposable);
-        Observable<Reciters> observable = dataManager.getApiHelper().getService().getReciters(language);
-        observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Reciters>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        disposable = d;
-                    }
+        if (dataManager.reciterTableIsEmpty()) {
+            RxUtil.dispose(disposable);
+            dataManager.getApiHelper().getService().getReciters(language)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<Reciters>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                            disposable = d;
+                        }
 
-                    @Override
-                    public void onNext(Reciters reciters) {
+                        @Override
+                        public void onNext(Reciters reciters) {
 
-                        if (reciters == null) {
-                            getMvpView().showError("null object");
+                            if (reciters == null) {
+                                getMvpView().showError("null object from server");
+                                getMvpView().showProgress(false);
+                            }
+
+                            for (int i = 0; i < reciters.getReciters().size(); i++) {
+                                disposable = dataManager.getReciterRepository().insertReciter(new Reciter(
+                                        reciters.getReciters().get(i).getId(),
+                                        reciters.getReciters().get(i).getName(),
+                                        reciters.getReciters().get(i).getServer(),
+                                        reciters.getReciters().get(i).getRewaya(),
+                                        reciters.getReciters().get(i).getCount(),
+                                        reciters.getReciters().get(i).getLetter(),
+                                        reciters.getReciters().get(i).getSuras()
+                                )).subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(() -> Log.d(TAG, "inserted to db successfully "));
+                            }
+
                             getMvpView().showProgress(false);
+                            getReciterListFromDb();
                         }
 
-                        List<Reciters.Reciter> model = new ArrayList<>();
-                        for (int i = 0; i < reciters.getReciters().size(); i++) {
-                            model.add(new Reciters.Reciter(
-                                    reciters.getReciters().get(i).getId(),
-                                    reciters.getReciters().get(i).getName(),
-                                    reciters.getReciters().get(i).getServer(),
-                                    reciters.getReciters().get(i).getRewaya(),
-                                    reciters.getReciters().get(i).getCount(),
-                                    reciters.getReciters().get(i).getLetter(),
-                                    reciters.getReciters().get(i).getSuras()
-                            ));
+
+                        @Override
+                        public void onError(Throwable e) {
+                            getMvpView().showProgress(false);
+                            getMvpView().showError(e.getMessage());
                         }
 
-                        getMvpView().showProgress(false);
-                        getMvpView().showReciters(model);
+                        @Override
+                        public void onComplete() {
+                            Log.d(TAG, "onComplete: Reciters Observable");
+                        }
+                    });
+        } else {
+            getReciterListFromDb();
+        }
 
+    }
+
+    private void getReciterListFromDb() {
+        Log.d(TAG, "getReciterListFromDb:");
+        RxUtil.dispose(disposable);
+        dataManager.getReciterRepository().getReciters()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new FlowableSubscriber<List<Reciter>>() {
+                    @Override
+                    public void onSubscribe(Subscription s) {
                     }
 
                     @Override
-                    public void onError(Throwable e) {
+                    public void onNext(List<Reciter> list) {
+                        Log.d(TAG, "onNext: reciter size" + list.size());
                         getMvpView().showProgress(false);
-                        getMvpView().showError(e.getMessage());
+                        getMvpView().showReciters(list);
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+
                     }
 
                     @Override
                     public void onComplete() {
-                        Log.d(TAG, "onComplete: Reciters Observable");
+
                     }
                 });
+    }
+
+    private void add() {
+
     }
 }

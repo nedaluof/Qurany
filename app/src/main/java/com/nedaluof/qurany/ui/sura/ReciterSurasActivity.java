@@ -37,6 +37,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.nedaluof.qurany.R;
+import com.nedaluof.qurany.data.model.Reciter;
 import com.nedaluof.qurany.data.model.Reciters;
 import com.nedaluof.qurany.data.model.Suras;
 import com.nedaluof.qurany.databinding.ActivityReciterSurasBinding;
@@ -51,7 +52,7 @@ public class ReciterSurasActivity extends AppCompatActivity implements SurasView
     private static final String TAG = "ReciterSurasActivity";
     private ActivityReciterSurasBinding binding;
     private ReciterSuraAdapter adapter;
-    private Reciters.Reciter reciterData;
+    private Reciter reciterData;
     private BottomSheetBehavior sheetBehavior;
     //audio player
     private SimpleExoPlayer player;
