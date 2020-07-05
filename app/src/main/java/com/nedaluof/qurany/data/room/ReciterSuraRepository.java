@@ -1,7 +1,6 @@
 package com.nedaluof.qurany.data.room;
 
 import com.nedaluof.qurany.data.model.ReciterSuraEntity;
-import com.nedaluof.qurany.util.Executor;
 
 import java.util.List;
 
@@ -34,11 +33,5 @@ public class ReciterSuraRepository {
         return reciterSuraDAO.getReciterSuras();
     }
 
-    /*
-    * test usage only
-    * */
-    public void insertToDb(ReciterSuraEntity entity) {
-        Executor.IOThread(() -> reciterSuraDAO.insertToDb(entity));
-    }
 
 }

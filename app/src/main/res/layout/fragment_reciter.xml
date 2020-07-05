@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grey"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -12,16 +13,17 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_margin="@dimen/dp_4"
-                android:layout_marginStart="20dp"
-                android:text="@string/reciters_bar_title"
-                android:textColor="@color/green_200"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/dp_4"
+            android:layout_marginStart="20dp"
+            android:text="@string/reciters_bar_title"
+            android:textColor="@color/green_200"
+            android:textSize="22sp"
+            android:textStyle="bold" />
     </com.google.android.material.appbar.AppBarLayout>
 
 
@@ -44,6 +46,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </RelativeLayout>
 </LinearLayout>

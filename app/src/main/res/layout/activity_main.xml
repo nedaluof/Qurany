@@ -19,8 +19,7 @@
     <com.ismaeldivita.chipnavigation.ChipNavigationBar
         android:id="@+id/navigation"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:elevation="16dp"
         android:gravity="bottom"
         app:cnb_addLeftInset="true"
@@ -28,6 +27,7 @@
         app:cnb_menuResource="@menu/navigation"
         app:cnb_minExpandedWidth="150dp"
         app:cnb_orientationMode="horizontal"
+        app:cnb_radius="@dimen/dp_8"
         app:itemHorizontalTranslationEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
