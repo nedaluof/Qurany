@@ -9,7 +9,6 @@ import androidx.room.RoomDatabase;
 
 import com.nedaluof.qurany.data.model.Reciter;
 import com.nedaluof.qurany.data.model.ReciterSuraEntity;
-import com.nedaluof.qurany.data.model.Reciters;
 
 /**
  * Created by nedaluof on 6/26/2020.

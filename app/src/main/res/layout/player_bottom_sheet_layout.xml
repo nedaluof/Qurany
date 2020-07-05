@@ -8,9 +8,9 @@
     android:elevation="4dp"
     android:gravity="center_horizontal"
     android:orientation="vertical"
+    android:visibility="gone"
     app:behavior_hideable="false"
     app:behavior_peekHeight="37dp"
-    android:visibility="visible"
     app:layout_behavior="@string/bottom_sheet_behavior">
 
 
@@ -39,8 +39,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_cancel"
-            android:contentDescription="@string/app_name"/>
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_cancel" />
     </LinearLayout>
 
     <View

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home_navigation"
+        android:orderInCategory="10"
+        android:title="@string/home_nav_title" />
+
+    <item
+        android:id="@+id/nav_favorite"
+        android:icon="@drawable/ic_favorite_navigation"
+        android:orderInCategory="20"
+        android:title="@string/favorite_nav_title" />
+
+
+    <!--
+    Todo next version
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/ic_settings_navigation"
+        android:orderInCategory="30"
+        android:title="@string/settings_nav_title" />-->
+</menu>

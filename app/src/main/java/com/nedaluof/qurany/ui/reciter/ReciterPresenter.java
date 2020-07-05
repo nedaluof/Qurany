@@ -3,25 +3,16 @@ package com.nedaluof.qurany.ui.reciter;
 import android.util.Log;
 
 import com.nedaluof.qurany.data.DataManager;
-import com.nedaluof.qurany.data.model.Reciter;
-import com.nedaluof.qurany.data.model.ReciterEntity;
 import com.nedaluof.qurany.data.model.Reciters;
 import com.nedaluof.qurany.ui.base.BasePresenter;
 import com.nedaluof.qurany.util.RxUtil;
-import com.nedaluof.qurany.util.SurasUtil;
-
-import org.reactivestreams.Subscription;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.nedaluof.qurany.util.Utility;
 
 import javax.inject.Inject;
 
-import io.reactivex.Flowable;
-import io.reactivex.FlowableSubscriber;
-import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
@@ -32,6 +23,7 @@ public class ReciterPresenter extends BasePresenter<ReciterView> {
     private static final String TAG = "ReciterPresenter";
     private Disposable disposable;
     private DataManager dataManager;
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Inject
     public ReciterPresenter(DataManager dataManager) {
@@ -52,12 +44,44 @@ public class ReciterPresenter extends BasePresenter<ReciterView> {
     }
 
     public void loadReciters() {
-        String language = SurasUtil.getLanguage();
         checkViewAttached();
         getMvpView().showProgress(true);
-        if (dataManager.reciterTableIsEmpty()) {
-            RxUtil.dispose(disposable);
-            dataManager.getApiHelper().getService().getReciters(language)
+        RxUtil.dispose(disposable);
+        dataManager.getApiHelper().getService().getReciters(Utility.getLanguage())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Reciters>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        disposable = d;
+                    }
+
+                    @Override
+                    public void onNext(Reciters reciters) {
+                        getMvpView().showProgress(false);
+                        getMvpView().showReciters(reciters.getReciters());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        getMvpView().showProgress(false);
+                        getMvpView().showError(e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.d(TAG, "loadReciters : onComplete Reciters Presenter");
+                    }
+                });
+    }
+
+    /*public void loadReciters() {
+        checkViewAttached();
+        getMvpView().showProgress(true);
+        //Todo network check
+       if (!dataManager.reciterTableIsEmpty()) {
+            deleteAllRecitersInDb();
+            dataManager.getApiHelper().getService().getReciters(SurasUtil.getLanguage())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<Reciters>() {
@@ -72,24 +96,13 @@ public class ReciterPresenter extends BasePresenter<ReciterView> {
                             if (reciters == null) {
                                 getMvpView().showError("null object from server");
                                 getMvpView().showProgress(false);
-                            }
-
-                            for (int i = 0; i < reciters.getReciters().size(); i++) {
-                                disposable = dataManager.getReciterRepository().insertReciter(new Reciter(
-                                        reciters.getReciters().get(i).getId(),
-                                        reciters.getReciters().get(i).getName(),
-                                        reciters.getReciters().get(i).getServer(),
-                                        reciters.getReciters().get(i).getRewaya(),
-                                        reciters.getReciters().get(i).getCount(),
-                                        reciters.getReciters().get(i).getLetter(),
-                                        reciters.getReciters().get(i).getSuras()
-                                )).subscribeOn(Schedulers.io())
+                            } else {
+                                compositeDisposable.add(dataManager.getReciterRepository()
+                                        .insertReciters(reciters.getReciters())
+                                        .subscribeOn(Schedulers.io())
                                         .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe(() -> Log.d(TAG, "inserted to db successfully "));
+                                        .subscribe(() -> Log.d(TAG, "All inserted")));
                             }
-
-                            getMvpView().showProgress(false);
-                            getReciterListFromDb();
                         }
 
 
@@ -102,45 +115,32 @@ public class ReciterPresenter extends BasePresenter<ReciterView> {
                         @Override
                         public void onComplete() {
                             Log.d(TAG, "onComplete: Reciters Observable");
+                            getRecitersFromDb();
                         }
                     });
         } else {
-            getReciterListFromDb();
+            getRecitersFromDb();
         }
 
-    }
+       //getRecitersFromDb();
 
-    private void getReciterListFromDb() {
-        Log.d(TAG, "getReciterListFromDb:");
-        RxUtil.dispose(disposable);
-        dataManager.getReciterRepository().getReciters()
+    }*/
+
+    void getRecitersFromDb() {
+        disposable = dataManager.getReciterRepository().getReciters()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new FlowableSubscriber<List<Reciter>>() {
-                    @Override
-                    public void onSubscribe(Subscription s) {
-                    }
-
-                    @Override
-                    public void onNext(List<Reciter> list) {
-                        Log.d(TAG, "onNext: reciter size" + list.size());
-                        getMvpView().showProgress(false);
-                        getMvpView().showReciters(list);
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+                .subscribe(list -> {
+                    Log.d(TAG, "geetRecitersFromDb: liist size success " + list.size());
+                    getMvpView().showProgress(false);
+                    getMvpView().showReciters(list);
+                }, throwable -> Log.d(TAG, "Error: " + throwable.getMessage()));
     }
 
-    private void add() {
-
+    void deleteAllRecitersInDb() {
+        disposable = dataManager.getReciterRepository().deleteAllReciters()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> Log.d(TAG, "deleteAllRecitersInDb : success "));
     }
 }

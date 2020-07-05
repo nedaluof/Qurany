@@ -1,12 +1,10 @@
 package com.nedaluof.qurany.ui.sura;
 
-import android.util.Log;
-
 import com.nedaluof.qurany.data.model.Reciter;
-import com.nedaluof.qurany.data.model.Reciters;
 import com.nedaluof.qurany.data.model.Suras;
 import com.nedaluof.qurany.ui.base.BasePresenter;
 import com.nedaluof.qurany.util.SurasUtil;
+import com.nedaluof.qurany.util.Utility;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,7 +38,7 @@ public class SurasPresenter extends BasePresenter<SurasView> {
         for (int i = 0; i < reciterSuras.size(); i++) {
             String suraName;
             int item = Integer.parseInt(reciterSuras.get(i));
-            if (SurasUtil.getLanguage().equals("_arabic")) {
+            if (Utility.getLanguage().equals("_arabic")) {
                 suraName = SurasUtil.arabicSurasName().get(item - 1).getName();
                 mainList.add(new Suras(item, suraName, "رواية : " + reciterData.getRewaya()));
             } else {

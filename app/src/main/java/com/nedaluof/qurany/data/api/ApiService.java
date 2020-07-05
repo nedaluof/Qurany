@@ -1,12 +1,8 @@
 package com.nedaluof.qurany.data.api;
 
-import com.nedaluof.qurany.data.model.Languages;
 import com.nedaluof.qurany.data.model.Reciters;
 
-import java.util.List;
-
 import io.reactivex.Observable;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -27,12 +23,4 @@ public interface ApiService {
             @Path("language") String language
     );
 
-
-    /**
-     * @param url
-     * @return Call<ResponseBody>
-     */
-    @Streaming
-    @GET
-    Call<ResponseBody> downloadFileWithDynamicUrlSync(@Url String url);
 }

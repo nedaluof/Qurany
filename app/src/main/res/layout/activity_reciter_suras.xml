@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/reciters_bg"
     android:orientation="vertical"
-    tools:context=".ui.reciter.ReciterActivity">
+    tools:context=".ui.sura.ReciterSurasActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/suras_bar_layout"

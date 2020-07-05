@@ -1,5 +1,8 @@
 package com.nedaluof.qurany.data.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -11,7 +14,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by nedaluof on 7/2/2020.
  */
 @Entity(tableName = "reciters")
-public class Reciter {
+public class Reciter implements Parcelable {
     @SerializedName("id")
     @Expose
     private String id;
@@ -60,6 +63,29 @@ public class Reciter {
         this.suras = suras;
     }
 
+    protected Reciter(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        server = in.readString();
+        rewaya = in.readString();
+        count = in.readString();
+        letter = in.readString();
+        suras = in.readString();
+        reciter_id = in.readInt();
+    }
+
+    public static final Creator<Reciter> CREATOR = new Creator<Reciter>() {
+        @Override
+        public Reciter createFromParcel(Parcel in) {
+            return new Reciter(in);
+        }
+
+        @Override
+        public Reciter[] newArray(int size) {
+            return new Reciter[size];
+        }
+    };
+
     public String getId() {
         return id;
     }
@@ -92,4 +118,20 @@ public class Reciter {
         return reciter_id;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(server);
+        dest.writeString(rewaya);
+        dest.writeString(count);
+        dest.writeString(letter);
+        dest.writeString(suras);
+        dest.writeInt(reciter_id);
+    }
 }

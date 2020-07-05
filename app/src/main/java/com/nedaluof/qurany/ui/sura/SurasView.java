@@ -1,6 +1,5 @@
 package com.nedaluof.qurany.ui.sura;
 
-import com.nedaluof.qurany.data.model.Reciters;
 import com.nedaluof.qurany.data.model.Suras;
 import com.nedaluof.qurany.ui.base.MvpView;
 

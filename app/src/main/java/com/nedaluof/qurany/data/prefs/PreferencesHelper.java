@@ -89,7 +89,7 @@ public class PreferencesHelper {
      * @param key     Key to delete from SharedPreferences
      */
     public void removeFromPrefs(Context context, String key) {
-        WeakReference<Context> contextWeakReference = new WeakReference<Context>(context);
+        WeakReference<Context> contextWeakReference = new WeakReference<>(context);
         if (contextWeakReference.get() != null) {
             SharedPreferences prefs =
                     android.preference.PreferenceManager.getDefaultSharedPreferences(contextWeakReference.get());
@@ -100,7 +100,7 @@ public class PreferencesHelper {
     }
 
     public boolean hasKey(Context context, String key) {
-        WeakReference<Context> contextWeakReference = new WeakReference<Context>(context);
+        WeakReference<Context> contextWeakReference = new WeakReference<>(context);
         if (contextWeakReference.get() != null) {
             SharedPreferences prefs =
                     android.preference.PreferenceManager.getDefaultSharedPreferences(contextWeakReference.get());

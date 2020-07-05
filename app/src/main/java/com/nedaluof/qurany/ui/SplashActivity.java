@@ -7,8 +7,8 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.nedaluof.qurany.BuildConfig;
+import com.nedaluof.qurany.ui.main.MainActivity;
 import com.nedaluof.qurany.databinding.ActivitySplashBinding;
-import com.nedaluof.qurany.ui.reciter.ReciterActivity;
 
 import yanzhikai.textpath.painter.FireworksPainter;
 
@@ -31,7 +31,7 @@ public class SplashActivity extends AppCompatActivity {
         binding.tvVersion.setText("v ".concat(BuildConfig.VERSION_NAME));
         // TODO: 6/13/2020 check the preferences to open languageActivity
         new Handler().postDelayed(() -> {
-            startActivity(new Intent(SplashActivity.this, ReciterActivity.class));
+            startActivity(new Intent(SplashActivity.this, MainActivity.class));
             this.finish();
         }, 2200);
     }

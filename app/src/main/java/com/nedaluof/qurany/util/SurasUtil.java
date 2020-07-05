@@ -1,6 +1,5 @@
 package com.nedaluof.qurany.util;
 
-import com.nedaluof.qurany.data.model.Reciters;
 import com.nedaluof.qurany.data.model.Suras;
 
 import java.util.ArrayList;
@@ -251,16 +250,13 @@ public class SurasUtil {
         return surasList;
     }
 
-    public static String getLanguage() {
-        return Locale.getDefault().getDisplayLanguage().equals("العربية") ? "_arabic" : "_english";
-    }
 
     public static String getSuraIndex(int id) {
         String item;
         if (id < 9) {
-            item = "00" + String.valueOf(id);
+            item = "00" + id;
         } else if (id <= 99 && id > 9) {
-            item = "0" + String.valueOf(id);
+            item = "0" + id;
         } else {
             item = String.valueOf(id);
         }
@@ -269,7 +265,7 @@ public class SurasUtil {
 
     public static String getPlayerTitle(int suraId, String reciterName) {
         String playerTitle;
-        if (SurasUtil.getLanguage().equals("_arabic")) {
+        if (Utility.getLanguage().equals("_arabic")) {
             playerTitle = reciterName + " | ".concat(SurasUtil.arabicSurasName().get(suraId - 1).getName());
         } else {
             playerTitle = reciterName + " | ".concat(SurasUtil.englishSurasName().get(suraId - 1).getName());
@@ -279,7 +275,7 @@ public class SurasUtil {
 
     public static String getSuraName(int suraId) {
         String suraName;
-        if (SurasUtil.getLanguage().equals("_arabic")) {
+        if (Utility.getLanguage().equals("_arabic")) {
             suraName = arabicSurasName().get(suraId - 1).getName();
         } else {
             suraName =englishSurasName().get(suraId - 1).getName();

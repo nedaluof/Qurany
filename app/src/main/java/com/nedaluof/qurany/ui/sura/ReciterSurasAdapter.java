@@ -1,12 +1,8 @@
 package com.nedaluof.qurany.ui.sura;
 
-import android.util.Log;
-import android.widget.Toast;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.nedaluof.qurany.R;
-import com.nedaluof.qurany.data.model.Reciters;
 import com.nedaluof.qurany.data.model.Suras;
 
 import org.jetbrains.annotations.NotNull;
@@ -17,12 +13,12 @@ import java.util.List;
 /**
  * Created by nedaluof on 6/16/2020.
  */
-public class ReciterSuraAdapter extends BaseQuickAdapter<Suras, BaseViewHolder> {
+public class ReciterSurasAdapter extends BaseQuickAdapter<Suras, BaseViewHolder> {
 
-    private static final String TAG = "ReciterSuraAdapter";
+    private static final String TAG = "ReciterSurasAdapter";
     private SurasView surasView;
 
-    public ReciterSuraAdapter(int layoutResId, @Nullable List<Suras> data, SurasView surasView) {
+    public ReciterSurasAdapter(int layoutResId, @Nullable List<Suras> data, SurasView surasView) {
         super(layoutResId, data);
         this.surasView = surasView;
     }

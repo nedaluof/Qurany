@@ -3,8 +3,6 @@ package com.nedaluof.qurany.di.modules;
 import android.app.Application;
 import android.content.Context;
 
-import com.nedaluof.qurany.di.ApplicationContext;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -21,9 +19,7 @@ public class ApplicationModule {
         application = app;
     }
 
-    @Singleton
     @Provides
-    @ApplicationContext
     Context provideContext() {
         return application;
     }

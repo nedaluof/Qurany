@@ -1,8 +1,6 @@
 package com.nedaluof.qurany.data.room;
 
 import com.nedaluof.qurany.data.model.Reciter;
-import com.nedaluof.qurany.data.model.ReciterEntity;
-import com.nedaluof.qurany.data.model.Reciters;
 
 import java.util.List;
 
@@ -36,6 +34,14 @@ public class ReciterRepository {
 
     public Completable deleteAllReciters() {
         return reciterDao.deleteAllReciters();
+    }
+
+    public int reciterListCheck() {
+        return reciterDao.getRecitersForCheck().size();
+    }
+
+    public int recitersCountinTable() {
+        return reciterDao.getRecitersRecordsNumber();
     }
 
 }

@@ -38,7 +38,6 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.nedaluof.qurany.R;
 import com.nedaluof.qurany.data.model.Reciter;
-import com.nedaluof.qurany.data.model.Reciters;
 import com.nedaluof.qurany.data.model.Suras;
 import com.nedaluof.qurany.databinding.ActivityReciterSurasBinding;
 import com.nedaluof.qurany.util.SurasUtil;
@@ -51,16 +50,15 @@ import java.util.List;
 public class ReciterSurasActivity extends AppCompatActivity implements SurasView {
     private static final String TAG = "ReciterSurasActivity";
     private ActivityReciterSurasBinding binding;
-    private ReciterSuraAdapter adapter;
+    private ReciterSurasAdapter adapter;
     private Reciter reciterData;
-    private BottomSheetBehavior sheetBehavior;
+    private BottomSheetBehavior<?> sheetBehavior;
     //audio player
     private SimpleExoPlayer player;
     private MediaSource mediaSource;
     private boolean playWhenReady = true;
     private int currentWindow = 0;
     private long playbackPosition = 0;
-    private String server;
     private int suraId;
 
     @Override
@@ -105,7 +103,7 @@ public class ReciterSurasActivity extends AppCompatActivity implements SurasView
         binding.reciterSurasRecyclerView.setHasFixedSize(true);
         binding.reciterSurasRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        adapter = new ReciterSuraAdapter(R.layout.item_sura, new ArrayList<>(), this);
+        adapter = new ReciterSurasAdapter(R.layout.item_sura, new ArrayList<>(), this);
         adapter.setAdapterAnimation(new ScaleInAnimation());
         binding.reciterSurasRecyclerView.setAdapter(adapter);
         binding.reciterSurasRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -194,34 +192,32 @@ public class ReciterSurasActivity extends AppCompatActivity implements SurasView
 
     @Override
     public void onDownloadClick(int suraId) {
-        new Thread(() -> {
-            Dexter.withContext(this)
-                    .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    .withListener(new PermissionListener() {
-                        @Override
-                        public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                            startDownload(suraId);
-                        }
+        new Thread(() -> Dexter.withContext(this)
+                .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                        startDownload(suraId);
+                    }
 
-                        @Override
-                        public void onPermissionDenied(PermissionDeniedResponse response) {
-                            if (response.isPermanentlyDenied()) {
-                                Utility.showSettingsDialog(ReciterSurasActivity.this);
-                            }
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        if (response.isPermanentlyDenied()) {
+                            Utility.showSettingsDialog(ReciterSurasActivity.this);
                         }
+                    }
 
-                        @Override
-                        public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken token) {
-                            token.continuePermissionRequest();
-                        }
-                    }).withErrorListener(e -> Toast.makeText(this, getString(R.string.dexter_permission_error), Toast.LENGTH_SHORT).show())
-                    .check();
-        }) {
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).withErrorListener(e -> Toast.makeText(this, getString(R.string.dexter_permission_error), Toast.LENGTH_SHORT).show())
+                .check()) {
         }.start();
     }
 
     private void initializePlayer(int suraId) {
-        server = reciterData.getServer() + "/" + SurasUtil.getSuraIndex(suraId) + ".mp3";
+        String server = reciterData.getServer() + "/" + SurasUtil.getSuraIndex(suraId) + ".mp3";
         mediaSource = buildMediaSource(Uri.parse(server));
         player = ExoPlayerFactory.newSimpleInstance(this);
         binding.playerBottomSheet.playerController.setPlayer(player);
@@ -337,6 +333,7 @@ public class ReciterSurasActivity extends AppCompatActivity implements SurasView
         if (Util.SDK_INT < 24) {
             releasePlayer();
         }
+        unregisterReceiver(onComplete);
     }
 
     @Override

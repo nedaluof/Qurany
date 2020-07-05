@@ -5,7 +5,6 @@ import android.content.Context;
 import com.nedaluof.qurany.data.room.QuranyDatabase;
 import com.nedaluof.qurany.data.room.ReciterDao;
 import com.nedaluof.qurany.data.room.ReciterSuraDAO;
-import com.nedaluof.qurany.di.ApplicationContext;
 
 import javax.inject.Singleton;
 
@@ -17,10 +16,9 @@ import dagger.Provides;
  */
 @Module
 public class DatabaseModule {
-    @ApplicationContext
     Context context;
 
-    public DatabaseModule(@ApplicationContext Context context) {
+    public DatabaseModule(Context context) {
         this.context = context;
     }
 

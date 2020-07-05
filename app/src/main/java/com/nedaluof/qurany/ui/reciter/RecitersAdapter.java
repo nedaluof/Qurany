@@ -4,7 +4,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.nedaluof.qurany.R;
 import com.nedaluof.qurany.data.model.Reciter;
-import com.nedaluof.qurany.data.model.Reciters;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

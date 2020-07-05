@@ -10,13 +10,24 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.nedaluof.qurany.R;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
+import java.util.Locale;
 
 /**
  * Created by nedaluof on 6/25/2020.
  */
 public class Utility {
 
+
+    /**
+     * @return user device language
+     */
+    @NotNull
+    public static String getLanguage() {
+        return Locale.getDefault().getDisplayLanguage().equals("العربية") ? "_arabic" : "_english";
+    }
 
     /**
      * Create the main folder which will hold

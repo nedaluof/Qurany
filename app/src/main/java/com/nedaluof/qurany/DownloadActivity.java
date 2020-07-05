@@ -1,4 +1,4 @@
-package com.nedaluof.qurany.ui;
+package com.nedaluof.qurany;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,7 +10,6 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,13 +18,7 @@ import android.widget.Toast;
 
 import com.nedaluof.qurany.databinding.ActivityDownloadBinding;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLConnection;
 
 public class DownloadActivity extends AppCompatActivity {
     ActivityDownloadBinding binding;

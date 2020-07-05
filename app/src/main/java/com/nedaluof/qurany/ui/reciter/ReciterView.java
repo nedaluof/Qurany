@@ -1,8 +1,6 @@
 package com.nedaluof.qurany.ui.reciter;
 
 import com.nedaluof.qurany.data.model.Reciter;
-import com.nedaluof.qurany.data.model.ReciterEntity;
-import com.nedaluof.qurany.data.model.Reciters;
 import com.nedaluof.qurany.ui.base.MvpView;
 
 import java.util.List;

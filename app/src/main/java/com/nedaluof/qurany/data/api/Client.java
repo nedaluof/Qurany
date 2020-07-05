@@ -2,7 +2,6 @@ package com.nedaluof.qurany.data.api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.nedaluof.qurany.BuildConfig;
 
 import java.util.concurrent.TimeUnit;
 
