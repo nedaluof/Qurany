@@ -7,10 +7,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
-import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import com.nedaluof.qurany.R;
 import com.nedaluof.qurany.databinding.ActivityMainBinding;
-import com.nedaluof.qurany.ui.NoInternetFragment;
 import com.nedaluof.qurany.ui.myreciters.MyRecitersFragment;
 import com.nedaluof.qurany.ui.reciter.RecitersFragment;
 import com.nedaluof.qurany.util.RxUtil;

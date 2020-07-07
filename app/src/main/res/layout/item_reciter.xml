@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <!--Todo content description-->
+
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -28,9 +28,11 @@
             android:background="@color/green_200" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/reciter_data_layout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_4"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -61,6 +63,32 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
                 tools:text="There 70 Suhras" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/green_200" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:layout_marginBottom="2dp"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/img_add_favorite"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_margin="1dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/app_name"
+                android:focusable="true"
+                android:src="@drawable/ic_favorite_navigation" />
         </LinearLayout>
     </LinearLayout>
 

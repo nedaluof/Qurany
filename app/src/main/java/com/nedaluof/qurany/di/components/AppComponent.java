@@ -10,6 +10,7 @@ import com.nedaluof.qurany.data.room.ReciterSuraDAO;
 import com.nedaluof.qurany.data.room.QuranyDatabase;
 import com.nedaluof.qurany.di.modules.ApplicationModule;
 import com.nedaluof.qurany.di.modules.DatabaseModule;
+import com.nedaluof.qurany.ui.myreciters.MyRecitersFragment;
 import com.nedaluof.qurany.ui.reciter.RecitersFragment;
 
 import javax.inject.Singleton;
@@ -27,6 +28,8 @@ public interface AppComponent {
     void inject(TestRoomActivity testRoomActivity);
 
     void inject(RecitersFragment recitersFragment);
+
+    void inject(MyRecitersFragment myRecitersFragment);
 
     Context getContext();
 

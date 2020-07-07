@@ -4,7 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import androidx.preference.PreferenceManager;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -14,6 +21,7 @@ import javax.inject.Singleton;
  */
 @Singleton
 public class PreferencesHelper {
+
     @Inject
     public PreferencesHelper() {
     }
@@ -29,7 +37,7 @@ public class PreferencesHelper {
         WeakReference<Context> contextWeakReference = new WeakReference<>(context);
         if (contextWeakReference.get() != null) {
             SharedPreferences prefs =
-                    android.preference.PreferenceManager.getDefaultSharedPreferences(contextWeakReference.get());
+                    PreferenceManager.getDefaultSharedPreferences(contextWeakReference.get());
             final SharedPreferences.Editor editor = prefs.edit();
             if (value instanceof Integer) {
                 editor.putInt(key, (Integer) value);
@@ -61,7 +69,7 @@ public class PreferencesHelper {
         WeakReference<Context> contextWeakReference = new WeakReference<>(context);
         if (contextWeakReference.get() != null) {
             SharedPreferences sharedPrefs =
-                    android.preference.PreferenceManager.getDefaultSharedPreferences(contextWeakReference.get());
+                    PreferenceManager.getDefaultSharedPreferences(contextWeakReference.get());
             try {
                 if (defaultValue instanceof String) {
                     return sharedPrefs.getString(key, defaultValue.toString());
@@ -92,7 +100,7 @@ public class PreferencesHelper {
         WeakReference<Context> contextWeakReference = new WeakReference<>(context);
         if (contextWeakReference.get() != null) {
             SharedPreferences prefs =
-                    android.preference.PreferenceManager.getDefaultSharedPreferences(contextWeakReference.get());
+                    PreferenceManager.getDefaultSharedPreferences(contextWeakReference.get());
             final SharedPreferences.Editor editor = prefs.edit();
             editor.remove(key);
             editor.apply();
@@ -103,10 +111,30 @@ public class PreferencesHelper {
         WeakReference<Context> contextWeakReference = new WeakReference<>(context);
         if (contextWeakReference.get() != null) {
             SharedPreferences prefs =
-                    android.preference.PreferenceManager.getDefaultSharedPreferences(contextWeakReference.get());
+                    PreferenceManager.getDefaultSharedPreferences(contextWeakReference.get());
             return prefs.contains(key);
         }
         return false;
     }
+
+    public void saveArrayList(Context context, ArrayList<String> list, String key) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString(key, json);
+        editor.apply();
+
+    }
+
+    public ArrayList<String> getArrayList(Context context, String key) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        Gson gson = new Gson();
+        String json = prefs.getString(key, null);
+        Type type = new TypeToken<ArrayList<String>>() {
+        }.getType();
+        return gson.fromJson(json, type);
+    }
+
 
 }

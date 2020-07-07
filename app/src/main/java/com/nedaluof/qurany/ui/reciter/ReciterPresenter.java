@@ -1,8 +1,10 @@
 package com.nedaluof.qurany.ui.reciter;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.nedaluof.qurany.data.DataManager;
+import com.nedaluof.qurany.data.model.Reciter;
 import com.nedaluof.qurany.data.model.Reciters;
 import com.nedaluof.qurany.ui.base.BasePresenter;
 import com.nedaluof.qurany.util.RxUtil;
@@ -23,7 +25,10 @@ public class ReciterPresenter extends BasePresenter<ReciterView> {
     private static final String TAG = "ReciterPresenter";
     private Disposable disposable;
     private DataManager dataManager;
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
+
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    @Inject
+    Context context;
 
     @Inject
     public ReciterPresenter(DataManager dataManager) {
@@ -58,23 +63,45 @@ public class ReciterPresenter extends BasePresenter<ReciterView> {
 
                     @Override
                     public void onNext(Reciters reciters) {
-                        getMvpView().showProgress(false);
                         getMvpView().showReciters(reciters.getReciters());
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         getMvpView().showProgress(false);
-                        getMvpView().showError(e.getMessage());
+                        getMvpView().onError(e.getMessage());
                     }
 
                     @Override
                     public void onComplete() {
+                        getMvpView().showProgress(false);
                         Log.d(TAG, "loadReciters : onComplete Reciters Presenter");
                     }
                 });
     }
 
+    public void addReciterToMyReciters(Reciter reciter) {
+        if (reciter != null) {
+            String inPrefs = (String) dataManager.getPreferencesHelper().getFromPrefs(context, reciter.getName(), null);
+            if (inPrefs == null) {
+                //adding reciter to database
+                compositeDisposable.add(dataManager.getReciterRepository().insertReciter(reciter)
+                        .subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> {
+                            Log.d(TAG, "insert btn : onComplete: ");
+                        }));
+                //adding reciter to preferences
+                dataManager.getPreferencesHelper()
+                        .saveToPrefs(context, reciter.getName(), reciter.getName());
+                //inform user that reciter added to My Reciters List
+                getMvpView().onReciterAddedToMyRecitersSuccess();
+            } else {
+                //inform user that reciter already added to My Reciter List
+                getMvpView().onReciterAlreadyAddedToMyReciters();
+            }
+        }
+    }
     /*public void loadReciters() {
         checkViewAttached();
         getMvpView().showProgress(true);

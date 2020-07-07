@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,9 +20,10 @@ import com.chad.library.adapter.base.animation.ScaleInAnimation;
 import com.nedaluof.qurany.QuranyApplication;
 import com.nedaluof.qurany.R;
 import com.nedaluof.qurany.data.model.Reciter;
-import com.nedaluof.qurany.databinding.FragmentReciterBinding;
-import com.nedaluof.qurany.di.components.AppComponent;
+import com.nedaluof.qurany.databinding.ItemReciterBinding;
+import com.nedaluof.qurany.databinding.RecitersFragmentBinding;
 import com.nedaluof.qurany.ui.sura.ReciterSurasActivity;
+import com.nedaluof.qurany.util.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +37,7 @@ public class RecitersFragment extends Fragment implements ReciterView {
     public RecitersFragment() {/**/}
 
     private static final String TAG = "RecitersFragment";
-    private FragmentReciterBinding binding;
-
+    private RecitersFragmentBinding binding;
     private RecitersAdapter adapter;
     @Inject
     ReciterPresenter presenter;
@@ -46,7 +47,7 @@ public class RecitersFragment extends Fragment implements ReciterView {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentReciterBinding.inflate(inflater, container, false);
+        binding = RecitersFragmentBinding.inflate(inflater, container, false);
         ((QuranyApplication) getActivity().getApplication()).getComponent().inject(this);
         initComponents();
         return binding.getRoot();
@@ -67,7 +68,7 @@ public class RecitersFragment extends Fragment implements ReciterView {
     }
 
     @Override
-    public void showError(String message) {
+    public void onError(String message) {
         Toast.makeText(getActivity(), "Error: " + message, Toast.LENGTH_LONG).show();
     }
 
@@ -77,6 +78,22 @@ public class RecitersFragment extends Fragment implements ReciterView {
                 new Intent(context, ReciterSurasActivity.class)
                         .putExtra("reciterData", reciterData)
         );
+    }
+
+    @Override
+    public void onClickAddToMyReciters(Reciter reciterData) {
+        Toast.makeText(context, "reciter name:" + reciterData.getName(), Toast.LENGTH_SHORT).show();
+        presenter.addReciterToMyReciters(reciterData);
+    }
+
+    @Override
+    public void onReciterAddedToMyRecitersSuccess() {
+        Toast.makeText(context, "Added Successfully", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onReciterAlreadyAddedToMyReciters() {
+        Toast.makeText(context, "Fail To Add Reciter", Toast.LENGTH_SHORT).show();
     }
 
     private void initComponents() {

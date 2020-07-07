@@ -13,7 +13,13 @@ public interface ReciterView extends MvpView {
 
     void showReciters(List<Reciter> data);
 
-    void showError(String message);
+    void onError(String message);
 
     void onClickGetReciterData(Reciter reciterData);
+
+    void onClickAddToMyReciters(Reciter reciterData);
+
+    void onReciterAddedToMyRecitersSuccess();
+
+    void onReciterAlreadyAddedToMyReciters();
 }
