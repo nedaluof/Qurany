@@ -16,6 +16,7 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -34,6 +35,7 @@ public class ReciterPresenter extends BasePresenter<ReciterView> {
     public ReciterPresenter(DataManager dataManager) {
         this.dataManager = dataManager;
     }
+
 
     @Override
     public void attachView(ReciterView mvpView) {
@@ -55,52 +57,76 @@ public class ReciterPresenter extends BasePresenter<ReciterView> {
         dataManager.getApiHelper().getService().getReciters(Utility.getLanguage())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Reciters>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        disposable = d;
+                .filter(reciters -> {
+                    for (Reciter reciter : reciters.getReciters()) {
+                        boolean hasKey = dataManager.getPreferencesHelper().hasKey(context, reciter.getName());
+                        if (hasKey) {
+                            reciter.setInMyReciters(true);
+                        } else {
+                            reciter.setInMyReciters(false);
+                        }
                     }
+                    return true;
+                }).subscribe(new Observer<Reciters>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                disposable = d;
+            }
 
-                    @Override
-                    public void onNext(Reciters reciters) {
-                        getMvpView().showReciters(reciters.getReciters());
-                    }
+            @Override
+            public void onNext(Reciters reciters) {
+                getMvpView().showReciters(reciters.getReciters());
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        getMvpView().showProgress(false);
-                        getMvpView().onError(e.getMessage());
-                    }
+            @Override
+            public void onError(Throwable e) {
+                getMvpView().showProgress(false);
+                getMvpView().onError(e.getMessage());
+            }
 
-                    @Override
-                    public void onComplete() {
-                        getMvpView().showProgress(false);
-                        Log.d(TAG, "loadReciters : onComplete Reciters Presenter");
-                    }
-                });
+            @Override
+            public void onComplete() {
+                getMvpView().showProgress(false);
+                Log.d(TAG, "loadReciters : onComplete Reciters Presenter");
+            }
+        });
     }
 
     public void addReciterToMyReciters(Reciter reciter) {
-        if (reciter != null) {
-            String inPrefs = (String) dataManager.getPreferencesHelper().getFromPrefs(context, reciter.getName(), null);
-            if (inPrefs == null) {
-                //adding reciter to database
-                compositeDisposable.add(dataManager.getReciterRepository().insertReciter(reciter)
-                        .subscribeOn(Schedulers.computation())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(() -> {
-                            Log.d(TAG, "insert btn : onComplete: ");
-                        }));
-                //adding reciter to preferences
-                dataManager.getPreferencesHelper()
-                        .saveToPrefs(context, reciter.getName(), reciter.getName());
-                //inform user that reciter added to My Reciters List
-                getMvpView().onReciterAddedToMyRecitersSuccess();
-            } else {
-                //inform user that reciter already added to My Reciter List
-                getMvpView().onReciterAlreadyAddedToMyReciters();
-            }
+        boolean hasKey = dataManager.getPreferencesHelper().hasKey(context, reciter.getName());
+        if (!hasKey) {
+            //adding reciter to database
+            //RxUtil.dispose(disposable);
+            disposable = dataManager.getReciterRepository().insertReciter(reciter)
+                    .subscribeOn(Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> {
+                        Log.d(TAG, "insert btn : onComplete: ");
+                    });
+            //adding reciter to preferences
+            dataManager.getPreferencesHelper()
+                    .saveToPrefs(context, reciter.getName(), reciter.getName());
+            //inform user that reciter added to My Reciters List
+            getMvpView().onReciterAddedToMyRecitersSuccess();
+        } else {
+            //inform user that reciter already added to My Reciter List
+            getMvpView().onReciterAlreadyAddedToMyReciters();
         }
+    }
+
+    public void deleteFromMyReciters(Reciter reciter) {
+        checkViewAttached();
+        RxUtil.dispose(disposable);
+        disposable = dataManager.getReciterRepository()
+                .deleteReciter(reciter)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                    Log.d(TAG, "deleteFromMyReciters: deleted successfully");
+                    dataManager.getPreferencesHelper().removeFromPrefs(context, reciter.getName());
+                });
+
+        //inform user that the reciter removed successfully
     }
     /*public void loadReciters() {
         checkViewAttached();

@@ -95,13 +95,16 @@ public class MyRecitersFragment extends Fragment implements MyRecitersView {
     }
 
     @Override
-    public void onClickDeleteFromFavorite(Reciter reciterData) {
+    public void onClickDeleteFromMyReciters(Reciter reciterData) {
         /*Todo delete from My Reciters List*/
+        presenter.deleteFromMyReciters(reciterData);
+
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+        presenter.detachView();
     }
 }

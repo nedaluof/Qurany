@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,10 +19,8 @@ import com.chad.library.adapter.base.animation.ScaleInAnimation;
 import com.nedaluof.qurany.QuranyApplication;
 import com.nedaluof.qurany.R;
 import com.nedaluof.qurany.data.model.Reciter;
-import com.nedaluof.qurany.databinding.ItemReciterBinding;
 import com.nedaluof.qurany.databinding.RecitersFragmentBinding;
 import com.nedaluof.qurany.ui.sura.ReciterSurasActivity;
-import com.nedaluof.qurany.util.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +91,11 @@ public class RecitersFragment extends Fragment implements ReciterView {
     @Override
     public void onReciterAlreadyAddedToMyReciters() {
         Toast.makeText(context, "Fail To Add Reciter", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClickDeleteFromMyReciters(Reciter reciterData) {
+        presenter.deleteFromMyReciters(reciterData);
     }
 
     private void initComponents() {

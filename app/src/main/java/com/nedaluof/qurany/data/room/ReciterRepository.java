@@ -36,6 +36,10 @@ public class ReciterRepository {
         return reciterDao.deleteAllReciters();
     }
 
+    public Completable deleteReciter(Reciter reciter) {
+        return reciterDao.deleteReciter(reciter);
+    }
+
     public int reciterListCheck() {
         return reciterDao.getRecitersForCheck().size();
     }

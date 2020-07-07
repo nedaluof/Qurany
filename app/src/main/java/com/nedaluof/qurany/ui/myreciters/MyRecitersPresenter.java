@@ -1,9 +1,13 @@
 package com.nedaluof.qurany.ui.myreciters;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.karumi.dexter.listener.single.DialogOnDeniedPermissionListener;
 import com.nedaluof.qurany.data.DataManager;
+import com.nedaluof.qurany.data.model.Reciter;
 import com.nedaluof.qurany.ui.base.BasePresenter;
+import com.nedaluof.qurany.util.RxUtil;
 
 import javax.inject.Inject;
 
@@ -18,6 +22,9 @@ public class MyRecitersPresenter extends BasePresenter<MyRecitersView> {
     private static final String TAG = "MyRecitersPresenter";
     private Disposable disposable;
     private DataManager dataManager;
+
+    @Inject
+    Context context;
 
     @Inject
     public MyRecitersPresenter(DataManager dataManager) {
@@ -38,6 +45,9 @@ public class MyRecitersPresenter extends BasePresenter<MyRecitersView> {
     }
 
     public void loadMyReciters() {
+        checkViewAttached();
+        getMvpView().showProgress(true);
+        RxUtil.dispose(disposable);
         disposable = dataManager.getReciterRepository().getReciters()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -46,5 +56,20 @@ public class MyRecitersPresenter extends BasePresenter<MyRecitersView> {
                     getMvpView().showProgress(false);
                     getMvpView().showMyReciters(list);
                 }, throwable -> Log.d(TAG, "Error: " + throwable.getMessage()));
+    }
+
+    public void deleteFromMyReciters(Reciter reciter) {
+        checkViewAttached();
+        RxUtil.dispose(disposable);
+        disposable = dataManager.getReciterRepository()
+                .deleteReciter(reciter)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                    Log.d(TAG, "deleteFromMyReciters: deleted successfully");
+                    dataManager.getPreferencesHelper().removeFromPrefs(context, reciter.getName());
+                });
+
+        //inform user that the reciter removed successfully
     }
 }

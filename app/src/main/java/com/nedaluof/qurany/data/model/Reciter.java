@@ -41,6 +41,8 @@ public class Reciter implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private int reciter_id;
 
+    private boolean inMyReciters;
+
     public Reciter(int reciter_id, String id, String name, String server, String rewaya, String count, String letter, String suras) {
         this.reciter_id = reciter_id;
         this.id = id;
@@ -116,6 +118,14 @@ public class Reciter implements Parcelable {
 
     public int getReciter_id() {
         return reciter_id;
+    }
+
+    public boolean isInMyReciters() {
+        return inMyReciters;
+    }
+
+    public void setInMyReciters(boolean inMyReciters) {
+        this.inMyReciters = inMyReciters;
     }
 
     @Override

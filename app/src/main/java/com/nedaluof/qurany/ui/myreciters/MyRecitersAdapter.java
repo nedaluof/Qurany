@@ -6,7 +6,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.nedaluof.qurany.R;
 import com.nedaluof.qurany.data.model.Reciter;
-import com.nedaluof.qurany.ui.reciter.ReciterView;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -35,10 +34,11 @@ public class MyRecitersAdapter extends BaseQuickAdapter<Reciter, BaseViewHolder>
                 .setText(R.id.tv_reciter_sura_count, "There " + reciter.getCount() + " Sura")
                 .getView(R.id.reciter_data_layout).setOnClickListener(v -> handleClick.onClickGetReciterData(reciter));
 
+        holder.setImageResource(R.id.img_add_favorite, R.drawable.ic_favorite_selected);
         holder.getView(R.id.img_add_favorite)
                 .setOnClickListener(v -> {
-                    handleClick.onClickDeleteFromFavorite(reciter);
                     holder.setImageResource(R.id.img_add_favorite, R.drawable.ic_favorite_navigation);
+                    handleClick.onClickDeleteFromMyReciters(reciter);
                 });
 
     }
