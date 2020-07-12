@@ -22,6 +22,7 @@
 * [Dagger](https://google.github.io/dagger/) for dependency injection.
 * [Retrofit](https://square.github.io/retrofit/) and [OkHttp](https://square.github.io/okhttp/) for network connecting .
 * [Glide](https://github.com/bumptech/glide) for image loading.
+* [Chip Navigation Bar](https://github.com/ismaeldivita/chip-navigation-bar) Bottom Navigation mixed with Chips component.
 * [TextPathView](https://github.com/totond/TextPathView) for animated text in splash screen.
 
 ## Run the project
