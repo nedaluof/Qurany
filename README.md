@@ -3,7 +3,10 @@
 ### Qurany : Simple Android Application aims to provide way for listen to Holy Quran Online via over 209 Quran Karim Reciters
 ## ScreenShot
 
-<img src="art/qurany.gif" alt="screenshot" width="300"/>
+| Reciters List | Reciter Sura list | Holy Quran Sura audio player | My Reciters List |
+| ------ | ----- | ------ | ----- |
+| ![Reciters](/art/qurany1.png) | ![Suras](/art/qurany2.png) | ![Suraaudioplayer](/art/qurany3.png) | ![MyReciters](/art/Screenshot_4.png) |
+
 
 ## MVP Archeitecture
 * The mvp architecture used in simple way in Qurany as the diagram below shows
