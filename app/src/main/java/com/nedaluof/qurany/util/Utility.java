@@ -56,21 +56,7 @@ public class Utility {
         return direct.exists();
     }
 
-    /**
-     * this method inform the user that the sura he want to
-     * download it ready to listen from local source instead
-     * online source.
-     *
-     * @param context to build alert dialog
-     */
-    public static void alertSuraIsReadyToPlay(Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        //builder.setTitle(context.getResources().getString(R.string.dialoge_sura_exist_title));
-        //builder.setMessage(context.getResources().getString(R.string.dialoge_sura_exist_message));
-        builder.setCancelable(true);
-        builder.setView(R.layout.dialog_sura_ready_layout);
-        builder.show();
-    }
+
 
     public static void showSettingsDialog(Context context) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);

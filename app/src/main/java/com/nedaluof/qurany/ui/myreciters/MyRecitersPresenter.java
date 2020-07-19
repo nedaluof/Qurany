@@ -22,13 +22,12 @@ public class MyRecitersPresenter extends BasePresenter<MyRecitersView> {
     private static final String TAG = "MyRecitersPresenter";
     private Disposable disposable;
     private DataManager dataManager;
+    private Context context;
 
     @Inject
-    Context context;
-
-    @Inject
-    public MyRecitersPresenter(DataManager dataManager) {
+    public MyRecitersPresenter(DataManager dataManager, Context context) {
         this.dataManager = dataManager;
+        this.context = context;
     }
 
     @Override
@@ -53,23 +52,21 @@ public class MyRecitersPresenter extends BasePresenter<MyRecitersView> {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(list -> {
                     Log.d(TAG, "getRecitersFromDb: list size success " + list.size());
-                    getMvpView().showProgress(false);
                     getMvpView().showMyReciters(list);
+                    getMvpView().showProgress(false);
                 }, throwable -> Log.d(TAG, "Error: " + throwable.getMessage()));
     }
 
     public void deleteFromMyReciters(Reciter reciter) {
-        checkViewAttached();
         RxUtil.dispose(disposable);
         disposable = dataManager.getReciterRepository()
                 .deleteReciter(reciter)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
-                    Log.d(TAG, "deleteFromMyReciters: deleted successfully");
-                    dataManager.getPreferencesHelper().removeFromPrefs(context, reciter.getName());
+                    dataManager.getPreferencesHelper().removeFromPrefs(context, reciter.getId());
+                    getMvpView().onReciterDeletedFromMyReciters();
                 });
 
-        //inform user that the reciter removed successfully
     }
 }

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,15 +14,14 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chad.library.adapter.base.animation.ScaleInAnimation;
 import com.nedaluof.qurany.QuranyApplication;
 import com.nedaluof.qurany.R;
 import com.nedaluof.qurany.data.model.Reciter;
 import com.nedaluof.qurany.databinding.MyRecitersFragmentBinding;
-import com.nedaluof.qurany.ui.reciter.RecitersAdapter;
+import com.nedaluof.qurany.ui.component.MyRecitersAdapter;
 import com.nedaluof.qurany.ui.sura.ReciterSurasActivity;
+import com.tapadoo.alerter.Alerter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -39,13 +37,9 @@ public class MyRecitersFragment extends Fragment implements MyRecitersView {
     MyRecitersPresenter presenter;
     @Inject
     Context context;
+    @Inject
+    MyRecitersAdapter adapter;
 
-    private MyRecitersAdapter adapter;
-
-    /*
-     * TODO 5/7/2020 : save the Favorite Reciters To Room then inflate
-     *  them to recycler view  , again same process with suras
-     * */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -60,11 +54,9 @@ public class MyRecitersFragment extends Fragment implements MyRecitersView {
         binding.recitersRecyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
         binding.recitersRecyclerView.setHasFixedSize(true);
         binding.recitersRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        adapter = new MyRecitersAdapter(R.layout.item_reciter, new ArrayList<>(), this);
-        adapter.setAdapterAnimation(new ScaleInAnimation());
+        adapter.setOnClickHandlerMyReciters(this);
         binding.recitersRecyclerView.setAdapter(adapter);
         presenter.loadMyReciters();
-
     }
 
     @Override
@@ -78,12 +70,25 @@ public class MyRecitersFragment extends Fragment implements MyRecitersView {
 
     @Override
     public void showMyReciters(List<Reciter> list) {
-        adapter.addData(list);
+        if (list != null && !list.isEmpty()) {
+            adapter.addAll(list);
+            if (binding.reciterListLayout.getVisibility() == View.GONE) {
+                binding.reciterListLayout.setVisibility(View.VISIBLE);
+            }
+        } else {
+            binding.reciterListLayout.setVisibility(View.GONE);
+            binding.noRecitersLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void onError(String message) {
-        Toast.makeText(context, "Error : " + message, Toast.LENGTH_SHORT).show();
+        Alerter.create(getActivity())
+                .setTitle(R.string.alrt_err_occur_title)
+                .setText(R.string.alrt_err_occur_msg)
+                .hideIcon()
+                .setBackgroundColorRes(R.color.red)
+                .show();
     }
 
     @Override
@@ -96,9 +101,28 @@ public class MyRecitersFragment extends Fragment implements MyRecitersView {
 
     @Override
     public void onClickDeleteFromMyReciters(Reciter reciterData) {
-        /*Todo delete from My Reciters List*/
-        presenter.deleteFromMyReciters(reciterData);
+        String msg1 = context.getString(R.string.alrt_delete_msg1);
+        String msg2 = context.getString(R.string.alrt_delete_msg2);
+        Alerter.create(getActivity())
+                .setTitle(R.string.alrt_delete_title)
+                .setText(msg1 + reciterData.getName() + msg2)
+                .addButton(context.getString(R.string.alrt_delete_btn_ok), R.style.AlertButton, v -> {
+                    presenter.deleteFromMyReciters(reciterData);
+                    Alerter.hide();
+                })
+                .addButton(context.getString(R.string.alrt_delete_btn_cancel), R.style.AlertButton, v -> Alerter.hide())
+                .enableSwipeToDismiss()
+                .show();
+    }
 
+    @Override
+    public void onReciterDeletedFromMyReciters() {
+        adapter.clear();
+        presenter.loadMyReciters();
+        Alerter.create(getActivity())
+                .setTitle(R.string.alrt_delete_success)
+                .enableSwipeToDismiss()
+                .show();
     }
 
     @Override
@@ -107,4 +131,5 @@ public class MyRecitersFragment extends Fragment implements MyRecitersView {
         binding = null;
         presenter.detachView();
     }
+
 }

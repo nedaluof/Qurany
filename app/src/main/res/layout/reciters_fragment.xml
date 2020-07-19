@@ -10,7 +10,11 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white">
+        android:alwaysDrawnWithCache="true"
+        android:animateLayoutChanges="true"
+        android:animationCache="true"
+        android:background="@android:color/white"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <TextView
             android:layout_width="wrap_content"
@@ -27,6 +31,7 @@
 
 
     <RelativeLayout
+        android:id="@+id/reciter_list_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/dp_4">
@@ -37,6 +42,7 @@
             android:layout_height="match_parent"
             android:overScrollMode="never"
             android:scrollbars="none"
+            android:layoutAnimation="@anim/recyclerview_animation"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_reciter" />
 
@@ -47,4 +53,31 @@
             android:layout_centerInParent="true"
             android:visibility="gone" />
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/no_internet_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="230dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_no_internet" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/alrt_no_internet_title"
+            android:textColor="@color/green_200"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
 </LinearLayout>

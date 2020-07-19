@@ -1,5 +1,7 @@
 package com.nedaluof.qurany.data;
 
+import android.content.Context;
+
 import com.nedaluof.qurany.data.api.ApiHelper;
 import com.nedaluof.qurany.data.prefs.PreferencesHelper;
 import com.nedaluof.qurany.data.room.ReciterRepository;
@@ -50,5 +52,7 @@ public class DataManager {
         return reciterRepository.reciterListCheck() == 0;
     }
 
-
+    public boolean reciterHasKey(Context context, String key) {
+        return preferencesHelper.hasKey(context, key);
+    }
 }

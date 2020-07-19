@@ -21,8 +21,5 @@ public interface ReciterView extends MvpView {
 
     void onReciterAddedToMyRecitersSuccess();
 
-    void onReciterAlreadyAddedToMyReciters();
-
-    //to delete from my reciters (from db)
-    void onClickDeleteFromMyReciters(Reciter reciterData);
+    void onNoInternetConnectionProvided();
 }

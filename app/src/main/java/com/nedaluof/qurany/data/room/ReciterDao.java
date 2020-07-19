@@ -22,7 +22,7 @@ public interface ReciterDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Completable insertReciters(List<Reciter> list);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     Completable insertReciter(Reciter reciter);
 
     @Query("select * from reciters order by name")
@@ -41,4 +41,7 @@ public interface ReciterDao {
 
     @Delete
     Completable deleteReciter(Reciter reciter);
+
+    @Delete
+    void deleteReciterTest(Reciter reciter);
 }

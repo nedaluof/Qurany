@@ -14,4 +14,5 @@
     <color name="grey">#e8ebe9</color>
     <color name="green_200">#1b948e</color>
     <color name="reciters_bg">#ebf0ec</color>
+    <color name="red">#FF0000</color>
 </resources>

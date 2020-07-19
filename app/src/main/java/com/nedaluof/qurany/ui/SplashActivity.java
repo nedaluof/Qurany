@@ -1,6 +1,7 @@
 package com.nedaluof.qurany.ui;
 
 import android.content.Intent;
+import android.graphics.Path;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -10,6 +11,8 @@ import com.nedaluof.qurany.BuildConfig;
 import com.nedaluof.qurany.ui.main.MainActivity;
 import com.nedaluof.qurany.databinding.ActivitySplashBinding;
 
+import yanzhikai.textpath.calculator.AroundCalculator;
+import yanzhikai.textpath.calculator.BlinkCalculator;
 import yanzhikai.textpath.painter.FireworksPainter;
 
 /**
@@ -25,7 +28,8 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         binding.stpvQurany.setPathPainter(new FireworksPainter());
-        binding.stpvQurany.startAnimation(0, 1);
+        binding.stpvQurany.setCalculator(new AroundCalculator());
+        binding.stpvQurany.startAnimation(0,1);
         binding.stpvQurany.setFillColor(true);
 
         binding.tvVersion.setText("v ".concat(BuildConfig.VERSION_NAME));

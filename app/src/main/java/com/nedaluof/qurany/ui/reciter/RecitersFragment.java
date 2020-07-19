@@ -16,16 +16,25 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.animation.ScaleInAnimation;
+import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 import com.nedaluof.qurany.QuranyApplication;
 import com.nedaluof.qurany.R;
 import com.nedaluof.qurany.data.model.Reciter;
 import com.nedaluof.qurany.databinding.RecitersFragmentBinding;
+import com.nedaluof.qurany.ui.component.NewAdapter;
+import com.nedaluof.qurany.ui.component.RecitersAdapter;
 import com.nedaluof.qurany.ui.sura.ReciterSurasActivity;
+import com.nedaluof.qurany.util.RxUtil;
+import com.tapadoo.alerter.Alerter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by nedaluof on 7/5/2020.
@@ -35,7 +44,11 @@ public class RecitersFragment extends Fragment implements ReciterView {
 
     private static final String TAG = "RecitersFragment";
     private RecitersFragmentBinding binding;
-    private RecitersAdapter adapter;
+    //private RecitersAdapter adapter;
+    @Inject
+    RecitersAdapter adapter;
+    NewAdapter newAdapter;
+    private Disposable networkDisposable;
     @Inject
     ReciterPresenter presenter;
     @Inject
@@ -46,6 +59,7 @@ public class RecitersFragment extends Fragment implements ReciterView {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = RecitersFragmentBinding.inflate(inflater, container, false);
         ((QuranyApplication) getActivity().getApplication()).getComponent().inject(this);
+        presenter.attachView(this);
         initComponents();
         return binding.getRoot();
     }
@@ -61,7 +75,10 @@ public class RecitersFragment extends Fragment implements ReciterView {
 
     @Override
     public void showReciters(List<Reciter> list) {
-        adapter.addData(list);
+        /*binding.recitersRecyclerView.scheduleLayoutAnimation();
+        if (adapter.getItemCount() > 0) adapter.clear();
+        adapter.addAll(list);*/
+        newAdapter.addData(list);
     }
 
     @Override
@@ -79,39 +96,57 @@ public class RecitersFragment extends Fragment implements ReciterView {
 
     @Override
     public void onClickAddToMyReciters(Reciter reciterData) {
-        Toast.makeText(context, "reciter name:" + reciterData.getName(), Toast.LENGTH_SHORT).show();
-        presenter.addReciterToMyReciters(reciterData);
+         presenter.addReciterToMyReciters(reciterData);
     }
 
     @Override
     public void onReciterAddedToMyRecitersSuccess() {
-        Toast.makeText(context, "Added Successfully", Toast.LENGTH_SHORT).show();
+        Alerter.create(getActivity())
+                .setText(R.string.alrt_add_success_title)
+                .setText(R.string.alrt_add_success_msg)
+                .enableSwipeToDismiss()
+                .setBackgroundColorRes(R.color.green_200)
+                .show();
     }
 
-    @Override
-    public void onReciterAlreadyAddedToMyReciters() {
-        Toast.makeText(context, "Fail To Add Reciter", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onClickDeleteFromMyReciters(Reciter reciterData) {
-        presenter.deleteFromMyReciters(reciterData);
-    }
 
     private void initComponents() {
-        presenter.attachView(this);
-        binding.recitersRecyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
-        binding.recitersRecyclerView.setHasFixedSize(true);
-        binding.recitersRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        adapter = new RecitersAdapter(R.layout.item_reciter, new ArrayList<>(), this);
-        adapter.setAdapterAnimation(new ScaleInAnimation());
-        binding.recitersRecyclerView.setAdapter(adapter);
-        presenter.loadReciters();
+        networkDisposable = ReactiveNetwork
+                .observeNetworkConnectivity(context)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(available -> {
+                    if (available.available()) {
+                        if (binding.reciterListLayout.getVisibility() == View.GONE) {
+                            binding.reciterListLayout.setVisibility(View.VISIBLE);
+                        }
+                        binding.recitersRecyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+                        binding.recitersRecyclerView.setHasFixedSize(true);
+                        binding.recitersRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                        //adapter.setOnClickHandler(this);
+                        newAdapter = new NewAdapter(R.layout.item_reciter, new ArrayList<>(), getActivity(),this);
+                        newAdapter.setAnimationEnable(true);
+                        newAdapter.setAdapterAnimation(new ScaleInAnimation());
+                        //binding.recitersRecyclerView.setAdapter(adapter);
+                        binding.recitersRecyclerView.setAdapter(newAdapter);
+                        presenter.loadReciters();
+                    } else {
+                        presenter.loadNoInternetConectionView();
+                    }
+                });
+    }
+
+    @Override
+    public void onNoInternetConnectionProvided() {
+        binding.reciterListLayout.setVisibility(View.GONE);
+        binding.noInternetLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+        presenter.detachView();
+        RxUtil.dispose(networkDisposable);
     }
 }

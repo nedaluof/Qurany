@@ -21,4 +21,7 @@ public interface MyRecitersView extends MvpView {
 
     //to delete from my reciters (from db)
     void onClickDeleteFromMyReciters(Reciter reciterData);
+
+    void onReciterDeletedFromMyReciters();
+
 }

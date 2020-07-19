@@ -56,10 +56,9 @@ public class TestRoomActivity extends AppCompatActivity {
         binding.testBtnGet.setOnClickListener(v -> compositeDisposable.add(dataManager.getReciterRepository().getReciters()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(list -> {
-                    Toast.makeText(getApplicationContext(), String.valueOf(list.size()), Toast.LENGTH_SHORT).show();
-
-                }, throwable -> Log.d(TAG, "Error: " + throwable.getMessage()))));
+                .subscribe(list ->
+                                Toast.makeText(getApplicationContext(), String.valueOf(list.size()), Toast.LENGTH_SHORT).show()
+                        , throwable -> Log.d(TAG, "Error: " + throwable.getMessage()))));
 
         binding.testBtnDelete.setOnClickListener(v -> compositeDisposable.add(dataManager.getReciterRepository().deleteAllReciters()
                 .subscribeOn(Schedulers.computation())

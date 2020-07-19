@@ -34,18 +34,23 @@ import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
-import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.nedaluof.qurany.R;
 import com.nedaluof.qurany.data.model.Reciter;
 import com.nedaluof.qurany.data.model.Suras;
 import com.nedaluof.qurany.databinding.ActivityReciterSurasBinding;
+import com.nedaluof.qurany.ui.main.MainActivity;
+import com.nedaluof.qurany.util.NetworkUtil;
 import com.nedaluof.qurany.util.SurasUtil;
 import com.nedaluof.qurany.util.Utility;
+import com.tapadoo.alerter.Alerter;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class ReciterSurasActivity extends AppCompatActivity implements SurasView {
     private static final String TAG = "ReciterSurasActivity";
@@ -60,6 +65,7 @@ public class ReciterSurasActivity extends AppCompatActivity implements SurasView
     private int currentWindow = 0;
     private long playbackPosition = 0;
     private int suraId;
+    private long downloadId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +128,25 @@ public class ReciterSurasActivity extends AppCompatActivity implements SurasView
     private BroadcastReceiver onComplete = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Toast.makeText(context, getString(R.string.download_manager_completed_message), Toast.LENGTH_SHORT).show();
+
+            if (intent != null) {
+                long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+                //Checking if the received broadcast is for our enqueued download by matching download id
+                if (downloadId == id) {
+                    Alerter.create(ReciterSurasActivity.this)
+                            .setTitle(R.string.alrt_download_completed_title)
+                            .setText(R.string.alrt_download_completed_msg)
+                            .setBackgroundColorRes(R.color.green_200)
+                            .enableSwipeToDismiss()
+                            .show();
+                    Log.d(TAG, "onReceive: download id match and the download completed");
+                } else {
+                    Log.d(TAG, "onReceive: download id not match");
+                }
+
+            } else {
+                Log.d(TAG, "onReceive: intent null");
+            }
         }
     };
 
@@ -152,47 +176,51 @@ public class ReciterSurasActivity extends AppCompatActivity implements SurasView
 
     @Override
     public void onClickPlay(int suraId) {
-        File direct = new File(Environment.getExternalStorageDirectory()
-                + "/Qurany/" + reciterData.getName(), SurasUtil.getSuraName(suraId) + ".mp3");
-        if (!player.isPlaying()) {
-            if (!Utility.checkIfFileInPathExist(reciterData.getName() + "/" + SurasUtil.getSuraName(suraId) + ".mp3")) {
-                this.suraId = suraId;
-                binding.playerBottomSheet.bottomSheet.setVisibility(View.VISIBLE);
-                sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                binding.playerBottomSheet.reciterSuraName.setText(SurasUtil.getPlayerTitle(suraId, reciterData.getName()));
-                initializePlayer(suraId);
-                Log.d(TAG, "onClickPlay: current , listened online");
-            } else {
-                this.suraId = suraId;
-                binding.playerBottomSheet.bottomSheet.setVisibility(View.VISIBLE);
-                sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                binding.playerBottomSheet.reciterSuraName.setText(SurasUtil.getPlayerTitle(suraId, reciterData.getName()));
-                initializePlayerLocalSura(direct.getPath());
-                Log.d(TAG, "onClickPlay: current listened local");
+        if (NetworkUtil.isNetworkOk(this)) {
+            File direct = new File(Environment.getExternalStorageDirectory()
+                    + "/Qurany/" + reciterData.getName(), SurasUtil.getSuraName(suraId) + ".mp3");
+            if (!player.isPlaying()) {
+                if (!Utility.checkIfFileInPathExist(reciterData.getName() + "/" + SurasUtil.getSuraName(suraId) + ".mp3")) {
+                    this.suraId = suraId;
+                    binding.playerBottomSheet.bottomSheet.setVisibility(View.VISIBLE);
+                    sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    binding.playerBottomSheet.reciterSuraName.setText(SurasUtil.getPlayerTitle(suraId, reciterData.getName()));
+                    initializePlayer(suraId);
+                    Log.d(TAG, "onClickPlay: current , listened online");
+                } else {
+                    this.suraId = suraId;
+                    binding.playerBottomSheet.bottomSheet.setVisibility(View.VISIBLE);
+                    sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    binding.playerBottomSheet.reciterSuraName.setText(SurasUtil.getPlayerTitle(suraId, reciterData.getName()));
+                    initializePlayerLocalSura(direct.getPath());
+                    Log.d(TAG, "onClickPlay: current listened local");
+                }
+            } else if (this.suraId != suraId) {
+                player.release();
+                if (!Utility.checkIfFileInPathExist(reciterData.getName() + "/" + SurasUtil.getSuraName(suraId) + ".mp3")) {
+                    this.suraId = suraId;
+                    binding.playerBottomSheet.bottomSheet.setVisibility(View.VISIBLE);
+                    sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    binding.playerBottomSheet.reciterSuraName.setText(SurasUtil.getPlayerTitle(suraId, reciterData.getName()));
+                    initializePlayer(suraId);
+                    Log.d(TAG, "onClickPlay: new sura id , listened online");
+                } else {
+                    this.suraId = suraId;
+                    binding.playerBottomSheet.bottomSheet.setVisibility(View.VISIBLE);
+                    sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    binding.playerBottomSheet.reciterSuraName.setText(SurasUtil.getPlayerTitle(suraId, reciterData.getName()));
+                    initializePlayerLocalSura(direct.getPath());
+                    Log.d(TAG, "onClickPlay: new sura id , listened local");
+                }
             }
-        } else if (this.suraId != suraId) {
-            player.release();
-            if (!Utility.checkIfFileInPathExist(reciterData.getName() + "/" + SurasUtil.getSuraName(suraId) + ".mp3")) {
-                this.suraId = suraId;
-                binding.playerBottomSheet.bottomSheet.setVisibility(View.VISIBLE);
-                sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                binding.playerBottomSheet.reciterSuraName.setText(SurasUtil.getPlayerTitle(suraId, reciterData.getName()));
-                initializePlayer(suraId);
-                Log.d(TAG, "onClickPlay: new sura id , listened online");
-            } else {
-                this.suraId = suraId;
-                binding.playerBottomSheet.bottomSheet.setVisibility(View.VISIBLE);
-                sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                binding.playerBottomSheet.reciterSuraName.setText(SurasUtil.getPlayerTitle(suraId, reciterData.getName()));
-                initializePlayerLocalSura(direct.getPath());
-                Log.d(TAG, "onClickPlay: new sura id , listened local");
-            }
+        } else {
+            showNoInternetAlert();
         }
     }
 
     @Override
     public void onDownloadClick(int suraId) {
-        new Thread(() -> Dexter.withContext(this)
+        Dexter.withContext(this)
                 .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .withListener(new PermissionListener() {
                     @Override
@@ -208,12 +236,13 @@ public class ReciterSurasActivity extends AppCompatActivity implements SurasView
                     }
 
                     @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken token) {
-                        token.continuePermissionRequest();
+                    public void onPermissionRationaleShouldBeShown(com.karumi.dexter.listener.PermissionRequest permissionRequest, PermissionToken permissionToken) {
+                        permissionToken.continuePermissionRequest();
                     }
+
                 }).withErrorListener(e -> Toast.makeText(this, getString(R.string.dexter_permission_error), Toast.LENGTH_SHORT).show())
-                .check()) {
-        }.start();
+                .check();
+
     }
 
     private void initializePlayer(int suraId) {
@@ -271,6 +300,7 @@ public class ReciterSurasActivity extends AppCompatActivity implements SurasView
 
     }
 
+    @NotNull
     private MediaSource buildMediaSource(Uri uri) {
         DataSource.Factory dataSourceFactory =
                 new DefaultDataSourceFactory(this, "Qurany_Player");
@@ -280,26 +310,50 @@ public class ReciterSurasActivity extends AppCompatActivity implements SurasView
 
 
     private void startDownload(int suraId) {
-        if (!Utility.checkIfFileInPathExist(reciterData.getName() + "/" + SurasUtil.getSuraName(suraId) + ".mp3")) {
-            String uRl = reciterData.getServer() + "/" + SurasUtil.getSuraIndex(suraId) + ".mp3";
-            DownloadManager downloadManager = (DownloadManager) this.getSystemService(Context.DOWNLOAD_SERVICE);
-            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(uRl));
-            request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI |
-                    DownloadManager.Request.NETWORK_MOBILE)
-                    .setAllowedOverRoaming(false)
-                    .setTitle(getString(R.string.download_manager_title) + SurasUtil.getSuraName(suraId))
-                    .setDescription(SurasUtil.getSuraName(suraId) + "| " + reciterData.getName());
+        if (NetworkUtil.isNetworkOk(this)) {
+            if (!Utility.checkIfFileInPathExist(reciterData.getName() + "/" + SurasUtil.getSuraName(suraId) + ".mp3")) {
+                Alerter.create(this)
+                        .setTitle(R.string.alrt_download_start_title)
+                        .enableProgress(true)
+                        .setProgressColorRes(R.color.grey)
+                        .setBackgroundColorRes(R.color.green_200)
+                        .show();
+                String uRl = reciterData.getServer() + "/" + SurasUtil.getSuraIndex(suraId) + ".mp3";
+                DownloadManager downloadManager = (DownloadManager) this.getSystemService(Context.DOWNLOAD_SERVICE);
+                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(uRl));
+                request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI |
+                        DownloadManager.Request.NETWORK_MOBILE)
+                        .setAllowedOverRoaming(false)
+                        .setTitle(getString(R.string.download_manager_title) + SurasUtil.getSuraName(suraId))
+                        .setDescription(SurasUtil.getSuraName(suraId) + "| " + reciterData.getName());
 
-            request.setDestinationInExternalPublicDir("/Qurany/" + reciterData.getName(), SurasUtil.getSuraName(suraId) + ".mp3");
+                request.setDestinationInExternalPublicDir("/Qurany/" + reciterData.getName(), SurasUtil.getSuraName(suraId) + ".mp3");
 
-            if (downloadManager != null) {
-                downloadManager.enqueue(request);
+                if (downloadManager != null) {
+                    downloadId = downloadManager.enqueue(request);
+                }
+            } else {
+                Alerter.create(this)
+                        .setTitle(R.string.alrt_sura_exist_title)
+                        .setText(R.string.alrt_sura_exist_message)
+                        .setBackgroundColorRes(R.color.green_200)
+                        .enableSwipeToDismiss()
+                        .show();
             }
         } else {
-            Utility.alertSuraIsReadyToPlay(ReciterSurasActivity.this);
+            showNoInternetAlert();
         }
     }
 
+    private void showNoInternetAlert() {
+        Alerter.create(this)
+                .setTitle(R.string.alrt_no_internet_title)
+                .setText(R.string.alrt_no_internet_msg)
+                .enableSwipeToDismiss()
+                .hideIcon()
+                .setBackgroundColorRes(R.color.red)
+                .show();
+    }
 
     private void releasePlayer() {
         if (player != null) {
@@ -333,7 +387,6 @@ public class ReciterSurasActivity extends AppCompatActivity implements SurasView
         if (Util.SDK_INT < 24) {
             releasePlayer();
         }
-        unregisterReceiver(onComplete);
     }
 
     @Override
@@ -344,4 +397,9 @@ public class ReciterSurasActivity extends AppCompatActivity implements SurasView
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(onComplete);
+    }
 }

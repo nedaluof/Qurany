@@ -40,6 +40,10 @@ public class ReciterRepository {
         return reciterDao.deleteReciter(reciter);
     }
 
+    public void deleteReciterTest(Reciter reciter) {
+        reciterDao.deleteReciterTest(reciter);
+    }
+
     public int reciterListCheck() {
         return reciterDao.getRecitersForCheck().size();
     }

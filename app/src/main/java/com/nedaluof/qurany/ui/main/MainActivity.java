@@ -28,55 +28,43 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        RxUtil.dispose(networkDisposable);
-        networkDisposable = ReactiveNetwork.observeNetworkConnectivity(MainActivity.this)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        available -> {
-                            setContentView(binding.getRoot());
-                            handleState(available.available(), savedInstanceState);
-                            binding.navigation.setOnItemSelectedListener(i -> {
-                                switch (i) {
-                                    case R.id.nav_home:
-                                        binding.navigation.setItemSelected(R.id.nav_home, true);
-                                        loadFragment(new RecitersFragment(), 1);
-                                        break;
-                                    case R.id.nav_favorite:
-                                        binding.navigation.setItemSelected(R.id.nav_favorite, true);
-                                        loadFragment(new MyRecitersFragment(), 2);
-                                        break;
-                                }
-                            });
-                        },
-                        throwable -> Log.d(TAG, "Error : " + throwable.getMessage())
-                );
+        setContentView(binding.getRoot());
+
+        binding.navigation.setOnItemSelectedListener(i -> {
+            switch (i) {
+                case R.id.nav_home:
+                    binding.navigation.setItemSelected(R.id.nav_home, true);
+                    loadFragment(new RecitersFragment(), 1);
+                    break;
+                case R.id.nav_favorite:
+                    binding.navigation.setItemSelected(R.id.nav_favorite, true);
+                    loadFragment(new MyRecitersFragment(), 2);
+                    break;
+            }
+        });
+
+        handleState(savedInstanceState);
+
     }
 
-    private void handleState(boolean available, Bundle savedInstanceState) {
-        if (available) {
-            if (savedInstanceState != null) {
-                int id = savedInstanceState.getInt(FRAGMENT_KEY_ID);
-                switch (id) {
-                    case 1:
-                        binding.navigation.setItemEnabled(R.id.nav_home, true);
-                        binding.navigation.setItemSelected(R.id.nav_home, true);
-                        loadFragment(new RecitersFragment(), 1);
-                        break;
-                    case 2:
-                        binding.navigation.setItemEnabled(R.id.nav_favorite, true);
-                        binding.navigation.setItemSelected(R.id.nav_favorite, true);
-                        loadFragment(new MyRecitersFragment(), 2);
-                        break;
-                }
-            } else {
-               handleItemEnabled(true);
-                binding.navigation.setItemSelected(R.id.nav_home, true);
-                loadFragment(new RecitersFragment(), 1);
+    private void handleState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            int id = savedInstanceState.getInt(FRAGMENT_KEY_ID);
+            switch (id) {
+                case 1:
+                    binding.navigation.setItemEnabled(R.id.nav_home, true);
+                    binding.navigation.setItemSelected(R.id.nav_home, true);
+                    loadFragment(new RecitersFragment(), 1);
+                    break;
+                case 2:
+                    binding.navigation.setItemEnabled(R.id.nav_favorite, true);
+                    binding.navigation.setItemSelected(R.id.nav_favorite, true);
+                    loadFragment(new MyRecitersFragment(), 2);
+                    break;
             }
         } else {
-            handleItemEnabled(false);
-            loadFragment(new NoInternetFragment(), 0);
+            binding.navigation.setItemSelected(R.id.nav_home, true);
+            loadFragment(new RecitersFragment(), 1);
         }
     }
 
@@ -97,15 +85,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void handleItemEnabled(boolean enabled){
-        if (enabled){
-            binding.navigation.setItemEnabled(R.id.nav_home, true);
-            binding.navigation.setItemEnabled(R.id.nav_favorite, true);
-        }else {
-            binding.navigation.setItemEnabled(R.id.nav_home, false);
-            binding.navigation.setItemEnabled(R.id.nav_favorite, false);
-        }
-    }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

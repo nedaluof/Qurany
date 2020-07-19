@@ -19,7 +19,7 @@
             android:layout_gravity="center"
             android:layout_margin="@dimen/dp_4"
             android:layout_marginStart="20dp"
-            android:text="@string/reciters_bar_title"
+            android:text="@string/my_reciters_appbar_title"
             android:textColor="@color/green_200"
             android:textSize="22sp"
             android:textStyle="bold" />
@@ -27,8 +27,10 @@
 
 
     <RelativeLayout
+        android:id="@+id/reciter_list_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="visible"
         android:layout_marginBottom="@dimen/dp_4">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -36,6 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"
+            android:visibility="visible"
             android:scrollbars="none"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_reciter" />
@@ -47,4 +50,27 @@
             android:layout_centerInParent="true"
             android:visibility="gone" />
     </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/no_reciters_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="230dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:ignore="UseCompoundDrawables">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_reciters"
+            android:background="@android:color/white"
+            android:textColor="@color/green_200"
+            android:padding="15dp"
+            android:textSize="18sp"
+            android:layout_margin="20dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
 </LinearLayout>

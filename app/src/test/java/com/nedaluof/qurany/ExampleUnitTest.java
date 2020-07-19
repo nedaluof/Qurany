@@ -1,5 +1,7 @@
 package com.nedaluof.qurany;
 
+import com.nedaluof.qurany.util.Utility;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -15,7 +17,7 @@ import static org.junit.Assert.*;
  */
 public class ExampleUnitTest {
     @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+    public void device_language(){
+        assertSame(Utility.getLanguage(),"_english");
     }
 }
