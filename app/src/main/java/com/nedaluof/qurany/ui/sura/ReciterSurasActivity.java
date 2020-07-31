@@ -214,6 +214,21 @@ public class ReciterSurasActivity extends AppCompatActivity implements SurasView
                 }
             }
         } else {
+            handleNoInternetIfFileExixt(suraId);
+        }
+    }
+
+    private void handleNoInternetIfFileExixt(int suraId) {
+        File direct = new File(Environment.getExternalStorageDirectory()
+                + "/Qurany/" + reciterData.getName(), SurasUtil.getSuraName(suraId) + ".mp3");
+        if (Utility.checkIfFileInPathExist(reciterData.getName() + "/" + SurasUtil.getSuraName(suraId) + ".mp3")) {
+            this.suraId = suraId;
+            binding.playerBottomSheet.bottomSheet.setVisibility(View.VISIBLE);
+            sheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            binding.playerBottomSheet.reciterSuraName.setText(SurasUtil.getPlayerTitle(suraId, reciterData.getName()));
+            initializePlayerLocalSura(direct.getPath());
+            Log.d(TAG, "onClickPlay: current listened local and no internet");
+        } else {
             showNoInternetAlert();
         }
     }
