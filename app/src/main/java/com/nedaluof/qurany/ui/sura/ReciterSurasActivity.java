@@ -128,7 +128,6 @@ public class ReciterSurasActivity extends AppCompatActivity implements SurasView
     private BroadcastReceiver onComplete = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
             if (intent != null) {
                 long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
                 //Checking if the received broadcast is for our enqueued download by matching download id
