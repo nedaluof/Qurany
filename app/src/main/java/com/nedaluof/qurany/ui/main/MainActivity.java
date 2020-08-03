@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 import com.nedaluof.qurany.R;
@@ -22,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String FRAGMENT_KEY_ID = "FRAGMENT_KEY_ID";
     private int fragmentId;
     private ActivityMainBinding binding;
-    private Disposable networkDisposable;
+    private boolean doubleBackToExitPressedOnce = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +95,22 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        RxUtil.dispose(networkDisposable);
+    public void onBackPressed() {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(binding.container.getId());
+        if (fragment instanceof RecitersFragment) {
+            if (doubleBackToExitPressedOnce) {
+                this.doubleBackToExitPressedOnce = false;
+                Toast.makeText(this, "Please press back again to exit.", Toast.LENGTH_LONG).show();
+                new Handler().postDelayed(()->this.doubleBackToExitPressedOnce = true,2000);
+            } else {
+                finish();
+            }
+        } else if (fragment instanceof MyRecitersFragment) {
+            loadFragment(new RecitersFragment(),1);
+            binding.navigation.setItemSelected(R.id.nav_home, true);
+        } else {
+            Toast.makeText(this, "i don't know", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }
