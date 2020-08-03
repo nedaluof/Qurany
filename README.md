@@ -13,7 +13,7 @@
 
 <img src="art/mvp.png" alt="screenshot" width="450"/>
 
-## Libraries Used in Magnum Weather
+## Libraries Used in Qurany
 * [AndroidX](https://developer.android.com/jetpack/androidx).
 * [Room Persistence](https://developer.android.com/topic/libraries/architecture/room) to store the user reciters.
 * [ExoPlayer](https://github.com/google/ExoPlayer) for handle audio player. 
