@@ -14,8 +14,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /*
  * Created By nedaluof  2020.
  */
-
-
 public class Client {
     private static final String BASE_URL="http://mp3quran.net/api/";
     private static final Object LOCK = new Object();

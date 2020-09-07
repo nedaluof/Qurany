@@ -3,7 +3,6 @@ package com.nedaluof.qurany.ui.myreciters;
 import android.content.Context;
 import android.util.Log;
 
-import com.karumi.dexter.listener.single.DialogOnDeniedPermissionListener;
 import com.nedaluof.qurany.data.DataManager;
 import com.nedaluof.qurany.data.model.Reciter;
 import com.nedaluof.qurany.ui.base.BasePresenter;

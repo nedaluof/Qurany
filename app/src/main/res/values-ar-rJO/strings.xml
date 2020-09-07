@@ -65,7 +65,7 @@
     <string name="alrt_download_start_title">بدء التحميل الرجاء الإنتظار</string>
 
     <string name="alrt_no_internet_title">لايوجد إتصال بالإنترنت</string>
-    <string name="alrt_no_internet_msg">تأكد من أنك تملك إتصال بالشبكة للإستفادة من هذا الأمر</string>
+    <string name="alrt_no_internet_msg">تأكد من أنك تملك إتصال بالشبكة</string>
     .
 
     <string name="alrt_sura_exist_title">السورة موجودة</string>
