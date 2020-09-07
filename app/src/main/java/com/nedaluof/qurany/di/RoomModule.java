@@ -1,4 +1,4 @@
-package com.nedaluof.qurany.di.modules;
+package com.nedaluof.qurany.di;
 
 import android.content.Context;
 
@@ -15,16 +15,11 @@ import dagger.Provides;
  * Created by nedaluof on 6/26/2020.
  */
 @Module
-public class DatabaseModule {
-    Context context;
-
-    public DatabaseModule(Context context) {
-        this.context = context;
-    }
+public class RoomModule {
 
     @Singleton
     @Provides
-    QuranyDatabase provideDatabase() {
+    QuranyDatabase provideDatabase(Context context) {
         return QuranyDatabase.getInstance(context);
     }
 
@@ -39,5 +34,4 @@ public class DatabaseModule {
     ReciterDao provideReciterDao(QuranyDatabase database) {
         return database.getRecitersDao();
     }
-
 }

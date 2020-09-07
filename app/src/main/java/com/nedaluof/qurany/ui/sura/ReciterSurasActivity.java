@@ -52,7 +52,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ReciterSurasActivity extends AppCompatActivity implements SurasView {
+public class ReciterSurasActivity extends AppCompatActivity
+        implements SurasView {
     private static final String TAG = "ReciterSurasActivity";
     private ActivityReciterSurasBinding binding;
     private ReciterSurasAdapter adapter;

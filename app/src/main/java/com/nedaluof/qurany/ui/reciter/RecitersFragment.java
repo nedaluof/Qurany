@@ -10,14 +10,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.animation.ScaleInAnimation;
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
-import com.nedaluof.qurany.QuranyApplication;
 import com.nedaluof.qurany.R;
 import com.nedaluof.qurany.data.model.Reciter;
 import com.nedaluof.qurany.databinding.RecitersFragmentBinding;
@@ -32,6 +30,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import dagger.android.support.DaggerFragment;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -39,7 +38,8 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by nedaluof on 7/5/2020.
  */
-public class RecitersFragment extends Fragment implements ReciterView {
+public class RecitersFragment extends DaggerFragment
+        implements ReciterView {
     public RecitersFragment() {/**/}
 
     private static final String TAG = "RecitersFragment";
@@ -58,7 +58,6 @@ public class RecitersFragment extends Fragment implements ReciterView {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = RecitersFragmentBinding.inflate(inflater, container, false);
-        ((QuranyApplication) getActivity().getApplication()).getComponent().inject(this);
         presenter.attachView(this);
         initComponents();
         return binding.getRoot();
@@ -96,7 +95,7 @@ public class RecitersFragment extends Fragment implements ReciterView {
 
     @Override
     public void onClickAddToMyReciters(Reciter reciterData) {
-         presenter.addReciterToMyReciters(reciterData);
+        presenter.addReciterToMyReciters(reciterData);
     }
 
     @Override
@@ -124,7 +123,7 @@ public class RecitersFragment extends Fragment implements ReciterView {
                         binding.recitersRecyclerView.setHasFixedSize(true);
                         binding.recitersRecyclerView.setItemAnimator(new DefaultItemAnimator());
                         //adapter.setOnClickHandler(this);
-                        newAdapter = new NewAdapter(R.layout.item_reciter, new ArrayList<>(), getActivity(),this);
+                        newAdapter = new NewAdapter(R.layout.item_reciter, new ArrayList<>(), getActivity(), this);
                         newAdapter.setAnimationEnable(true);
                         newAdapter.setAdapterAnimation(new ScaleInAnimation());
                         //binding.recitersRecyclerView.setAdapter(adapter);

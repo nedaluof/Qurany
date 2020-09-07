@@ -9,12 +9,10 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.nedaluof.qurany.QuranyApplication;
 import com.nedaluof.qurany.R;
 import com.nedaluof.qurany.data.model.Reciter;
 import com.nedaluof.qurany.databinding.MyRecitersFragmentBinding;
@@ -26,10 +24,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import dagger.android.support.DaggerFragment;
+
 /**
  * Created by nedaluof on 7/5/2020.
  */
-public class MyRecitersFragment extends Fragment implements MyRecitersView {
+public class MyRecitersFragment extends DaggerFragment
+        implements MyRecitersView {
     public MyRecitersFragment() {/**/}
 
     private MyRecitersFragmentBinding binding;
@@ -44,7 +45,6 @@ public class MyRecitersFragment extends Fragment implements MyRecitersView {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = MyRecitersFragmentBinding.inflate(inflater, container, false);
-        ((QuranyApplication) getActivity().getApplication()).getComponent().inject(this);
         initComponent();
         return binding.getRoot();
     }
