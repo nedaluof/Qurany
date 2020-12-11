@@ -47,7 +47,7 @@ public class MyRecitersPresenter extends BasePresenter<MyRecitersView> {
         checkViewAttached();
         getMvpView().showProgress(true);
         RxUtil.dispose(disposable);
-        disposable = dataManager.getReciterRepository().getReciters()
+        disposable = dataManager.getReciterDao().getReciters()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(list -> {
@@ -59,12 +59,12 @@ public class MyRecitersPresenter extends BasePresenter<MyRecitersView> {
 
     public void deleteFromMyReciters(Reciter reciter) {
         RxUtil.dispose(disposable);
-        disposable = dataManager.getReciterRepository()
+        disposable = dataManager.getReciterDao()
                 .deleteReciter(reciter)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
-                    dataManager.getPreferencesHelper().removeFromPrefs(context, reciter.getId());
+                    dataManager.getPreferencesHelper().removeFromPrefs(reciter.getId());
                     getMvpView().onReciterDeletedFromMyReciters();
                 });
 

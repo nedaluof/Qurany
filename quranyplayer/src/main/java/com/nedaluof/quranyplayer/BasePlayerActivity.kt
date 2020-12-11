@@ -26,7 +26,7 @@ open class BasePlayerActivity : AppCompatActivity(), OnPlayerServiceCallback {
     val playerViewModel: PlayerViewModel = getPlayerViewModelInstance()
 
 
-    private val mHandler = object : Handler(Looper.getMainLooper()) {
+    private val handler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
                 ACTION_PLAY_AUDIO -> audioData?.let { service?.play(it) }
@@ -51,7 +51,7 @@ open class BasePlayerActivity : AppCompatActivity(), OnPlayerServiceCallback {
             this@BasePlayerActivity.service = binder.service
             bound = true
             this@BasePlayerActivity.service?.subscribeToAudioPlayerUpdates()
-            mHandler.sendEmptyMessage(msg)
+            handler.sendEmptyMessage(msg)
             this@BasePlayerActivity.service?.addListener(this@BasePlayerActivity)
         }
 
@@ -73,28 +73,28 @@ open class BasePlayerActivity : AppCompatActivity(), OnPlayerServiceCallback {
         this.audioList = audioList
         playerViewModel.setPlayStatus(true)
         if (service == null) bindPlayerService()
-        else mHandler.sendEmptyMessage(msg)
+        else handler.sendEmptyMessage(msg)
     }
 
     fun play(audioData1: AudioData) {
         msg = ACTION_PLAY_AUDIO
         audioData = audioData1
         if (service == null) bindPlayerService()
-        else mHandler.sendEmptyMessage(msg)
+        else handler.sendEmptyMessage(msg)
     }
 
     private fun pause() {
         msg = ACTION_PAUSE
         playerViewModel.setPlayStatus(false)
         if (service == null) bindPlayerService()
-        else mHandler.sendEmptyMessage(msg)
+        else handler.sendEmptyMessage(msg)
     }
 
     fun stop() {
         msg = ACTION_STOP
         playerViewModel.setPlayStatus(false)
         if (service == null) bindPlayerService()
-        else mHandler.sendEmptyMessage(msg)
+        else handler.sendEmptyMessage(msg)
     }
 
     fun next() {

@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.animation.ScaleInAnimation
-import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.MediaSource
@@ -242,7 +241,6 @@ class ReciterSurasActivity : AppCompatActivity(), SurasView {
     private fun initializePlayer(suraId: Int) {
         val server = reciterData.server + "/" + SurasUtil.getSuraIndex(suraId) + ".mp3"
         mediaSource = buildMediaSource(Uri.parse(server))
-        //quranyplayer = ExoPlayerFactory.newSimpleInstance(this)
         player = SimpleExoPlayer.Builder(this).build()
         binding.playerBottomSheet.playerController.player = player
         player?.playWhenReady = playWhenReady
@@ -272,7 +270,7 @@ class ReciterSurasActivity : AppCompatActivity(), SurasView {
 
     private fun initializePlayerLocalSura(path: String) {
         mediaSource = buildMediaSource(Uri.parse(path))
-        player = ExoPlayerFactory.newSimpleInstance(this)
+        player = SimpleExoPlayer.Builder(this).build()
         binding.playerBottomSheet.playerController.player = player
         player?.playWhenReady = playWhenReady
         player?.seekTo(currentWindow, playbackPosition)

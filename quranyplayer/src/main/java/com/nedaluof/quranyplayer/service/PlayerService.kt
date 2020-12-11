@@ -186,7 +186,6 @@ class PlayerService : Service(), OnMediaAdapterCallback {
 
 
     companion object {
-
         private val TAG = PlayerService::class.java.name
         const val ACTION_CMD = "app.ACTION_CMD"
         const val CMD_NAME = "CMD_NAME"

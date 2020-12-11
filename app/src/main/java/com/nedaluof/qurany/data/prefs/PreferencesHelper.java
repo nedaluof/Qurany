@@ -13,7 +13,6 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
@@ -22,18 +21,18 @@ import javax.inject.Singleton;
 @Singleton
 public class PreferencesHelper {
 
-    @Inject
-    public PreferencesHelper() {
+    private final Context context;
+
+    public PreferencesHelper(Context context) {
+        this.context = context;
     }
 
     /**
      * Called to save supplied value in shared preferences against given key.
-     *
-     * @param context Context of caller activity
      * @param key     Key of value to save against
      * @param value   Value to save
      */
-    public void saveToPrefs(Context context, String key, Object value) {
+    public void saveToPrefs(String key, Object value) {
         WeakReference<Context> contextWeakReference = new WeakReference<>(context);
         if (contextWeakReference.get() != null) {
             SharedPreferences prefs =
@@ -59,13 +58,11 @@ public class PreferencesHelper {
     /**
      * Called to retrieve required value from shared preferences, identified by given key.
      * Default value will be returned of no value found or error occurred.
-     *
-     * @param context      Context of caller activity
      * @param key          Key to find value against
      * @param defaultValue Value to return if no data found against given key
      * @return Return the value found against given key, default if not found or any error occurs
      */
-    public Object getFromPrefs(Context context, String key, Object defaultValue) {
+    public Object getFromPrefs(String key, Object defaultValue) {
         WeakReference<Context> contextWeakReference = new WeakReference<>(context);
         if (contextWeakReference.get() != null) {
             SharedPreferences sharedPrefs =
@@ -93,10 +90,9 @@ public class PreferencesHelper {
     }
 
     /**
-     * @param context Context of caller activity
      * @param key     Key to delete from SharedPreferences
      */
-    public void removeFromPrefs(Context context, String key) {
+    public void removeFromPrefs(String key) {
         WeakReference<Context> contextWeakReference = new WeakReference<>(context);
         if (contextWeakReference.get() != null) {
             SharedPreferences prefs =
@@ -107,7 +103,7 @@ public class PreferencesHelper {
         }
     }
 
-    public boolean hasKey(Context context, String key) {
+    public boolean hasKey(String key) {
         WeakReference<Context> contextWeakReference = new WeakReference<>(context);
         if (contextWeakReference.get() != null) {
             SharedPreferences prefs =
@@ -117,7 +113,7 @@ public class PreferencesHelper {
         return false;
     }
 
-    public void saveArrayList(Context context, ArrayList<String> list, String key) {
+    public void saveArrayList(ArrayList<String> list, String key) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
         Gson gson = new Gson();
@@ -127,7 +123,7 @@ public class PreferencesHelper {
 
     }
 
-    public ArrayList<String> getArrayList(Context context, String key) {
+    public ArrayList<String> getArrayList(String key) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Gson gson = new Gson();
         String json = prefs.getString(key, null);

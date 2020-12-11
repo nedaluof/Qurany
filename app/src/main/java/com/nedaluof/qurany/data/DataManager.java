@@ -2,10 +2,9 @@ package com.nedaluof.qurany.data;
 
 import android.content.Context;
 
-import com.nedaluof.qurany.data.api.ApiHelper;
 import com.nedaluof.qurany.data.prefs.PreferencesHelper;
-import com.nedaluof.qurany.data.room.ReciterRepository;
-import com.nedaluof.qurany.data.room.ReciterSuraRepository;
+import com.nedaluof.qurany.data.room.ReciterDao;
+import com.nedaluof.qurany.data.room.ReciterSuraDAO;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -16,43 +15,31 @@ import javax.inject.Singleton;
 @Singleton
 public class DataManager {
     private static final String TAG = "DataManager";
-    private ApiHelper apiHelper;
     private PreferencesHelper preferencesHelper;
-    private ReciterSuraRepository reciterSuraRepository;
-    private ReciterRepository reciterRepository;
+    private ReciterDao reciterDao;
+    private ReciterSuraDAO reciterSuraDAO;
 
     @Inject
-    public DataManager(ApiHelper apiHelper, PreferencesHelper preferencesHelper, ReciterSuraRepository reciterSuraRepository, ReciterRepository reciterRepository) {
-        this.apiHelper = apiHelper;
+    public DataManager(PreferencesHelper preferencesHelper,
+                       ReciterDao reciterDao,
+                       ReciterSuraDAO reciterSuraDAO) {
         this.preferencesHelper = preferencesHelper;
-        this.reciterSuraRepository = reciterSuraRepository;
-        this.reciterRepository = reciterRepository;
+        this.reciterDao = reciterDao;
+        this.reciterSuraDAO = reciterSuraDAO;
     }
 
-
-    public ApiHelper getApiHelper() {
-        return apiHelper;
-    }
 
     public PreferencesHelper getPreferencesHelper() {
         return preferencesHelper;
     }
 
-    public ReciterSuraRepository getReciterSuraRepository() {
-        return reciterSuraRepository;
+
+    public ReciterDao getReciterDao() {
+        return reciterDao;
     }
 
-    public ReciterRepository getReciterRepository() {
-        return reciterRepository;
-    }
-
-    boolean reciterTableIsEmpty = false;
-
-    public boolean reciterTableIsEmpty() {
-        return reciterRepository.reciterListCheck() == 0;
-    }
 
     public boolean reciterHasKey(Context context, String key) {
-        return preferencesHelper.hasKey(context, key);
+        return preferencesHelper.hasKey(key);
     }
 }

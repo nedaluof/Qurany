@@ -14,7 +14,7 @@ import io.reactivex.Flowable;
  */
 public class ReciterSuraRepository {
 
-    private ReciterSuraDAO reciterSuraDAO;
+    private final ReciterSuraDAO reciterSuraDAO;
 
     @Inject
     public ReciterSuraRepository(ReciterSuraDAO reciterSuraDAO) {

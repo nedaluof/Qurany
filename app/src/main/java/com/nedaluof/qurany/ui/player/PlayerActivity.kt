@@ -49,8 +49,8 @@ class PlayerActivity : BasePlayerActivity() {
         setContentView(R.layout.activity_player)
 
         //onNewIntent(intent)
-        //play(mutableListOf(Alfatiha) , Alfatiha)
-        play(Alfatiha)
+        play(mutableListOf(Alfatiha) , Alfatiha)
+        //play(Alfatiha)
         with(playerViewModel) {
 
             audioDurationData.observe(this@PlayerActivity) {
