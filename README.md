@@ -1,4 +1,5 @@
 # Qurany
+## Under Migrating to Kotlin And MVVM Arch ⚒️ ⚒️
 ## The development now are continuous in this project
 ### Qurany : Simple Android Application aims to provide way for listen to Holy Quran Online via over 209 Quran Karim Reciters
 ## ScreenShot
