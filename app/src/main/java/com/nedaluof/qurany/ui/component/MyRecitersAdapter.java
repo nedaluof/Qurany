@@ -13,12 +13,13 @@ import com.nedaluof.qurany.data.DataManager;
 import com.nedaluof.qurany.data.model.Reciter;
 import com.nedaluof.qurany.databinding.ItemReciterBinding;
 import com.nedaluof.qurany.ui.myreciters.MyRecitersView;
-import com.nedaluof.qurany.ui.reciter.ReciterView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import dagger.hilt.android.qualifiers.ApplicationContext;
 
 /**
  * Created by nedaluof on 7/13/2020.
@@ -30,7 +31,7 @@ public class MyRecitersAdapter extends RecyclerView.Adapter<MyRecitersAdapter.Re
     private DataManager dataManager;
 
     @Inject
-    public MyRecitersAdapter(DataManager dataManager, Context context) {
+    public MyRecitersAdapter(DataManager dataManager,@ApplicationContext Context context) {
         this.dataManager = dataManager;
         this.context = context;
     }

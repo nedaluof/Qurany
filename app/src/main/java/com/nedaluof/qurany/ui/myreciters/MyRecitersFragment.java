@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,20 +25,23 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import dagger.android.support.DaggerFragment;
+import dagger.hilt.android.AndroidEntryPoint;
+import dagger.hilt.android.qualifiers.ApplicationContext;
 
 /**
  * Created by nedaluof on 7/5/2020.
  */
-public class MyRecitersFragment extends DaggerFragment
+@AndroidEntryPoint
+public class MyRecitersFragment extends Fragment
         implements MyRecitersView {
-    public MyRecitersFragment() {/**/}
 
     private MyRecitersFragmentBinding binding;
     @Inject
     MyRecitersPresenter presenter;
     @Inject
+    @ApplicationContext
     Context context;
+
     @Inject
     MyRecitersAdapter adapter;
 
@@ -51,7 +55,7 @@ public class MyRecitersFragment extends DaggerFragment
 
     private void initComponent() {
         presenter.attachView(this);
-        binding.recitersRecyclerView.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+        binding.recitersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         binding.recitersRecyclerView.setHasFixedSize(true);
         binding.recitersRecyclerView.setItemAnimator(new DefaultItemAnimator());
         adapter.setOnClickHandlerMyReciters(this);
@@ -94,23 +98,23 @@ public class MyRecitersFragment extends DaggerFragment
     @Override
     public void onClickGetReciterData(Reciter reciterData) {
         startActivity(
-                new Intent(context, ReciterSurasActivity.class)
+                new Intent(getActivity(), ReciterSurasActivity.class)
                         .putExtra("reciterData", reciterData)
         );
     }
 
     @Override
     public void onClickDeleteFromMyReciters(Reciter reciterData) {
-        String msg1 = context.getString(R.string.alrt_delete_msg1);
-        String msg2 = context.getString(R.string.alrt_delete_msg2);
+        String msg1 = getResources().getString(R.string.alrt_delete_msg1);
+        String msg2 = getResources().getString(R.string.alrt_delete_msg2);
         Alerter.create(getActivity())
                 .setTitle(R.string.alrt_delete_title)
                 .setText(msg1 + reciterData.getName() + msg2)
-                .addButton(context.getString(R.string.alrt_delete_btn_ok), R.style.AlertButton, v -> {
+                .addButton(getResources().getString(R.string.alrt_delete_btn_ok), R.style.AlertButton, v -> {
                     presenter.deleteFromMyReciters(reciterData);
                     Alerter.hide();
                 })
-                .addButton(context.getString(R.string.alrt_delete_btn_cancel), R.style.AlertButton, v -> Alerter.hide())
+                .addButton(getResources().getString(R.string.alrt_delete_btn_cancel), R.style.AlertButton, v -> Alerter.hide())
                 .enableSwipeToDismiss()
                 .show();
     }

@@ -14,8 +14,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 /**
  * Created by nedaluof on 7/15/2020.
  */
@@ -37,7 +35,7 @@ public class NewAdapter extends BaseQuickAdapter<Reciter, BaseViewHolder> {
         holder.setText(R.id.tv_reciter_sura_count, context.getString(R.string.sura_count) + reciter.getCount());
         holder.getView(R.id.reciter_data_layout).setOnClickListener(v -> viewOnClick.onClickGetReciterData(reciter));
 
-        if (reciter.isInMyReciters()) {
+        if (reciter.getInMyReciters()) {
             holder.getView(R.id.img_add_favorite).setVisibility(View.GONE);
         } else {
             holder.getView(R.id.img_add_favorite).setVisibility(View.VISIBLE);

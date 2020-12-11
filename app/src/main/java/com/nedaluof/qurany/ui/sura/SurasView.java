@@ -1,6 +1,6 @@
 package com.nedaluof.qurany.ui.sura;
 
-import com.nedaluof.qurany.data.model.Suras;
+import com.nedaluof.qurany.data.model.Sura;
 import com.nedaluof.qurany.ui.base.MvpView;
 
 import java.util.List;
@@ -13,7 +13,7 @@ public interface SurasView extends MvpView {
 
     void setReciterName(String reciterName);
 
-    void showReciterSuras(List<Suras> surasList);
+    void showReciterSuras(List<Sura> suraList);
 
     void showError(String message);
 

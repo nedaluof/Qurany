@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +18,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import dagger.hilt.android.qualifiers.ApplicationContext;
+
 /**
  * Created by nedaluof on 7/12/2020.
  */
@@ -29,7 +30,7 @@ public class RecitersAdapter extends RecyclerView.Adapter<RecitersAdapter.Recite
     private DataManager dataManager;
 
     @Inject
-    public RecitersAdapter(DataManager dataManager, Context context) {
+    public RecitersAdapter(DataManager dataManager, @ApplicationContext Context context) {
         this.dataManager = dataManager;
         this.context = context;
     }
@@ -51,9 +52,9 @@ public class RecitersAdapter extends RecyclerView.Adapter<RecitersAdapter.Recite
         holder.binding.tvReciterRewaya.setText(list.get(position).getRewaya().toUpperCase());
         holder.binding.tvReciterSuraCount.setText("There ".concat(list.get(position).getCount()).concat(" Sura"));
         holder.binding.reciterDataLayout.setOnClickListener(v -> onClickHandler.onClickGetReciterData(list.get(position)));
-        if (list.get(position).isInMyReciters()) {
+        if (list.get(position).getInMyReciters()) {
             holder.binding.imgAddFavorite.setVisibility(View.GONE);
-        }else {
+        } else {
             holder.binding.imgAddFavorite.setVisibility(View.VISIBLE);
         }
 
@@ -99,6 +100,7 @@ public class RecitersAdapter extends RecyclerView.Adapter<RecitersAdapter.Recite
 
     static class RecitersViewHolder extends RecyclerView.ViewHolder {
         private ItemReciterBinding binding;
+
         public RecitersViewHolder(@NonNull View view) {
             super(view);
             binding = ItemReciterBinding.bind(view);

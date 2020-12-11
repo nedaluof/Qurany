@@ -10,6 +10,7 @@ import com.nedaluof.qurany.util.RxUtil;
 
 import javax.inject.Inject;
 
+import dagger.hilt.android.qualifiers.ApplicationContext;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -24,7 +25,7 @@ public class MyRecitersPresenter extends BasePresenter<MyRecitersView> {
     private Context context;
 
     @Inject
-    public MyRecitersPresenter(DataManager dataManager, Context context) {
+    public MyRecitersPresenter(DataManager dataManager,@ApplicationContext Context context) {
         this.dataManager = dataManager;
         this.context = context;
     }

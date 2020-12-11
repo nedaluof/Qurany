@@ -1,10 +1,2 @@
-/*
- * Created By nedaluof  2020.
- */
-
-/*
- * Created By nedaluof  2020.
- */
-
+include ':app', ':quranyplayer'
 rootProject.name='Qurany'
-include ':app'

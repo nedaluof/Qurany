@@ -1,24 +1,22 @@
 package com.nedaluof.qurany.ui.main;
 
+import android.os.Bundle;
+import android.os.Handler;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
-import android.widget.Toast;
-
-import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 import com.nedaluof.qurany.R;
 import com.nedaluof.qurany.databinding.ActivityMainBinding;
 import com.nedaluof.qurany.ui.myreciters.MyRecitersFragment;
 import com.nedaluof.qurany.ui.reciter.RecitersFragment;
-import com.nedaluof.qurany.util.RxUtil;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import org.jetbrains.annotations.NotNull;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final String FRAGMENT_KEY_ID = "FRAGMENT_KEY_ID";
@@ -88,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putLong(FRAGMENT_KEY_ID, fragmentId);
     }
@@ -101,12 +99,12 @@ public class MainActivity extends AppCompatActivity {
             if (doubleBackToExitPressedOnce) {
                 this.doubleBackToExitPressedOnce = false;
                 Toast.makeText(this, "Please press back again to exit.", Toast.LENGTH_LONG).show();
-                new Handler().postDelayed(()->this.doubleBackToExitPressedOnce = true,2000);
+                new Handler().postDelayed(() -> this.doubleBackToExitPressedOnce = true, 2000);
             } else {
                 finish();
             }
         } else if (fragment instanceof MyRecitersFragment) {
-            loadFragment(new RecitersFragment(),1);
+            loadFragment(new RecitersFragment(), 1);
             binding.navigation.setItemSelected(R.id.nav_home, true);
         } else {
             Toast.makeText(this, "i don't know", Toast.LENGTH_SHORT).show();

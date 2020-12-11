@@ -1,7 +1,7 @@
 package com.nedaluof.qurany.ui.sura;
 
 import com.nedaluof.qurany.data.model.Reciter;
-import com.nedaluof.qurany.data.model.Suras;
+import com.nedaluof.qurany.data.model.Sura;
 import com.nedaluof.qurany.ui.base.BasePresenter;
 import com.nedaluof.qurany.util.SurasUtil;
 import com.nedaluof.qurany.util.Utility;
@@ -32,18 +32,22 @@ public class SurasPresenter extends BasePresenter<SurasView> {
         getMvpView().showProgress(false);
     }
 
-    private List<Suras> getSuras(Reciter reciterData) {
+    private List<Sura> getSuras(Reciter reciterData) {
+        // TODO: 9/27/2020 need to fill sura server link / Url here to model
         List<String> reciterSuras = Arrays.asList(reciterData.getSuras().split("\\s*,\\s*"));
-        List<Suras> mainList = new ArrayList<>();
+        List<Sura> mainList = new ArrayList<>();
         for (int i = 0; i < reciterSuras.size(); i++) {
             String suraName;
             int item = Integer.parseInt(reciterSuras.get(i));
+            String server;
             if (Utility.getLanguage().equals("_arabic")) {
                 suraName = SurasUtil.arabicSurasName().get(item - 1).getName();
-                mainList.add(new Suras(item, suraName, "رواية : " + reciterData.getRewaya()));
+                server = reciterData.getServer() + "/" + SurasUtil.getSuraIndex(item - 1) + ".mp3";
+                mainList.add(new Sura(item, suraName, "رواية : " + reciterData.getRewaya(), server));
             } else {
                 suraName = SurasUtil.englishSurasName().get(item - 1).getName();
-                mainList.add(new Suras(item, suraName, reciterData.getRewaya()));
+                server = reciterData.getServer() + "/" + SurasUtil.getSuraIndex(item - 1) + ".mp3";
+                mainList.add(new Sura(item, suraName, reciterData.getRewaya(), server));
             }
         }
         return mainList;

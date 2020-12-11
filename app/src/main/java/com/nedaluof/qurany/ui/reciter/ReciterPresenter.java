@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.nedaluof.qurany.data.DataManager;
 import com.nedaluof.qurany.data.model.Reciter;
-import com.nedaluof.qurany.data.model.Reciters;
 import com.nedaluof.qurany.ui.base.BasePresenter;
 import com.nedaluof.qurany.util.RxUtil;
 import com.nedaluof.qurany.util.Utility;
@@ -14,11 +13,9 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observer;
+import dagger.hilt.android.qualifiers.ApplicationContext;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -27,11 +24,11 @@ import io.reactivex.schedulers.Schedulers;
 public class ReciterPresenter extends BasePresenter<ReciterView> {
     private static final String TAG = "ReciterPresenter";
     private Disposable disposable;
-    private DataManager dataManager;
-    private Context context;
+    private final DataManager dataManager;
+    private final Context context;
 
     @Inject
-    public ReciterPresenter(DataManager dataManager, Context context) {
+    public ReciterPresenter(DataManager dataManager, @ApplicationContext Context context) {
         this.dataManager = dataManager;
         this.context = context;
     }
@@ -50,7 +47,7 @@ public class ReciterPresenter extends BasePresenter<ReciterView> {
         }
     }
 
-    public void loadNoInternetConectionView() {
+    public void loadNoInternetConnectionView() {
         getMvpView().onNoInternetConnectionProvided();
     }
 

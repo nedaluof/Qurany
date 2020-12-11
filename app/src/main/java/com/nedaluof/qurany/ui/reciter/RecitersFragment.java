@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,7 +31,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import dagger.android.support.DaggerFragment;
+import dagger.hilt.android.AndroidEntryPoint;
+import dagger.hilt.android.qualifiers.ApplicationContext;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -38,7 +40,8 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Created by nedaluof on 7/5/2020.
  */
-public class RecitersFragment extends DaggerFragment
+@AndroidEntryPoint
+public class RecitersFragment extends Fragment
         implements ReciterView {
     public RecitersFragment() {/**/}
 
@@ -51,6 +54,7 @@ public class RecitersFragment extends DaggerFragment
     private Disposable networkDisposable;
     @Inject
     ReciterPresenter presenter;
+    @ApplicationContext
     @Inject
     Context context;
 
@@ -58,9 +62,14 @@ public class RecitersFragment extends DaggerFragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = RecitersFragmentBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         presenter.attachView(this);
         initComponents();
-        return binding.getRoot();
     }
 
     @Override
@@ -130,7 +139,7 @@ public class RecitersFragment extends DaggerFragment
                         binding.recitersRecyclerView.setAdapter(newAdapter);
                         presenter.loadReciters();
                     } else {
-                        presenter.loadNoInternetConectionView();
+                        presenter.loadNoInternetConnectionView();
                     }
                 });
     }

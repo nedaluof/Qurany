@@ -24,6 +24,9 @@ import java.util.Locale;
  */
 public class Utility {
 
+    public static final String BUNDLE_KEY = "BUNDLE_KEY";
+    public static final String SURA_KEY = "SURA_KEY";
+    public static final int PLAYBACK_NOTIFICATION_ID = 50;
 
     /**
      * @return user device language
@@ -35,7 +38,7 @@ public class Utility {
 
     /**
      * Create the main folder which will hold
-     * downloaded Suras if not exist
+     * downloaded Sura if not exist
      */
     public static void createMainFolder() {
         File direct = new File(Environment.getExternalStorageDirectory()

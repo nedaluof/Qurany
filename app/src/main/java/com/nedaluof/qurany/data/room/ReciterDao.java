@@ -25,23 +25,20 @@ public interface ReciterDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     Completable insertReciter(Reciter reciter);
 
-    @Query("select * from reciters order by name")
+    @Query("select * from reciter order by name")
     Flowable<List<Reciter>> getReciters();
 
     //to check table size
-    @Query("select * from reciters")
+    @Query("select * from reciter")
     List<Reciter> getRecitersForCheck();
 
     //to check records number
-    @Query("SELECT COUNT(*) FROM reciters")
+    @Query("SELECT COUNT(*) FROM reciter")
     int getRecitersRecordsNumber();
 
-    @Query("Delete from reciters")
+    @Query("Delete from reciter")
     Completable deleteAllReciters();
 
     @Delete
     Completable deleteReciter(Reciter reciter);
-
-    @Delete
-    void deleteReciterTest(Reciter reciter);
 }

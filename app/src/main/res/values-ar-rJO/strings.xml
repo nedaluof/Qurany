@@ -71,4 +71,9 @@
     <string name="alrt_sura_exist_title">السورة موجودة</string>
     <string name="alrt_sura_exist_message">السورة محملة مسبقا , يمكنك الإستماع لها مباشرة عند الضغط على زر التشغيل</string>
 
+    <string name="controller_ffwd">تقديم السورة إلى الأمام</string>
+    <string name="controller_rew">إرجاع السورة إلى الخلف</string>
+    <string name="controller_play">تشغيل السورة</string>
+    <string name="controller_pause">إيقاف السورة</string>
+
 </resources>
