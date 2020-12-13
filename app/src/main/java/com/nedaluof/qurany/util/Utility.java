@@ -5,13 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.Settings;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ImageButton;
 
 import androidx.appcompat.app.AlertDialog;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nedaluof.qurany.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -83,18 +79,4 @@ public class Utility {
         context.startActivity(intent);
     }
 
-
-    public static Animation getButtonAnimation(Context context) {
-        final Animation myAnim = AnimationUtils.loadAnimation(context, R.anim.bounce);
-        myAnim.setInterpolator(new ButtonAnimation(0.2, 20));
-        return myAnim;
-    }
-
-    public static void handleButtonAnimation(Context context, ImageButton button) {
-        final Animation myAnim = AnimationUtils.loadAnimation(context, R.anim.bounce);
-        // Use bounce interpolator with amplitude 0.2 and frequency 20
-        ButtonAnimation interpolator = new ButtonAnimation(0.2, 20);
-        myAnim.setInterpolator(interpolator);
-        button.startAnimation(myAnim);
-    }
 }

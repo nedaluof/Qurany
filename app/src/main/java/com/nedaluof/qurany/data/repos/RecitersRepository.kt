@@ -36,10 +36,10 @@ class RecitersRepository @Inject constructor(
 
     suspend fun addReciterToDatabase(reciter: Reciter): Resource<Boolean> {
         return try {
-            val result = reciterDao.insertReciter(reciter)
-                preferences.saveToPrefs(reciter.id, reciter.id)
-                //inform user that reciter added to My Reciters List
-                Resource.success(true)
+            reciterDao.insertReciter(reciter)
+            preferences.saveToPrefs(reciter.id, reciter.id)
+            //inform user that reciter added to My Reciters List
+            Resource.success(true)
         } catch (exception: Exception) {
             Log.d(TAG, "addReciterToDatabase: Error : ${exception.message} ")
             Resource.error(null, exception.message!!)

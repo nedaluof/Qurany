@@ -24,12 +24,6 @@ object DatabaseModule {
                     QuranyDatabase::class.java,
                     QuranyDatabase.DB_NAME).build()
 
-
-    @Singleton
-    @Provides
-    fun provideReciterSuraDao(database: QuranyDatabase) =
-            database.getReciterSuraDao()
-
     @Singleton
     @Provides
     fun provideReciterDao(database: QuranyDatabase) =

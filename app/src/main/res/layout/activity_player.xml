@@ -7,6 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".ui.player.PlayerActivity">
 
+    <!--
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/song_player_image_view"
         android:layout_width="match_parent"
@@ -162,6 +164,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/song_player_image_view"
         app:layout_constraintTop_toTopOf="parent" />
-
-
+-->
 </androidx.constraintlayout.widget.ConstraintLayout>

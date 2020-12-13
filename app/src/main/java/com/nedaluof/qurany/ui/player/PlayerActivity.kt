@@ -1,20 +1,9 @@
 package com.nedaluof.qurany.ui.player
 
-import android.content.Context
-import android.content.Intent
-import android.os.Bundle
-import android.util.Log
-import android.widget.SeekBar
-import com.nedaluof.qurany.R
-import com.nedaluof.qurany.data.model.Song
-import com.nedaluof.qurany.data.model.Sura
 import com.nedaluof.quranyplayer.BasePlayerActivity
-import com.nedaluof.quranyplayer.model.AudioData
-import com.nedaluof.quranyplayer.util.OnSwipeTouchListener
-import kotlinx.android.synthetic.main.activity_new_player.*
 
 
-class PlayerActivity : BasePlayerActivity() {
+class PlayerActivity : BasePlayerActivity() /*: BasePlayerActivity() {
 
     val Alfatiha = Sura(
             22,
@@ -46,7 +35,7 @@ class PlayerActivity : BasePlayerActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_player)
+        setContentView(com.nedaluof.qurany.R.layout.activity_player)
 
         //onNewIntent(intent)
         play(mutableListOf(Alfatiha) , Alfatiha)
@@ -78,7 +67,7 @@ class PlayerActivity : BasePlayerActivity() {
             }
 
             isPlayData.observe(this@PlayerActivity) {
-                song_player_toggle_image_view.setImageResource(if (it) R.drawable.ic_pause_vector else R.drawable.ic_play_vector)
+                song_player_toggle_image_view.setImageResource(if (it) R.drawable.ic_pause_vector else com.nedaluof.qurany.R.drawable.ic_play_vector)
             }
 
             playerData.observe(this@PlayerActivity) {
@@ -157,3 +146,4 @@ class PlayerActivity : BasePlayerActivity() {
         }
     }
 }
+**/

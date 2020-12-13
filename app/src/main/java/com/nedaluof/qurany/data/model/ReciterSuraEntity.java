@@ -1,17 +1,13 @@
 package com.nedaluof.qurany.data.model;
 
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
-
 /**
  * Created by nedaluof on 6/26/2020.
  */
-@Entity(tableName = "suras_table")
+//@Entity(tableName = "suras_table")
 public class ReciterSuraEntity {
 
     //content id not suras
-    @PrimaryKey(autoGenerate = true)
+    //@PrimaryKey(autoGenerate = true)
     private int id;
     //sura Data
     private int suraId;
@@ -32,7 +28,7 @@ public class ReciterSuraEntity {
     }
 
     //used to fill data manually
-    @Ignore
+    //@Ignore
     public ReciterSuraEntity(int suraId, String suraName, String suraRewaya, String reciterName, String reciterServer) {
         this.suraId = suraId;
         this.suraName = suraName;

@@ -6,14 +6,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork
 import com.nedaluof.qurany.R
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.databinding.FragmentRecitersBinding
-import com.nedaluof.qurany.ui.component.NewRecitersAdapter
+import com.nedaluof.qurany.ui.component.RecitersAdapter
 import com.nedaluof.qurany.ui.sura.ReciterSurasActivity
 import com.nedaluof.qurany.util.RxUtil
 import com.nedaluof.qurany.util.Utility
@@ -36,7 +36,7 @@ class RecitersFragment : Fragment() {
     private var networkDisposable: Disposable? = null
 
     //private lateinit var reciterAdapter: ReciterAdapter
-    private lateinit var reciterAdapter: NewRecitersAdapter
+    private lateinit var reciterAdapter: RecitersAdapter
 
     private val viewModel: RecitersViewModel by viewModels()
 
@@ -70,8 +70,8 @@ class RecitersFragment : Fragment() {
             binding.reciterListLayout.visibility = View.VISIBLE
         }
 
-        reciterAdapter = NewRecitersAdapter().apply {
-            listener = object : NewRecitersAdapter.ReciterAdapterListener {
+        reciterAdapter = RecitersAdapter(requireContext()).apply {
+            listener = object : RecitersAdapter.ReciterAdapterListener {
                 override fun onReciterClicked(reciter: Reciter) {
                     startActivity(Intent(context, ReciterSurasActivity::class.java)
                             .putExtra("reciterData", reciter))
@@ -92,8 +92,12 @@ class RecitersFragment : Fragment() {
                 reciterAdapter.addReciters(it as ArrayList<Reciter>)
             }
 
-            error.observe(viewLifecycleOwner) {
-                Toast.makeText(activity, "Error: ${it.first}", Toast.LENGTH_LONG).show()
+            error.observe(viewLifecycleOwner) { (message, _) ->
+                Alerter.create(activity)
+                        .setTitle(R.string.alrt_err_occur_title)
+                        .setText(message)
+                        .enableSwipeToDismiss()
+                        .show()
             }
 
             loading.observe(viewLifecycleOwner) { show ->
@@ -115,6 +119,18 @@ class RecitersFragment : Fragment() {
                 }
             }
         }
+
+        binding.recitersSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                reciterAdapter.filter.filter(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                reciterAdapter.filter.filter(newText)
+                return false
+            }
+        })
     }
 
     override fun onDestroyView() {

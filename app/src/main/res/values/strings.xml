@@ -65,6 +65,7 @@
     <string name="alrt_delete_btn_ok">Delete</string>
     <string name="alrt_delete_btn_cancel">Cancel</string>
     <string name="alrt_delete_success">Deleted Successfully</string>
+    <string name="alrt_delete_fail">Deletion Fail</string>
 
     <string name="alrt_download_completed_title">Download Completed</string>
     <string name="alrt_download_completed_msg">Now you can play the sura in offline mode</string>
@@ -84,5 +85,9 @@
 
     <string name="notification_channel" translatable="false">APP_Channel_ID</string>
     <string name="notification_channel_description" translatable="false">Channel ID for APP</string>
+
+    <string name="app_version">version : </string>
+
+    <string name="exit_app_msg">Please press back again to exit</string>
 
 </resources>

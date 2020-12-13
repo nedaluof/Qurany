@@ -59,6 +59,7 @@
     <string name="alrt_delete_btn_ok">حذف</string>
     <string name="alrt_delete_btn_cancel">إلغاء</string>
     <string name="alrt_delete_success">تم بنجاح</string>
+    <string name="alrt_delete_fail">لم يتم الحذف هنالك خطأ</string>
 
     <string name="alrt_download_completed_title">تم التحميل بنجاح</string>
     <string name="alrt_download_completed_msg">الأن يمكنك الإستماع للسورة بدون إنترنت</string>
@@ -75,5 +76,9 @@
     <string name="controller_rew">إرجاع السورة إلى الخلف</string>
     <string name="controller_play">تشغيل السورة</string>
     <string name="controller_pause">إيقاف السورة</string>
+
+    <string name="app_version">الإصدار : </string>
+    <string name="exit_app_msg">للخروج الرجاء الضغط على زر الرجوع مرة أخرى</string>
+
 
 </resources>

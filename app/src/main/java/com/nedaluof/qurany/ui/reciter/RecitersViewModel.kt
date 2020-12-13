@@ -31,7 +31,7 @@ class RecitersViewModel @ViewModelInject constructor(
         get() = _loading
 
     fun getReciters(language: String) {
-        _loading.postValue(true)
+        _loading.value = true
         viewModelScope.launch(Dispatchers.IO) {
             val result = repository.getReciters(language)
             when (result.status) {
@@ -39,7 +39,10 @@ class RecitersViewModel @ViewModelInject constructor(
                     _reciters.postValue(result.data!!)
                     _loading.postValue(false)
                 }
-                Status.ERROR -> _error.postValue(Pair(result.message!!, false))
+                Status.ERROR -> {
+                    _error.postValue(Pair(result.message!!, false))
+                    _loading.postValue(false)
+                }
             }
         }
         /*liveData(Dispatchers.IO) {

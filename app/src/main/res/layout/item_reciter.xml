@@ -63,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
-                tools:text="There 70 Suhras" />
+                tools:text="There 70 Suras" />
         </LinearLayout>
 
         <View
@@ -80,7 +80,7 @@
 
 
             <ImageView
-                android:id="@+id/img_add_favorite"
+                android:id="@+id/img_favorite"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:contentDescription="@string/app_name"
