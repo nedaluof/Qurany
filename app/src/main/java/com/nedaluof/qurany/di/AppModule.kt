@@ -15,6 +15,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object AppModule {
+
     @Singleton
     @Provides
     fun providePrefsHelper(@ApplicationContext context: Context) =

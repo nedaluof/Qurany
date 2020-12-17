@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.sura.ReciterSurasActivity">
+    tools:context=".ui.suras.SurasActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/suras_bar_layout"
@@ -27,13 +27,13 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <RelativeLayout
+   <!-- <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="40dp">
+        android:layout_marginTop="40dp">-->
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/reciter_suras_recyclerView"
+            android:id="@+id/suras_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"
@@ -41,16 +41,9 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:listitem="@layout/item_sura" />
+  <!--  </RelativeLayout>-->
 
-        <ProgressBar
-            android:id="@+id/pro_reciters_sura"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="gone" />
-    </RelativeLayout>
-
-    <include
+    <!--<include
         android:id="@+id/player_bottom_sheet"
-        layout="@layout/player_bottom_sheet_layout" />
+        layout="@layout/player_bottom_sheet_layout" />-->
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

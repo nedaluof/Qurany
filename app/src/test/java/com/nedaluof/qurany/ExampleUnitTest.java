@@ -4,7 +4,7 @@ import com.nedaluof.qurany.util.Utility;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertSame;
 
 /*
  * Created By nedaluof  2020.

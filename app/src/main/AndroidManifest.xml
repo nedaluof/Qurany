@@ -32,7 +32,7 @@
         <activity android:name=".ui.main.MainActivity" />
 
         <activity
-            android:name=".ui.sura.ReciterSurasActivity"/>
+            android:name=".ui.suras.SurasActivity"/>
 
         <activity
             android:name=".ui.player.PlayerActivity">

@@ -1,4 +1,4 @@
-package com.nedaluof.qurany.ui.reciter
+package com.nedaluof.qurany.ui.reciters
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData

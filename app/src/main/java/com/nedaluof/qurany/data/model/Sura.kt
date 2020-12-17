@@ -1,7 +1,7 @@
 package com.nedaluof.qurany.data.model
 
 import com.nedaluof.quranyplayer.model.AudioData
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 /**
  * Created by nedaluof on 12/2/2020.

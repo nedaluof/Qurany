@@ -12,7 +12,7 @@ import com.nedaluof.qurany.R
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.databinding.FragmentMyRecitersBinding
 import com.nedaluof.qurany.ui.component.MyRecitersAdapter
-import com.nedaluof.qurany.ui.sura.ReciterSurasActivity
+import com.nedaluof.qurany.ui.suras.SurasActivity
 import com.tapadoo.alerter.Alerter
 import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
@@ -22,7 +22,7 @@ import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
  * Created by nedaluof on 12/12/2020. {Kotlin}
  */
 @AndroidEntryPoint
-class NewMyRecitersFragment : Fragment() {
+class MyRecitersFragment : Fragment() {
 
     private var _binding: FragmentMyRecitersBinding? = null
     private val binding: FragmentMyRecitersBinding
@@ -103,7 +103,7 @@ class NewMyRecitersFragment : Fragment() {
         myRecitersAdapter = MyRecitersAdapter(requireContext()).apply {
             listener = object : MyRecitersAdapter.MyRecitersAdapterListener {
                 override fun onReciterClicked(reciter: Reciter) {
-                    startActivity(Intent(activity, ReciterSurasActivity::class.java)
+                    startActivity(Intent(activity, SurasActivity::class.java)
                             .putExtra("reciterData", reciter))
                 }
 
@@ -113,11 +113,11 @@ class NewMyRecitersFragment : Fragment() {
                     Alerter.create(activity)
                             .setTitle(R.string.alrt_delete_title)
                             .setText(msg1 + reciter.name + msg2)
-                            .addButton(resources.getString(R.string.alrt_delete_btn_ok), R.style.AlertButton) { v: View? ->
+                            .addButton(resources.getString(R.string.alrt_delete_btn_ok), R.style.AlertButton) {
                                 viewModel.deleteFromMyReciters(reciter)
                                 Alerter.hide()
                             }
-                            .addButton(resources.getString(R.string.alrt_delete_btn_cancel), R.style.AlertButton) { v: View? -> Alerter.hide() }
+                            .addButton(resources.getString(R.string.alrt_delete_btn_cancel), R.style.AlertButton) { Alerter.hide() }
                             .enableSwipeToDismiss()
                             .show()
                 }

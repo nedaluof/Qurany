@@ -1,4 +1,4 @@
-package com.nedaluof.qurany.ui.reciter
+package com.nedaluof.qurany.ui.reciters
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,8 +14,7 @@ import com.nedaluof.qurany.R
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.databinding.FragmentRecitersBinding
 import com.nedaluof.qurany.ui.component.RecitersAdapter
-import com.nedaluof.qurany.ui.sura.ReciterSurasActivity
-import com.nedaluof.qurany.util.RxUtil
+import com.nedaluof.qurany.ui.suras.SurasActivity
 import com.nedaluof.qurany.util.Utility
 import com.tapadoo.alerter.Alerter
 import dagger.hilt.android.AndroidEntryPoint
@@ -73,7 +72,7 @@ class RecitersFragment : Fragment() {
         reciterAdapter = RecitersAdapter(requireContext()).apply {
             listener = object : RecitersAdapter.ReciterAdapterListener {
                 override fun onReciterClicked(reciter: Reciter) {
-                    startActivity(Intent(context, ReciterSurasActivity::class.java)
+                    startActivity(Intent(context, SurasActivity::class.java)
                             .putExtra("reciterData", reciter))
                 }
 
@@ -135,7 +134,9 @@ class RecitersFragment : Fragment() {
 
     override fun onDestroyView() {
         _binding = null
-        RxUtil.dispose(networkDisposable)
+        if (networkDisposable != null && !networkDisposable?.isDisposed!!) {
+            networkDisposable?.dispose()
+        }
         super.onDestroyView()
     }
 

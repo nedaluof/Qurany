@@ -1,109 +1,94 @@
-package com.nedaluof.qurany.ui.sura
+package com.nedaluof.qurany.ui.suras
 
-import android.Manifest
-import android.app.DownloadManager
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
-import android.view.View
-import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.chad.library.adapter.base.animation.ScaleInAnimation
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.google.android.exoplayer2.util.Util
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.*
-import com.karumi.dexter.listener.single.PermissionListener
-import com.nedaluof.qurany.R
 import com.nedaluof.qurany.data.model.Reciter
-import com.nedaluof.qurany.data.model.Sura
-import com.nedaluof.qurany.databinding.ActivityReciterSurasBinding
-import com.nedaluof.qurany.util.NetworkUtil
-import com.nedaluof.qurany.util.SurasUtil
-import com.nedaluof.qurany.util.Utility
-import com.tapadoo.alerter.Alerter
-import java.io.File
-import java.util.*
+import com.nedaluof.qurany.databinding.ActivitySurasBinding
+import com.nedaluof.qurany.ui.component.SurasAdapter
+import com.nedaluof.qurany.ui.player.PlayerActivity
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
 
 /**
  * Created by nedaluof on 12/5/2020.
  */
-class ReciterSurasActivity : AppCompatActivity(), SurasView {
+class SurasActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityReciterSurasBinding
-    private lateinit var adapter: ReciterSurasAdapter
+    private lateinit var binding: ActivitySurasBinding
+    private lateinit var surasAdapter: SurasAdapter
     private lateinit var reciterData: Reciter
-    private var sheetBehavior: BottomSheetBehavior<*>? = null
+    // private var sheetBehavior: BottomSheetBehavior<*>? = null
 
     //audio quranyplayer
-    private var player: SimpleExoPlayer? = null
+    /*private var player: SimpleExoPlayer? = null
     private lateinit var mediaSource: MediaSource
     private var playWhenReady = true
     private var currentWindow = 0
     private var playbackPosition: Long = 0
     private var suraId = 0
-    private var downloadId: Long = 0
+    private var downloadId: Long = 0*/
 
+
+    private val viewModel: SurasViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityReciterSurasBinding.inflate(layoutInflater)
+        binding = ActivitySurasBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        sheetBehavior = BottomSheetBehavior.from<View>(binding.playerBottomSheet.bottomSheet)
+        //sheetBehavior = BottomSheetBehavior.from<View>(binding.playerBottomSheet.bottomSheet)
 
-        /* TODO: 6/26/2020 replace intent by create Room Database
-         * and support data in the presenter via {@link DataManager} class
-         * */
+        reciterData = intent.getParcelableExtra("reciterData")!!
 
-        val comingData = intent
-        reciterData = comingData.getParcelableExtra("reciterData")!!
-
-        val presenter = SurasPresenter()
-        presenter.attachView(this)
-
-
-        initRecyclerView()
-
-
-        presenter.loadRecitersSuras(reciterData)
-
-
-        binding.playerBottomSheet.imgBtnClose.setOnClickListener { v ->
-            player?.release()
-            (sheetBehavior as BottomSheetBehavior<*>).state = BottomSheetBehavior.STATE_COLLAPSED
-            Handler(Looper.myLooper()!!).postDelayed({ binding.playerBottomSheet.bottomSheet.visibility = View.GONE }, 750)
+        surasAdapter = SurasAdapter().apply {
+            clickListener = SurasAdapter.SurasAdapterListener { sura, suras ->
+                startActivity(Intent(this@SurasActivity, PlayerActivity::class.java).apply {
+                    putExtra("reciterSura", sura)
+                    putExtra("reciterSuras", suras)
+                })
+            }
+        }
+        binding.surasRecyclerView.apply {
+            setHasFixedSize(true)
+            adapter = ScaleInAnimationAdapter(surasAdapter).apply {
+                setFirstOnly(false)
+            }
         }
 
-        Utility.createMainFolder()
-        registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+        with(viewModel) {
+            loadSurasToUI(reciterData)
+            reciterName.observe(this@SurasActivity) { name ->
+                binding.reciterNameTitleBar.text = name
+            }
+            reciterSuras.observe(this@SurasActivity) { reciterSuras ->
+                surasAdapter.addData(reciterSuras)
+            }
+        }
+
+        /* binding.playerBottomSheet.imgBtnClose.setOnClickListener {
+             player?.release()
+             (sheetBehavior as BottomSheetBehavior<*>).state = BottomSheetBehavior.STATE_COLLAPSED
+             Handler(Looper.myLooper()!!).postDelayed({ binding.playerBottomSheet.bottomSheet.visibility = View.GONE }, 750)
+         }*/
+
+        //Utility.createMainFolder()
+        //registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
     }
 
     private fun initRecyclerView() {
-        binding.reciterSurasRecyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        binding.reciterSurasRecyclerView.setHasFixedSize(true)
-        binding.reciterSurasRecyclerView.itemAnimator = DefaultItemAnimator()
-        adapter = ReciterSurasAdapter(R.layout.item_sura, ArrayList(), this)
-        adapter.adapterAnimation = ScaleInAnimation()
-        binding.reciterSurasRecyclerView.adapter = adapter
-        binding.reciterSurasRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        /* binding.reciterSurasRecyclerView.setHasFixedSize(true)
+         surasAdapter = SurasAdapter().apply {
+             clickListener = SurasAdapter.SurasAdapterListener { sura, suras ->
+                 startActivity(Intent(this@SurasActivity, PlayerActivity::class.java).apply {
+                     putExtra("reciterSura", sura)
+                     putExtra("reciterSuras", suras)
+                 })
+             }
+         }
+         binding.reciterSurasRecyclerView.adapter = surasAdapter*/
+        /*binding.reciterSurasRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (dy > 0) {
@@ -112,15 +97,15 @@ class ReciterSurasActivity : AppCompatActivity(), SurasView {
                     sheetBehavior!!.state = BottomSheetBehavior.STATE_COLLAPSED
                 }
             }
-        })
+        })*/
     }
 
-    private val onComplete: BroadcastReceiver = object : BroadcastReceiver() {
+    /*private val onComplete: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
             //Checking if the received broadcast is for our enqueued download by matching download id
             if (downloadId == id) {
-                Alerter.create(this@ReciterSurasActivity)
+                Alerter.create(this@SurasActivity)
                         .setTitle(R.string.alrt_download_completed_title)
                         .setText(R.string.alrt_download_completed_msg)
                         .setBackgroundColorRes(R.color.green_200)
@@ -131,78 +116,74 @@ class ReciterSurasActivity : AppCompatActivity(), SurasView {
                 Log.d(TAG, "onReceive: download id not match")
             }
         }
-    }
+    }*/
 
-    override fun showProgress(show: Boolean) {
-        if (show) {
-            binding.proRecitersSura.visibility = View.VISIBLE
-        } else {
-            binding.proRecitersSura.visibility = View.GONE
-        }
-    }
+    /* override fun showProgress(show: Boolean) {
+         if (show) {
+             binding.proRecitersSura.visibility = View.VISIBLE
+         } else {
+             binding.proRecitersSura.visibility = View.GONE
+         }
+     }*/
 
-    override fun setReciterName(reciterName: String?) {
+    /*override fun setReciterName(reciterName: String?) {
         binding.reciterNameTitleBar.text = reciterName
-    }
+    }*/
 
-    override fun showReciterSuras(suraList: MutableList<Sura>?) {
-        adapter.addData(suraList!!)
-    }
+    /*override fun showReciterSuras(suraList: MutableList<Sura>?) {
+        surasAdapter.addData(suraList!!)
+    }*/
 
-    override fun showError(message: String?) {
+    /*override fun showError(message: String?) {
         // TODO: 2020 ar-en language in strings
         Toast.makeText(this, "Error :$message", Toast.LENGTH_SHORT).show()
-    }
+    }*/
 
-    override fun onClickPlay(suraId: Int) {
-        /*Todo need to start Player Activity with sura and surasList
-        *  transfer al logic with download to the Player Activity
-        * */
+    /* override fun onClickPlay(suraId: Int) {
+         if (NetworkUtild.isNetworkOk(this)) {
+             val direct = File(Environment.getExternalStorageDirectory()
+                     .toString() + "/Qurany/" + reciterData.name, SurasUtil.getSuraName(suraId) + ".mp3")
+             if (!(player?.isPlaying!!)) {
+                 if (!Utility.checkIfFileInPathExist(reciterData.name + "/" + SurasUtil.getSuraName(suraId) + ".mp3")) {
+                     this.suraId = suraId
+                     binding.playerBottomSheet.bottomSheet.visibility = View.VISIBLE
+                     sheetBehavior!!.state = BottomSheetBehavior.STATE_EXPANDED
+                     binding.playerBottomSheet.reciterSuraName.text = SurasUtil.getPlayerTitle(suraId, reciterData.name)
+                     initializePlayer(suraId)
+                     Log.d(TAG, "onClickPlay: current , listened online")
+                 } else {
+                     this.suraId = suraId
+                     binding.playerBottomSheet.bottomSheet.visibility = View.VISIBLE
+                     sheetBehavior!!.state = BottomSheetBehavior.STATE_EXPANDED
+                     binding.playerBottomSheet.reciterSuraName.text = SurasUtil.getPlayerTitle(suraId, reciterData.name)
+                     initializePlayerLocalSura(direct.path)
+                     Log.d(TAG, "onClickPlay: current listened local")
+                 }
+             } else if (this.suraId != suraId) {
+                 player?.release()
+                 if (!Utility.checkIfFileInPathExist(reciterData.name + "/" + SurasUtil.getSuraName(suraId) + ".mp3")) {
+                     this.suraId = suraId
+                     binding.playerBottomSheet.bottomSheet.visibility = View.VISIBLE
+                     sheetBehavior!!.state = BottomSheetBehavior.STATE_EXPANDED
+                     binding.playerBottomSheet.reciterSuraName.text = SurasUtil.getPlayerTitle(suraId, reciterData.name)
+                     initializePlayer(suraId)
+                     Log.d(TAG, "onClickPlay: new sura id , listened online")
+                 } else {
+                     this.suraId = suraId
+                     binding.playerBottomSheet.bottomSheet.visibility = View.VISIBLE
+                     sheetBehavior!!.state = BottomSheetBehavior.STATE_EXPANDED
+                     binding.playerBottomSheet.reciterSuraName.text = SurasUtil.getPlayerTitle(suraId, reciterData.name)
+                     initializePlayerLocalSura(direct.path)
+                     Log.d(TAG, "onClickPlay: new sura id , listened local")
+                 }
+             }
+         } else {
+             handleNoInternetIfFileExist(suraId)
+         }
+     }*/
 
-        if (NetworkUtil.isNetworkOk(this)) {
-            val direct = File(Environment.getExternalStorageDirectory()
-                    .toString() + "/Qurany/" + reciterData.name, SurasUtil.getSuraName(suraId) + ".mp3")
-            if (!(player?.isPlaying!!)) {
-                if (!Utility.checkIfFileInPathExist(reciterData.name + "/" + SurasUtil.getSuraName(suraId) + ".mp3")) {
-                    this.suraId = suraId
-                    binding.playerBottomSheet.bottomSheet.visibility = View.VISIBLE
-                    sheetBehavior!!.state = BottomSheetBehavior.STATE_EXPANDED
-                    binding.playerBottomSheet.reciterSuraName.text = SurasUtil.getPlayerTitle(suraId, reciterData.name)
-                    initializePlayer(suraId)
-                    Log.d(TAG, "onClickPlay: current , listened online")
-                } else {
-                    this.suraId = suraId
-                    binding.playerBottomSheet.bottomSheet.visibility = View.VISIBLE
-                    sheetBehavior!!.state = BottomSheetBehavior.STATE_EXPANDED
-                    binding.playerBottomSheet.reciterSuraName.text = SurasUtil.getPlayerTitle(suraId, reciterData.name)
-                    initializePlayerLocalSura(direct.path)
-                    Log.d(TAG, "onClickPlay: current listened local")
-                }
-            } else if (this.suraId != suraId) {
-                player?.release()
-                if (!Utility.checkIfFileInPathExist(reciterData.name + "/" + SurasUtil.getSuraName(suraId) + ".mp3")) {
-                    this.suraId = suraId
-                    binding.playerBottomSheet.bottomSheet.visibility = View.VISIBLE
-                    sheetBehavior!!.state = BottomSheetBehavior.STATE_EXPANDED
-                    binding.playerBottomSheet.reciterSuraName.text = SurasUtil.getPlayerTitle(suraId, reciterData.name)
-                    initializePlayer(suraId)
-                    Log.d(TAG, "onClickPlay: new sura id , listened online")
-                } else {
-                    this.suraId = suraId
-                    binding.playerBottomSheet.bottomSheet.visibility = View.VISIBLE
-                    sheetBehavior!!.state = BottomSheetBehavior.STATE_EXPANDED
-                    binding.playerBottomSheet.reciterSuraName.text = SurasUtil.getPlayerTitle(suraId, reciterData.name)
-                    initializePlayerLocalSura(direct.path)
-                    Log.d(TAG, "onClickPlay: new sura id , listened local")
-                }
-            }
-        } else {
-            handleNoInternetIfFileExist(suraId)
-        }
-    }
-
-    override fun onDownloadClick(suraId: Int) {
-        Dexter.withContext(this@ReciterSurasActivity)
+    /*override fun onDownloadClick(suraId: Int) {
+        Dexter.withContext(this@SurasActivity)
                 .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .withListener(object : PermissionListener {
                     override fun onPermissionGranted(permissionGrantedResponse: PermissionGrantedResponse) {
@@ -211,19 +192,22 @@ class ReciterSurasActivity : AppCompatActivity(), SurasView {
 
                     override fun onPermissionDenied(response: PermissionDeniedResponse) {
                         if (response.isPermanentlyDenied) {
-                            Utility.showSettingsDialog(this@ReciterSurasActivity)
+                            Utility.showSettingsDialog(this@SurasActivity)
                         }
                     }
 
                     override fun onPermissionRationaleShouldBeShown(permissionRequest: PermissionRequest, permissionToken: PermissionToken) {
                         permissionToken.continuePermissionRequest()
                     }
-                }).withErrorListener { e: DexterError? -> Toast.makeText(this, getString(R.string.dexter_permission_error), Toast.LENGTH_SHORT).show() }
+                }).withErrorListener {
+                    Toast.makeText(this, getString(R
+                            .string.dexter_permission_error), Toast.LENGTH_SHORT).show()
+                }
                 .check()
-    }
+    }*/
 
 
-    private fun handleNoInternetIfFileExist(suraId: Int) {
+    /*private fun handleNoInternetIfFileExist(suraId: Int) {
         val direct = File(Environment.getExternalStorageDirectory()
                 .toString() + "/Qurany/" + reciterData.name, SurasUtil.getSuraName(suraId) + ".mp3")
         if (Utility.checkIfFileInPathExist(reciterData.name + "/" + SurasUtil.getSuraName(suraId) + ".mp3")) {
@@ -236,9 +220,9 @@ class ReciterSurasActivity : AppCompatActivity(), SurasView {
         } else {
             showNoInternetAlert()
         }
-    }
+    }*/
 
-    private fun initializePlayer(suraId: Int) {
+    /*private fun initializePlayer(suraId: Int) {
         val server = reciterData.server + "/" + SurasUtil.getSuraIndex(suraId) + ".mp3"
         mediaSource = buildMediaSource(Uri.parse(server))
         player = SimpleExoPlayer.Builder(this).build()
@@ -266,9 +250,9 @@ class ReciterSurasActivity : AppCompatActivity(), SurasView {
                 }
             }
         })
-    }
+    }*/
 
-    private fun initializePlayerLocalSura(path: String) {
+    /*private fun initializePlayerLocalSura(path: String) {
         mediaSource = buildMediaSource(Uri.parse(path))
         player = SimpleExoPlayer.Builder(this).build()
         binding.playerBottomSheet.playerController.player = player
@@ -286,16 +270,16 @@ class ReciterSurasActivity : AppCompatActivity(), SurasView {
                 }
             }
         })
-    }
+    }*/
 
-    private fun buildMediaSource(uri: Uri): MediaSource {
+    /*private fun buildMediaSource(uri: Uri): MediaSource {
         val dataSourceFactory: DataSource.Factory = DefaultDataSourceFactory(this, "Qurany_Player")
         return ProgressiveMediaSource.Factory(dataSourceFactory)
                 .createMediaSource(uri)
-    }
+    }*/
 
-    private fun startDownload(suraId: Int) {
-        if (NetworkUtil.isNetworkOk(this)) {
+    /*private fun startDownload(suraId: Int) {
+        if (NetworkUtild.isNetworkOk(this)) {
             if (!Utility.checkIfFileInPathExist(reciterData.name + "/" + SurasUtil.getSuraName(suraId) + ".mp3")) {
                 Alerter.create(this)
                         .setTitle(R.string.alrt_download_start_title)
@@ -324,10 +308,10 @@ class ReciterSurasActivity : AppCompatActivity(), SurasView {
         } else {
             showNoInternetAlert()
         }
-    }
+    }*/
 
 
-    private fun showNoInternetAlert() {
+    /*private fun showNoInternetAlert() {
         Alerter.create(this)
                 .setTitle(R.string.alrt_no_internet_title)
                 .setText(R.string.alrt_no_internet_msg)
@@ -335,9 +319,9 @@ class ReciterSurasActivity : AppCompatActivity(), SurasView {
                 .hideIcon()
                 .setBackgroundColorRes(R.color.red)
                 .show()
-    }
+    }*/
 
-    private fun releasePlayer() {
+    /*private fun releasePlayer() {
         if (player != null) {
             playWhenReady = player?.playWhenReady!!
             playbackPosition = player?.currentPosition!!
@@ -345,44 +329,39 @@ class ReciterSurasActivity : AppCompatActivity(), SurasView {
             player?.release()
             player = null
         }
-    }
+    }*/
 
 
-    override fun onStart() {
+    /*override fun onStart() {
         super.onStart()
         if (Util.SDK_INT >= 24) {
             initializePlayer(suraId)
         }
-    }
+    }*/
 
-    override fun onResume() {
+    /*override fun onResume() {
         super.onResume()
         if (Util.SDK_INT < 24 || player == null) {
             initializePlayer(suraId)
         }
-    }
+    }*/
 
-    override fun onPause() {
+    /*override fun onPause() {
         super.onPause()
         if (Util.SDK_INT < 24) {
             releasePlayer()
         }
-    }
+    }*/
 
-    override fun onStop() {
+    /*override fun onStop() {
         super.onStop()
         if (Util.SDK_INT >= 24) {
             releasePlayer()
         }
-    }
+    }*/
 
-    override fun onDestroy() {
+    /*override fun onDestroy() {
         super.onDestroy()
         unregisterReceiver(onComplete)
-    }
-
-
-    companion object {
-        private const val TAG = "ReciterSurasActivity"
-    }
+    }*/
 }

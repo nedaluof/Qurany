@@ -3,7 +3,7 @@ package com.nedaluof.qurany.data.repos
 import android.util.Log
 import com.nedaluof.qurany.data.api.ApiService
 import com.nedaluof.qurany.data.model.Reciter
-import com.nedaluof.qurany.data.model.Resource
+import com.nedaluof.qurany.data.model.Result
 import com.nedaluof.qurany.data.prefs.PreferencesHelper
 import com.nedaluof.qurany.data.room.ReciterDao
 import javax.inject.Inject
@@ -16,33 +16,34 @@ class RecitersRepository @Inject constructor(
         private val preferences: PreferencesHelper,
         private val reciterDao: ReciterDao
 ) {
-    suspend fun getReciters(language: String): Resource<List<Reciter>> {
+
+    suspend fun getReciters(language: String): Result<List<Reciter>> {
         return try {
             val response = apiService.getReciters(language)
             if (response.isSuccessful) {
                 response.body()?.reciters?.map { reciter ->
-                    if (preferences.hasKey(reciter.id)) {
+                    if (preferences.hasKey(reciter.id!!)) {
                         reciter.inMyReciters = true
                     }
                 }
-                Resource.success(response.body()?.reciters!!)
+                Result.success(response.body()?.reciters!!)
             } else {
-                Resource.error(null, response.message())
+                Result.error(null, response.message())
             }
         } catch (exception: Exception) {
-            Resource.error(null, exception.message!!)
+            Result.error(null, exception.message!!)
         }
     }
 
-    suspend fun addReciterToDatabase(reciter: Reciter): Resource<Boolean> {
+    suspend fun addReciterToDatabase(reciter: Reciter): Result<Boolean> {
         return try {
             reciterDao.insertReciter(reciter)
-            preferences.saveToPrefs(reciter.id, reciter.id)
+            preferences.saveToPrefs(reciter.id!!, reciter.id!!)
             //inform user that reciter added to My Reciters List
-            Resource.success(true)
+            Result.success(true)
         } catch (exception: Exception) {
             Log.d(TAG, "addReciterToDatabase: Error : ${exception.message} ")
-            Resource.error(null, exception.message!!)
+            Result.error(null, exception.message!!)
         }
     }
 

@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.nedaluof.qurany.R
 import com.nedaluof.qurany.databinding.ActivityMainBinding
-import com.nedaluof.qurany.ui.myreciters.NewMyRecitersFragment
-import com.nedaluof.qurany.ui.reciter.RecitersFragment
+import com.nedaluof.qurany.ui.myreciters.MyRecitersFragment
+import com.nedaluof.qurany.ui.reciters.RecitersFragment
 import com.nedaluof.qurany.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.nav_my_reciters -> {
                     binding.navigation.setItemSelected(R.id.nav_my_reciters, true)
-                    loadFragment(NewMyRecitersFragment())
+                    loadFragment(MyRecitersFragment())
                 }
             }
         }
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 finish()
             }
-        } else if (fragment is NewMyRecitersFragment) {
+        } else if (fragment is MyRecitersFragment) {
             loadFragment(RecitersFragment())
             binding.navigation.setItemSelected(R.id.nav_recitera, true)
         }

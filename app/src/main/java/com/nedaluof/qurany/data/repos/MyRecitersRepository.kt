@@ -1,7 +1,7 @@
 package com.nedaluof.qurany.data.repos
 
 import com.nedaluof.qurany.data.model.Reciter
-import com.nedaluof.qurany.data.model.Resource
+import com.nedaluof.qurany.data.model.Result
 import com.nedaluof.qurany.data.prefs.PreferencesHelper
 import com.nedaluof.qurany.data.room.ReciterDao
 import kotlinx.coroutines.flow.Flow
@@ -21,15 +21,15 @@ class MyRecitersRepository @Inject constructor(
         get() = recitersDao.getMyReciters()
                 .distinctUntilChanged()
 
-    suspend fun deleteFromMyReciters(reciter: Reciter): Resource<Boolean> {
+    suspend fun deleteFromMyReciters(reciter: Reciter): Result<Boolean> {
         return try {
             recitersDao.deleteReciter(reciter)
             //remove from preferences
-            preferences.removeFromPrefs(reciter.id)
+            preferences.removeFromPrefs(reciter.id!!)
             //now inform  deletion successfully
-            Resource.success(true)
+            Result.success(true)
         } catch (exception: Exception) {
-            Resource.error(null, exception.message!!)
+            Result.error(null, exception.message!!)
         }
     }
 }
