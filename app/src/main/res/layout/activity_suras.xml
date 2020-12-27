@@ -27,10 +27,10 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-   <!-- <RelativeLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="40dp">-->
+        android:layout_marginTop="40dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/suras_recyclerView"
@@ -41,9 +41,9 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:listitem="@layout/item_sura" />
-  <!--  </RelativeLayout>-->
+    </RelativeLayout>
 
-    <!--<include
+    <include
         android:id="@+id/player_bottom_sheet"
-        layout="@layout/player_bottom_sheet_layout" />-->
+        layout="@layout/player_bottom_sheet_layout" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

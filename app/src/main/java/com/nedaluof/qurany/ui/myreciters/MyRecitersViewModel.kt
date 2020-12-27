@@ -9,6 +9,7 @@ import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.data.model.Status
 import com.nedaluof.qurany.data.repos.MyRecitersRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -33,24 +34,27 @@ class MyRecitersViewModel @ViewModelInject constructor(
 
     fun getMyReciters() {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.getMyReciters.collect {
-                _reciters.postValue(it)
-                _loading.postValue(false)
-            }
+            repository.getMyReciters
+                    .catch { cause -> _error.postValue(cause.message!!) }
+                    .collect {
+                        _reciters.postValue(it)
+                        _loading.postValue(false)
+                    }
         }
     }
+
     private val _resultOfDeletion = MutableLiveData<Boolean>()
     val resultOfDeleteReciter: LiveData<Boolean>
         get() = _resultOfDeletion
 
-    fun deleteFromMyReciters(reciter: Reciter){
+    fun deleteFromMyReciters(reciter: Reciter) {
         viewModelScope.launch(Dispatchers.IO) {
             val result = repository.deleteFromMyReciters(reciter)
-            when(result.status){
-                Status.SUCCESS ->{
+            when (result.status) {
+                Status.SUCCESS -> {
                     _resultOfDeletion.postValue(true)
                 }
-                Status.ERROR ->{
+                Status.ERROR -> {
                     _resultOfDeletion.postValue(false)
                 }
             }

@@ -1,6 +1,6 @@
 package com.nedaluof.qurany.data.model
 
-import com.nedaluof.quranyplayer.model.AudioData
+import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -12,10 +12,4 @@ data class Sura(
         var name: String = "",
         var rewaya: String = "",
         var suraUrl: String = ""
-) : AudioData(id, name, "", suraUrl, AUDIO_TYPE) {
-    constructor(id: Int = 0, name: String = "") : this(id, name, "", "")
-
-    companion object {
-        private const val AUDIO_TYPE = 3
-    }
-}
+) : Parcelable

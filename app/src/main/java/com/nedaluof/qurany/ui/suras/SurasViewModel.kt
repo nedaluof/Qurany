@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.data.model.Sura
-import com.nedaluof.qurany.util.SurasUtil
+import com.nedaluof.qurany.util.SuraUtil
 import com.nedaluof.qurany.util.Utility
 import java.util.*
 
@@ -39,12 +39,12 @@ class SurasViewModel : ViewModel() {
             val item = currentReciterSuras[i].toInt()
             var server: String
             if (Utility.getLanguage() == "_arabic") {
-                suraName = SurasUtil.arabicSurasName()[item - 1].name
-                server = reciterData.server + "/" + SurasUtil.getSuraIndex(item - 1) + ".mp3"
+                suraName = SuraUtil.getArabicSuraName()[item - 1].name
+                server = reciterData.server + "/" + SuraUtil.getSuraIndex(item - 1) + ".mp3"
                 mappedReciterSuras.add(Sura(item, suraName, "رواية : " + reciterData.rewaya, server))
             } else {
-                suraName = SurasUtil.englishSurasName()[item - 1].name
-                server = reciterData.server + "/" + SurasUtil.getSuraIndex(item - 1) + ".mp3"
+                suraName = SuraUtil.getEnglishSuraName()[item - 1].name
+                server = reciterData.server + "/" + SuraUtil.getSuraIndex(item - 1) + ".mp3"
                 mappedReciterSuras.add(Sura(item, suraName, reciterData.rewaya!!, server))
             }
         }

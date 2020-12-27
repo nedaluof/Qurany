@@ -1,2 +1,2 @@
-include ':app', ':quranyplayer'
+include ':app'
 rootProject.name='Qurany'

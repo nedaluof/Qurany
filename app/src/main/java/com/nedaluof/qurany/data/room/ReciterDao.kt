@@ -24,7 +24,7 @@ interface ReciterDao {
     @Query("SELECT COUNT(*) FROM reciter")
     fun getRecitersRecordsNumber(): Int
 
-    /* For Future use Todo (setting delete All Reciters in Mt Reciters) */
+    /* For Future use Todo (setting delete All Reciters in My Reciters) */
     @Query("Delete from reciter")
     suspend fun deleteAllReciters()
 
