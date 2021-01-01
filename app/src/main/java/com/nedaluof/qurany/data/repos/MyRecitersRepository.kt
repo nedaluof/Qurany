@@ -13,9 +13,8 @@ import javax.inject.Inject
  */
 class MyRecitersRepository @Inject constructor(
         private val recitersDao: ReciterDao,
-        private val preferences: PreferencesHelper
+        private val preferences: PreferencesHelper,
 ) {
-
 
     val getMyReciters: Flow<List<Reciter>>
         get() = recitersDao.getMyReciters()
@@ -24,12 +23,13 @@ class MyRecitersRepository @Inject constructor(
     suspend fun deleteFromMyReciters(reciter: Reciter): Result<Boolean> {
         return try {
             recitersDao.deleteReciter(reciter)
-            //remove from preferences
+            // remove from preferences
             preferences.removeFromPrefs(reciter.id!!)
-            //now inform  deletion successfully
+            // now inform  deletion successfully
             Result.success(true)
         } catch (exception: Exception) {
             Result.error(null, exception.message!!)
         }
     }
+
 }

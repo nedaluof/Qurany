@@ -19,63 +19,89 @@ import com.nedaluof.qurany.R
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.data.model.Sura
 import com.nedaluof.qurany.ui.suras.SurasActivity
-import com.nedaluof.qurany.util.SuraUtil
 import com.nedaluof.qurany.util.Utility.getLogoAsBitmap
-
+import com.nedaluof.qurany.util.Utility.getSuraPath
+import com.nedaluof.qurany.util.toastySuccess
 
 /**
  * Created by nedaluof on 12/27/2020.
  */
 class QuranyPlayerService : Service() {
 
-    // binder of the service to connect to the PlayerView
-    private var player: SimpleExoPlayer? = null
-    private var playerBinder = PlayerBinder()
+    private val player: SimpleExoPlayer by lazy {
+        SimpleExoPlayer.Builder(this).build()
+    }
     private var playerNotificationManager: PlayerNotificationManager? = null
-    lateinit var sura: Sura //coming sura to play on the player
-    lateinit var reciter: Reciter
+    lateinit var sura: Sura // coming sura to run on the player
+    lateinit var reciter: Reciter// coming reciter to serve the state of the suras activity
+    private var isRunning = false
+
+    // binder of the service to connect to the PlayerView in [SurasActivity]
+    private var playerBinder = PlayerBinder()
     override fun onBind(intent: Intent?): IBinder = playerBinder
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         sura = intent?.getParcelableExtra(SURA_KEY)!!
         reciter = intent.getParcelableExtra(RECITER_KEY)!!
         startPlayer()
-        return START_STICKY
+        isRunning = true
+        return START_NOT_STICKY
     }
 
     private fun startPlayer() {
-        player = SimpleExoPlayer.Builder(this).build()
-        if (this::sura.isInitialized && this::reciter.isInitialized) {
-            val server = reciter.server + "/" + SuraUtil.getSuraIndex(sura.id) + ".mp3"
-            val suraURI = Uri.parse(server)
-            val suraMediaSource = buildMediaSource(suraURI)
-            player?.apply {
-                prepare(suraMediaSource)
-                playWhenReady = true
+        if (this::sura.isInitialized) {
+            when (sura.playingType) {
+                PLAYING_ONLINE -> {
+                    val suraURI = Uri.parse(sura.suraUrl)
+                    val suraMediaSource = buildMediaSource(suraURI)
+                    player.apply {
+                        prepare(suraMediaSource)
+                        playWhenReady = true
+                    }
+                }
+                PLAYING_LOCALLY -> {
+                    val localSuraPath = this.getSuraPath(sura.suraSubPath)
+                    val suraURI = Uri.parse(localSuraPath)
+                    val suraMediaSource = buildMediaSource(suraURI)
+                    player.apply {
+                        prepare(suraMediaSource)
+                        playWhenReady = true
+                    }
+                    this@QuranyPlayerService.toastySuccess("Playing Locally")
+                }
             }
             initPlayerNotification()
+        }
+    }
+
+    fun playerIsRunning() = isRunning
+    fun getCurrentSuraRunning(): Sura {
+        return if (this::sura.isInitialized) {
+            sura
+        } else {
+            Sura()
         }
     }
 
     private fun initPlayerNotification() {
         val mediaDescriptionAdapter = object : PlayerNotificationManager.MediaDescriptionAdapter {
             override fun getCurrentContentTitle(player: Player): CharSequence =
-                    reciter.name!!
+                    sura.reciterName
 
             override fun createCurrentContentIntent(player: Player): PendingIntent? {
                 val resultIntent = Intent(this@QuranyPlayerService, SurasActivity::class.java).apply {
                     addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT)
+                    reciter.isPlayingNow = true
+                    putExtra(RECITER_KEY, reciter)
                 }
                 // Create the TaskStackBuilder
                 return TaskStackBuilder.create(this@QuranyPlayerService).run {
-                    // Add the intent, which inflates the back stack
                     addNextIntentWithParentStack(resultIntent)
-                    // Get the PendingIntent containing the entire back stack
-                    getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
+                    getPendingIntent(System.currentTimeMillis().toInt(), PendingIntent.FLAG_UPDATE_CURRENT)
                 }
             }
 
-            override fun getCurrentContentText(player: Player): CharSequence = sura.name
+            override fun getCurrentContentText(player: Player): CharSequence = sura.suraName
             override fun getCurrentLargeIcon(player: Player, callback: PlayerNotificationManager.BitmapCallback) =
                     this@QuranyPlayerService.getLogoAsBitmap()
         }
@@ -103,24 +129,26 @@ class QuranyPlayerService : Service() {
     }
 
     fun getPlayerInstance(): SimpleExoPlayer {
-        if (player == null) {
+        if (!player.isPlaying) {
             startPlayer()
         }
-        return player!!
+        return player
     }
 
-    private fun releasePlayer() {
-        if (player != null) {
-            playerNotificationManager?.setPlayer(null)
-            player?.release()
-            player = null
-        }
+    fun releasePlayer() {
+        playerNotificationManager?.setPlayer(null)
+        player.release()
     }
 
     private fun buildMediaSource(uri: Uri): MediaSource {
         val dataSourceFactory: DataSource.Factory = DefaultDataSourceFactory(this, "Qurany_Player")
         return ProgressiveMediaSource.Factory(dataSourceFactory)
                 .createMediaSource(uri)
+    }
+
+    fun stop() {
+        stopForeground(true)
+        stopSelf()
     }
 
     override fun onDestroy() {
@@ -137,5 +165,37 @@ class QuranyPlayerService : Service() {
         private const val TAG = "QuranyPlayerService"
         const val SURA_KEY = "SURA_KEY"
         const val RECITER_KEY = "RECITER_KEY"
+        const val PLAYING_ONLINE = 1
+        const val PLAYING_LOCALLY = 2
     }
 }
+
+
+/*val subPath = "/Qurany/${sura.reciterName}/${SuraUtil.getSuraName(sura.id)}.mp3"
+            if (!this.checkIfSuraExist(subPath)) {
+                if (NetworkUtil.isNetworkOk(this)) {
+                    val suraURI = Uri.parse(sura.suraUrl)
+                    val suraMediaSource = buildMediaSource(suraURI)
+                    player.apply {
+                        prepare(suraMediaSource)
+                        playWhenReady = true
+                    }
+                    initPlayerNotification()
+                } else {
+                    this@QuranyPlayerService.toastyError(R.string.alrt_no_internet_msg)
+                    stopSelf()
+                }
+            } else if (this.checkIfSuraExist(subPath)) {
+                val localSuraPath = this.getSuraPath(subPath)
+                val suraURI = Uri.parse(localSuraPath)
+                val suraMediaSource = buildMediaSource(suraURI)
+                player.apply {
+                    prepare(suraMediaSource)
+                    playWhenReady = true
+                }
+                initPlayerNotification()
+                this@QuranyPlayerService.toastySuccess("Playing Locally")
+            } else {
+                this@QuranyPlayerService.toastyError(R.string.alrt_no_internet_msg)
+                stopSelf()
+            }*/

@@ -10,9 +10,9 @@ import com.nedaluof.qurany.data.model.Reciter
 @Database(entities = [Reciter::class], version = 1, exportSchema = false)
 abstract class QuranyDatabase : RoomDatabase() {
 
-    abstract fun getRecitersDao(): ReciterDao
+  abstract fun getRecitersDao(): ReciterDao
 
-    companion object {
-        const val DB_NAME = "Qurany.db"
-    }
+  companion object {
+    const val DB_NAME = "Qurany.db"
+  }
 }

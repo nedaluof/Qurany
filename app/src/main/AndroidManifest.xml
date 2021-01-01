@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.nedaluof.qurany">
+    package="com.nedaluof.qurany"
+    android:installLocation="preferExternal">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
@@ -31,13 +29,31 @@
 
         <activity android:name=".ui.main.MainActivity" />
 
-        <activity
-            android:name=".ui.suras.SurasActivity"/>
+        <activity android:name=".ui.suras.SurasActivity"
+            android:launchMode="singleInstance"
+            android:parentActivityName=".ui.main.MainActivity"/>
 
-        <service android:name=".service.QuranyPlayerService"
+        <service
+            android:name=".service.QuranyPlayerService"
             android:exported="false"
             android:foregroundServiceType="mediaPlayback"
-            android:roundIcon="@mipmap/ic_qurany"
-            android:icon="@mipmap/ic_qurany"/>
+            android:icon="@mipmap/ic_qurany"
+            android:roundIcon="@mipmap/ic_qurany" />
+
+        <service
+            android:name=".service.QuranyDownloadService"
+            android:exported="false" />
+
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="com.nedaluof.qurany.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+
+            <meta-data
+                android:name="com.nedaluof.qurany.util.timber.TimberInitializer"
+                android:value="androidx.startup" />
+        </provider>
     </application>
 </manifest>

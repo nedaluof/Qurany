@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -22,7 +23,8 @@
             android:text="@string/my_reciters_appbar_title"
             android:textColor="@color/green_200"
             android:textSize="22sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_scrollFlags="scroll|enterAlways|snap" />
     </com.google.android.material.appbar.AppBarLayout>
 
 
@@ -30,16 +32,17 @@
         android:id="@+id/reciter_list_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/dp_4"
         android:visibility="gone"
-        android:layout_marginBottom="@dimen/dp_4">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/reciters_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"
-            android:visibility="visible"
             android:scrollbars="none"
+            android:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_reciter" />
 
@@ -65,13 +68,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/no_reciters"
-            android:background="@android:color/white"
-            android:textColor="@color/green_200"
-            android:padding="15dp"
-            android:textSize="18sp"
             android:layout_margin="20dp"
+            android:background="@android:color/white"
+            android:padding="15dp"
+            android:text="@string/no_reciters"
+            android:textColor="@color/green_200"
+            android:textSize="18sp"
             android:textStyle="bold" />
     </LinearLayout>
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

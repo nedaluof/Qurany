@@ -1,14 +1,8 @@
 package com.nedaluof.qurany.util
 
 import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.net.Uri
-import android.os.Environment
-import android.provider.Settings
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.nedaluof.qurany.R
 import java.io.File
@@ -27,51 +21,14 @@ object Utility {
             if (Locale.getDefault().displayLanguage == "العربية") "_arabic" else "_english"
 
 
-    /**
-     * Create the main folder which will hold
-     * downloaded Sura if not exist
-     */
-    fun createMainFolder() {
-        val direct = File(Environment.getExternalStorageDirectory()
-                .toString() + "/Qurany")
-        if (!direct.exists()) {
-            direct.mkdirs()
-        }
-    }
+    fun Context.checkIfSuraExist(subPath: String) =
+            File(this.getExternalFilesDir(null).toString()
+                    + subPath).exists()
 
-    /**
-     * @param subPath contain Reciter Name and Sura Name
-     * {Ahmad/AlFatiha.mp3}
-     * @return true if exist , else not exist
-     */
-    fun checkIfFileInPathExist(subPath: String): Boolean {
-        val direct = File(Environment.getExternalStorageDirectory()
-                .toString() + "/Qurany/" + subPath)
-        return direct.exists()
-    }
+    fun Context.getSuraPath(subPath: String): String =
+            File(this.getExternalFilesDir(null).toString()
+                    + subPath).absolutePath
 
-    fun showSettingsDialog(context: Context) {
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle(context.resources.getString(R.string.dialoge_permission_title))
-        builder.setMessage(context.resources.getString(R.string.dialoge_permission_message))
-        builder.setPositiveButton(context.resources.getString(R.string
-                .dialoge_permission_gosettings)) { dialog, _ ->
-            dialog.cancel()
-            openSettings(context)
-        }
-        builder.setNegativeButton(context.resources.getString(R.string.dialoge_permission_cancel)) { dialog: DialogInterface, which: Int -> dialog.cancel() }
-        builder.show()
-    }
-
-    /**
-     *  [context] identify package to navigate the user to app settings
-     */
-    private fun openSettings(context: Context) {
-        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-        val uri = Uri.fromParts("package", context.packageName, null)
-        intent.data = uri
-        context.startActivity(intent)
-    }
 
     fun Context.getLogoAsBitmap(): Bitmap {
         val width = 200
@@ -83,5 +40,4 @@ object Utility {
         drawable?.draw(canvas)
         return bitmap
     }
-
 }

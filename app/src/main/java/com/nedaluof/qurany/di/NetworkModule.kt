@@ -23,46 +23,37 @@ import javax.inject.Singleton
 @Module
 object NetworkModule {
 
-    @Singleton
-    @Provides
-    fun provideHttpLoggingInterceptor() =
-            HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            }
+  @Singleton
+  @Provides
+  fun provideHttpLoggingInterceptor() =
+    HttpLoggingInterceptor().apply {
+      level = HttpLoggingInterceptor.Level.BODY
+    }
 
-    @Singleton
-    @Provides
-    fun provideOkHttpClient(interceptor: HttpLoggingInterceptor) =
-            OkHttpClient.Builder()
-                    .addInterceptor(interceptor)
-                    .readTimeout(180, TimeUnit.SECONDS)
-                    .connectTimeout(180, TimeUnit.SECONDS)
-                    .build();
+  @Singleton
+  @Provides
+  fun provideOkHttpClient(interceptor: HttpLoggingInterceptor) =
+    OkHttpClient.Builder()
+      .addInterceptor(interceptor)
+      .readTimeout(180, TimeUnit.SECONDS)
+      .connectTimeout(180, TimeUnit.SECONDS)
+      .build()
 
-    @Singleton
-    @Provides
-    fun provideGson() = GsonBuilder().setLenient().create()
+  @Singleton
+  @Provides
+  fun provideGson() = GsonBuilder().setLenient().create()
 
+  @Singleton
+  @Provides
+  fun provideRetrofitClient(client: OkHttpClient, gson: Gson): Retrofit = Retrofit.Builder()
+    .baseUrl(BASE_URL)
+    .client(client)
+    .addCallAdapterFactory(CoroutineCallAdapterFactory())
+    .addConverterFactory(GsonConverterFactory.create(gson))
+    .build()
 
-    @Singleton
-    @Provides
-    fun provideRetrofitClient(client: OkHttpClient, gson: Gson): Retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(client)
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .build()
-
-    @Singleton
-    @Provides
-    fun provideApiService(client: Retrofit): ApiService =
-            client.create(ApiService::class.java)
-
+  @Singleton
+  @Provides
+  fun provideApiService(client: Retrofit): ApiService =
+    client.create(ApiService::class.java)
 }
-
-
-
-
-
-
-

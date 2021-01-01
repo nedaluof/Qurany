@@ -16,8 +16,8 @@ import javax.inject.Singleton
 @Module
 object AppModule {
 
-    @Singleton
-    @Provides
-    fun providePrefsHelper(@ApplicationContext context: Context) =
-            PreferencesHelper(context)
+  @Singleton
+  @Provides
+  fun providePrefsHelper(@ApplicationContext context: Context) =
+    PreferencesHelper(context)
 }

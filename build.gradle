@@ -8,11 +8,14 @@ buildscript {
         hilt_version = '2.29.1-alpha'
         ext.hilt_vm = "1.0.0-alpha02"
         room_version = "2.2.6"
+        startup_version = "1.0.0"
+        timber_version = "4.7.1"
     }
     repositories {
         google()
         jcenter()
         maven { url "https://jitpack.io" }
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.1'
@@ -26,7 +29,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-
+        maven { url "https://jitpack.io" }
     }
 }
 

@@ -16,18 +16,17 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 object DatabaseModule {
-    @Singleton
-    @Provides
-    fun provideDatabase(@ApplicationContext context: Context) =
-            Room.databaseBuilder(
-                    context,
-                    QuranyDatabase::class.java,
-                    QuranyDatabase.DB_NAME).build()
+  @Singleton
+  @Provides
+  fun provideDatabase(@ApplicationContext context: Context) =
+    Room.databaseBuilder(
+      context,
+      QuranyDatabase::class.java,
+      QuranyDatabase.DB_NAME
+    ).build()
 
-    @Singleton
-    @Provides
-    fun provideReciterDao(database: QuranyDatabase) =
-            database.getRecitersDao()
-
-
+  @Singleton
+  @Provides
+  fun provideReciterDao(database: QuranyDatabase) =
+    database.getRecitersDao()
 }

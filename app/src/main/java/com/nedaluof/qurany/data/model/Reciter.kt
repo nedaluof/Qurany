@@ -33,5 +33,7 @@ data class Reciter(
         var suras: String? = null,
         var inMyReciters: Boolean = false,
         @PrimaryKey(autoGenerate = true)
-        var reciter_id: Int = 0
+        var reciter_id: Int = 0,
+
+        var isPlayingNow: Boolean = false,
 ) : Parcelable

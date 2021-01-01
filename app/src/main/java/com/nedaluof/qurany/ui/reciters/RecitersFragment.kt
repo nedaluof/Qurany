@@ -34,7 +34,6 @@ class RecitersFragment : Fragment() {
 
     private var networkDisposable: Disposable? = null
 
-    //private lateinit var reciterAdapter: ReciterAdapter
     private lateinit var reciterAdapter: RecitersAdapter
 
     private val viewModel: RecitersViewModel by viewModels()
@@ -42,7 +41,7 @@ class RecitersFragment : Fragment() {
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
-            savedInstanceState: Bundle?
+            savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentRecitersBinding.inflate(inflater, container, false)
         return binding.root
@@ -54,14 +53,17 @@ class RecitersFragment : Fragment() {
                 .observeNetworkConnectivity(context)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ available ->
-                    if (available.available()) {
-                        initComponents()
-                    } else {
-                        binding.reciterListLayout.visibility = View.GONE
-                        binding.noInternetLayout.visibility = View.VISIBLE
-                    }
-                }, { Log.d(TAG, "onViewCreated: ${it.message}") })
+                .subscribe(
+                        { available ->
+                            if (available.available()) {
+                                initComponents()
+                            } else {
+                                binding.reciterListLayout.visibility = View.GONE
+                                binding.noInternetLayout.visibility = View.VISIBLE
+                            }
+                        },
+                        { Log.d(TAG, "onViewCreated: ${it.message}") }
+                )
     }
 
     private fun initComponents() {
@@ -69,17 +71,23 @@ class RecitersFragment : Fragment() {
             binding.reciterListLayout.visibility = View.VISIBLE
         }
 
+        if (binding.noInternetLayout.visibility == View.VISIBLE) {
+            binding.noInternetLayout.visibility = View.GONE
+        }
+
+
         reciterAdapter = RecitersAdapter(requireContext()).apply {
             listener = object : RecitersAdapter.ReciterAdapterListener {
                 override fun onReciterClicked(reciter: Reciter) {
-                    startActivity(Intent(context, SurasActivity::class.java)
-                            .putExtra("reciterData", reciter))
+                    startActivity(
+                            Intent(context, SurasActivity::class.java)
+                                    .putExtra(RECITER_KEY, reciter)
+                    )
                 }
 
                 override fun onAddToFavoriteClicked(reciter: Reciter) {
                     viewModel.addReciterToMyReciters(reciter)
                 }
-
             }
         }
         binding.recitersRecyclerView.adapter = ScaleInAnimationAdapter(reciterAdapter).apply {
@@ -142,5 +150,6 @@ class RecitersFragment : Fragment() {
 
     companion object {
         private const val TAG = "RecitersFragmentNew"
+        const val RECITER_KEY = "RECITER_KEY"
     }
 }

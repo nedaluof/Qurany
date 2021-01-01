@@ -10,12 +10,12 @@ import retrofit2.http.Path
  */
 interface ApiService {
 
-    @GET("{language}.php")
-    suspend fun getReciters(
-            @Path("language") language: String
-    ): Response<Reciters>
+  @GET("{language}.php")
+  suspend fun getReciters(
+    @Path("language") language: String
+  ): Response<Reciters>
 
-    companion object {
-        const val BASE_URL = "http://mp3quran.net/api/"
-    }
+  companion object {
+    const val BASE_URL = "http://mp3quran.net/api/"
+  }
 }

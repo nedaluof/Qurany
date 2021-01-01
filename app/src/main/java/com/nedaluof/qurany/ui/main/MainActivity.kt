@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     private fun loadFragment(fragment: Fragment) {
         supportFragmentManager
                 .beginTransaction()
@@ -58,9 +59,12 @@ class MainActivity : AppCompatActivity() {
             if (doubleBackToExitPressedOnce) {
                 doubleBackToExitPressedOnce = false
                 toast(R.string.exit_app_msg)
-                Handler(Looper.myLooper()!!).postDelayed({
-                    doubleBackToExitPressedOnce = true
-                }, 2000)
+                Handler(Looper.myLooper()!!).postDelayed(
+                        {
+                            doubleBackToExitPressedOnce = true
+                        },
+                        2000
+                )
             } else {
                 finish()
             }

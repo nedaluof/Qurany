@@ -17,24 +17,27 @@ class SurasAdapter : RecyclerView.Adapter<SurasAdapter.SurasVH>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SurasVH {
         val binding = ItemSuraBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false)
+                LayoutInflater.from(parent.context), parent, false
+        )
         return SurasVH(binding)
     }
 
     override fun onBindViewHolder(holder: SurasVH, position: Int) {
         val sura = suras[position]
         with(holder.binding) {
-            tvSuraName.text = sura.name
+            tvSuraName.text = sura.suraName
             tvSuraRewaya.text = sura.rewaya
             tvSuraNumber.text = sura.id.toString()
             imgPlaySura.setOnClickListener { clickListener.onClickPlaySura(sura, suras) }
+            imgDownloadSura.setOnClickListener { clickListener.onClickDownloadSura(sura) }
         }
     }
 
     override fun getItemCount(): Int = suras.size
 
-    fun interface SurasAdapterListener {
+    interface SurasAdapterListener {
         fun onClickPlaySura(sura: Sura, surasList: ArrayList<Sura>)
+        fun onClickDownloadSura(sura: Sura)
     }
 
     fun addData(surasList: List<Sura>) {

@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey"
-    android:orientation="vertical">
+    android:background="@color/grey">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -13,12 +12,12 @@
         android:alwaysDrawnWithCache="true"
         android:animateLayoutChanges="true"
         android:animationCache="true"
-        android:background="@android:color/white"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:background="@android:color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
             android:orientation="vertical">
 
             <TextView
@@ -36,9 +35,9 @@
                 android:id="@+id/reciters_search"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
+                android:layout_gravity="center"
                 android:paddingStart="@dimen/dp_10"
-                android:paddingEnd="@dimen/dp_10"
-                android:layout_gravity="center" />
+                android:paddingEnd="@dimen/dp_10" />
 
         </LinearLayout>
 
@@ -50,6 +49,7 @@
         android:id="@+id/reciter_list_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_marginBottom="@dimen/dp_4">
 
         <androidx.recyclerview.widget.RecyclerView
