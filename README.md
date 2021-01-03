@@ -9,13 +9,14 @@
 | ![Reciters](/art/qurany1.png) | ![Suras](/art/qurany2.png) | ![Suraaudioplayer](/art/qurany3.png) | ![MyReciters](/art/qurany4.png) |
 
 
-### Tech stackand 3pr Libraries Used in Qurany
+### Tech stack 3pr Libs Used in Qurany
+* The entire app re-writen with [Kotlin](https://kotlinlang.org/).
 * [AndroidX](https://developer.android.com/jetpack/androidx).
-* [ExoPlayer](https://github.com/google/ExoPlayer) for handle audio player. 
+* [ExoPlayer](https://github.com/google/ExoPlayer) main audio player. 
 * [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) + [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) for asynchronous tasks.
 * [Hilt](https://developer.android.com/training/dependency-injection/hilt-android) for dependency injection.💉
 * [ReactiveNetwork](https://github.com/pwittchen/ReactiveNetwork) for observing/checking internet/network connection availability . 
-* [Retrofit](https://square.github.io/retrofit/) and [OkHttp](https://square.github.io/okhttp/) for network connecting.
+* [Retrofit](https://square.github.io/retrofit/) and [OkHttp](https://square.github.io/okhttp/) for network layer.
 * [Chip Navigation Bar](https://github.com/ismaeldivita/chip-navigation-bar) Bottom Navigation mixed with Chips component.
 * [TextPathView](https://github.com/totond/TextPathView) for animated text in splash screen.
 * JetPack
@@ -23,6 +24,10 @@
   - Lifecycle.
   - ViewModel.
   - Room Persistence.
+  
+* Architecture
+  - MVVM Architecture 
+  - Repository pattern
   
 ## Run the project
 * You can run the project directly , the API used is free without any fees , full  respect to its owner / owners.
