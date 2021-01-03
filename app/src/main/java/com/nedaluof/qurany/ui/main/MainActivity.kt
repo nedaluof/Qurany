@@ -19,58 +19,57 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityMainBinding
-    private var doubleBackToExitPressedOnce = true
+  private lateinit var binding: ActivityMainBinding
+  private var doubleBackToExitPressedOnce = true
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    binding = ActivityMainBinding.inflate(layoutInflater)
+    setContentView(binding.root)
 
-        binding.navigation.setItemEnabled(R.id.nav_recitera, true)
-        binding.navigation.setItemSelected(R.id.nav_recitera, true)
-        loadFragment(RecitersFragment())
+    binding.navigation.setItemEnabled(R.id.nav_reciters, true)
+    binding.navigation.setItemSelected(R.id.nav_reciters, true)
+    loadFragment(RecitersFragment())
 
-        binding.navigation.setOnItemSelectedListener { i ->
-            when (i) {
-                R.id.nav_recitera -> {
-                    binding.navigation.setItemSelected(R.id.nav_recitera, true)
-                    loadFragment(RecitersFragment())
-                }
-                R.id.nav_my_reciters -> {
-                    binding.navigation.setItemSelected(R.id.nav_my_reciters, true)
-                    loadFragment(MyRecitersFragment())
-                }
-            }
+    binding.navigation.setOnItemSelectedListener { i ->
+      when (i) {
+        R.id.nav_reciters -> {
+          binding.navigation.setItemSelected(R.id.nav_reciters, true)
+          loadFragment(RecitersFragment())
         }
-    }
-
-
-    private fun loadFragment(fragment: Fragment) {
-        supportFragmentManager
-                .beginTransaction()
-                .replace(binding.container.id, fragment)
-                .commit()
-    }
-
-    override fun onBackPressed() {
-        val fragment = supportFragmentManager.findFragmentById(binding.container.id)
-        if (fragment is RecitersFragment) {
-            if (doubleBackToExitPressedOnce) {
-                doubleBackToExitPressedOnce = false
-                toast(R.string.exit_app_msg)
-                Handler(Looper.myLooper()!!).postDelayed(
-                        {
-                            doubleBackToExitPressedOnce = true
-                        },
-                        2000
-                )
-            } else {
-                finish()
-            }
-        } else if (fragment is MyRecitersFragment) {
-            loadFragment(RecitersFragment())
-            binding.navigation.setItemSelected(R.id.nav_recitera, true)
+        R.id.nav_my_reciters -> {
+          binding.navigation.setItemSelected(R.id.nav_my_reciters, true)
+          loadFragment(MyRecitersFragment())
         }
+      }
     }
+  }
+
+  private fun loadFragment(fragment: Fragment) {
+    supportFragmentManager
+      .beginTransaction()
+      .replace(binding.container.id, fragment)
+      .commit()
+  }
+
+  override fun onBackPressed() {
+    val fragment = supportFragmentManager.findFragmentById(binding.container.id)
+    if (fragment is RecitersFragment) {
+      if (doubleBackToExitPressedOnce) {
+        doubleBackToExitPressedOnce = false
+        toast(R.string.exit_app_msg)
+        Handler(Looper.myLooper()!!).postDelayed(
+          {
+            doubleBackToExitPressedOnce = true
+          },
+          2000
+        )
+      } else {
+        finish()
+      }
+    } else if (fragment is MyRecitersFragment) {
+      loadFragment(RecitersFragment())
+      binding.navigation.setItemSelected(R.id.nav_reciters, true)
+    }
+  }
 }

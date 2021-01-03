@@ -12,24 +12,23 @@ import javax.inject.Inject
  * Created by nedaluof on 12/12/2020.
  */
 class MyRecitersRepository @Inject constructor(
-        private val recitersDao: ReciterDao,
-        private val preferences: PreferencesHelper,
+  private val recitersDao: ReciterDao,
+  private val preferences: PreferencesHelper,
 ) {
 
-    val getMyReciters: Flow<List<Reciter>>
-        get() = recitersDao.getMyReciters()
-                .distinctUntilChanged()
+  val getMyReciters: Flow<List<Reciter>>
+    get() = recitersDao.getMyReciters()
+      .distinctUntilChanged()
 
-    suspend fun deleteFromMyReciters(reciter: Reciter): Result<Boolean> {
-        return try {
-            recitersDao.deleteReciter(reciter)
-            // remove from preferences
-            preferences.removeFromPrefs(reciter.id!!)
-            // now inform  deletion successfully
-            Result.success(true)
-        } catch (exception: Exception) {
-            Result.error(null, exception.message!!)
-        }
+  suspend fun deleteFromMyReciters(reciter: Reciter): Result<Boolean> {
+    return try {
+      recitersDao.deleteReciter(reciter)
+      // remove from preferences
+      preferences.removeFromPrefs(reciter.id!!)
+      // now inform  deletion successfully
+      Result.success(true)
+    } catch (exception: Exception) {
+      Result.error(null, exception.message!!)
     }
-
+  }
 }

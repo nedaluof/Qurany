@@ -1,11 +1,11 @@
 package com.nedaluof.qurany.data.repos
 
-import android.util.Log
 import com.nedaluof.qurany.data.api.ApiService
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.data.model.Result
 import com.nedaluof.qurany.data.prefs.PreferencesHelper
 import com.nedaluof.qurany.data.room.ReciterDao
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -42,12 +42,8 @@ class RecitersRepository @Inject constructor(
       // inform user that reciter added to My Reciters List
       Result.success(true)
     } catch (exception: Exception) {
-      Log.d(TAG, "addReciterToDatabase: Error : ${exception.message} ")
+      Timber.d( "addReciterToDatabase: Error : ${exception.message} ")
       Result.error(null, exception.message!!)
     }
-  }
-
-  companion object {
-    private const val TAG = "RecitersRepository"
   }
 }

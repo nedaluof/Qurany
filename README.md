@@ -9,7 +9,7 @@
 | ![Reciters](/art/qurany1.png) | ![Suras](/art/qurany2.png) | ![Suraaudioplayer](/art/qurany3.png) | ![MyReciters](/art/qurany4.png) |
 
 
-## MVP Archeitecture
+## MVP Architecture
 * The mvp architecture used in simple way in Qurany as the diagram below shows
 
 <img src="art/mvp.png" alt="screenshot" width="450"/>

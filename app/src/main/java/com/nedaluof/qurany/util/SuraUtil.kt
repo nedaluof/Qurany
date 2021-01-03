@@ -147,15 +147,15 @@ object SuraUtil {
   }
 
   fun getPlayerTitle(suraId: Int, reciterName: String): String {
-    return if (Utility.getLanguage() == "_arabic") {
+    return if (getLanguage() == "_arabic") {
       reciterName + " | " + getArabicSuraName()[suraId - 1].suraName
     } else {
       reciterName + " | " + getEnglishSuraName()[suraId - 1].suraName
     }
   }
 
-  fun getSuraName(suraId: Int): String? {
-    return if (Utility.getLanguage() == "_arabic") {
+  fun getSuraName(suraId: Int): String {
+    return if (getLanguage() == "_arabic") {
       getArabicSuraName()[suraId - 1].suraName
     } else {
       getEnglishSuraName()[suraId - 1].suraName

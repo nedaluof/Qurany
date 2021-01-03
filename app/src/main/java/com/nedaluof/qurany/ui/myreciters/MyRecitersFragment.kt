@@ -28,7 +28,7 @@ class MyRecitersFragment : Fragment() {
   private val binding: FragmentMyRecitersBinding
     get() = _binding!!
 
-  lateinit var myRecitersAdapter: MyRecitersAdapter
+  private lateinit var myRecitersAdapter: MyRecitersAdapter
   private val viewModel: MyRecitersViewModel by viewModels()
 
   override fun onCreateView(
@@ -137,7 +137,7 @@ class MyRecitersFragment : Fragment() {
     super.onDestroyView()
   }
 
-  companion object{
+  companion object {
     const val RECITER_KEY = "RECITER_KEY"
   }
 }

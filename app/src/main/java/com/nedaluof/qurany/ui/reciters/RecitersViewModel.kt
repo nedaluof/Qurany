@@ -70,6 +70,7 @@ class RecitersViewModel @ViewModelInject constructor(
         }*/
   }
 
+  //Todo: Future use
   private val _loadingAdd = MutableLiveData<Boolean>()
   val loadingAdd: LiveData<Boolean>
     get() = _loadingAdd
@@ -93,9 +94,5 @@ class RecitersViewModel @ViewModelInject constructor(
         }
       }
     }
-  }
-
-  companion object {
-    private const val TAG = "RecitersViewModel"
   }
 }
