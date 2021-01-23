@@ -2,7 +2,6 @@ package com.nedaluof.qurany.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.nedaluof.qurany.data.api.ApiService
 import com.nedaluof.qurany.data.api.ApiService.Companion.BASE_URL
 import dagger.Module
@@ -48,7 +47,6 @@ object NetworkModule {
   fun provideRetrofitClient(client: OkHttpClient, gson: Gson): Retrofit = Retrofit.Builder()
     .baseUrl(BASE_URL)
     .client(client)
-    .addCallAdapterFactory(CoroutineCallAdapterFactory())
     .addConverterFactory(GsonConverterFactory.create(gson))
     .build()
 

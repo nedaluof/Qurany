@@ -12,6 +12,8 @@ import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.databinding.FragmentMyRecitersBinding
 import com.nedaluof.qurany.ui.component.MyRecitersAdapter
 import com.nedaluof.qurany.ui.suras.SurasActivity
+import com.nedaluof.qurany.util.toastyError
+import com.nedaluof.qurany.util.toastySuccess
 import com.tapadoo.alerter.Alerter
 import dagger.hilt.android.AndroidEntryPoint
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
@@ -74,25 +76,14 @@ class MyRecitersFragment : Fragment() {
 
       error.observe(viewLifecycleOwner) {
         Timber.d(it)
-        Alerter.create(activity)
-          .setTitle(R.string.alrt_err_occur_title)
-          .setText(R.string.alrt_err_occur_msg)
-          .hideIcon()
-          .setBackgroundColorRes(R.color.red)
-          .show()
+        activity?.toastyError(R.string.alrt_err_occur_msg)
       }
 
       resultOfDeleteReciter.observe(viewLifecycleOwner) { success ->
         if (success) {
-          Alerter.create(activity)
-            .setTitle(R.string.alrt_delete_success)
-            .enableSwipeToDismiss()
-            .show()
+          activity?.toastySuccess(R.string.alrt_delete_success)
         } else {
-          Alerter.create(activity)
-            .setTitle(R.string.alrt_delete_fail)
-            .enableSwipeToDismiss()
-            .show()
+          activity?.toastyError(R.string.alrt_delete_fail)
         }
       }
     }

@@ -15,7 +15,8 @@ import com.nedaluof.qurany.databinding.FragmentRecitersBinding
 import com.nedaluof.qurany.ui.component.RecitersAdapter
 import com.nedaluof.qurany.ui.suras.SurasActivity
 import com.nedaluof.qurany.util.getLanguage
-import com.tapadoo.alerter.Alerter
+import com.nedaluof.qurany.util.toastyError
+import com.nedaluof.qurany.util.toastySuccess
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -98,12 +99,8 @@ class RecitersFragment : Fragment() {
         reciterAdapter.addReciters(it as ArrayList<Reciter>)
       }
 
-      error.observe(viewLifecycleOwner) { (message, _) ->
-        Alerter.create(activity)
-          .setTitle(R.string.alrt_err_occur_title)
-          .setText(message)
-          .enableSwipeToDismiss()
-          .show()
+      error.observe(viewLifecycleOwner) { (_, _) ->
+        activity?.toastyError(R.string.alrt_err_occur_msg)
       }
 
       loading.observe(viewLifecycleOwner) { show ->
@@ -116,12 +113,7 @@ class RecitersFragment : Fragment() {
 
       resultOfAddReciter.observe(viewLifecycleOwner) {
         if (it) {
-          Alerter.create(activity)
-            .setText(R.string.alrt_add_success_title)
-            .setText(R.string.alrt_add_success_msg)
-            .enableSwipeToDismiss()
-            .setBackgroundColorRes(R.color.green_200)
-            .show()
+          activity?.toastySuccess(R.string.alrt_add_success_msg)
         }
       }
     }

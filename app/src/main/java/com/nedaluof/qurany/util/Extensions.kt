@@ -2,12 +2,16 @@ package com.nedaluof.qurany.util
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.Uri
+import android.provider.Settings
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.nedaluof.qurany.R
 import es.dmoral.toasty.Toasty
@@ -81,6 +85,22 @@ fun Context.isNetworkOk(): Boolean {
         } else {
             false
         }
+    }
+}
+
+fun Context.showSettingsDialog() {
+    AlertDialog.Builder(this).apply {
+        setTitle("Need Permissions")
+        setMessage("This app needs permissions of Audio Recorder and access Storage to save record in ,  to use the App features. You can grant them in app settings.")
+        setPositiveButton("GOTO SETTINGS") { dialog, _ ->
+            dialog.cancel()
+            startActivity(Intent().apply {
+                action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                data = Uri.fromParts("package", packageName, null)
+            })
+        }
+        setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+        show()
     }
 }
 
