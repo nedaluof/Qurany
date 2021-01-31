@@ -29,6 +29,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        dataBinding = true
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -63,6 +64,7 @@ dependencies {
     implementation 'com.github.GrenderG:Toasty:1.5.0'
     //room database
     implementation "androidx.room:room-runtime:$room_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     //coroutines support
@@ -111,4 +113,5 @@ dependencies {
     //testImplementation "io.mockk:mockk:$mockk_version"
     testImplementation 'org.mockito:mockito-core:3.5.13'
     testImplementation 'org.mockito:mockito-inline:3.5.13'
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.21"
 }

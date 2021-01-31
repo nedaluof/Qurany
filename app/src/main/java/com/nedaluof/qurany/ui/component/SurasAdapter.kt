@@ -12,38 +12,46 @@ import com.nedaluof.qurany.databinding.ItemSuraBinding
 
 class SurasAdapter : RecyclerView.Adapter<SurasAdapter.SurasVH>() {
 
-  private val suras = ArrayList<Sura>()
-  lateinit var clickListener: SurasAdapterListener
+    // coming suras data list
+    private val suras = ArrayList<Sura>()
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SurasVH {
-    val binding = ItemSuraBinding.inflate(
-      LayoutInflater.from(parent.context), parent, false
-    )
-    return SurasVH(binding)
-  }
+    //listener must be initialized out the adapter in the client side
+    lateinit var listener: SurasAdapterListener
 
-  override fun onBindViewHolder(holder: SurasVH, position: Int) {
-    val sura = suras[position]
-    with(holder.binding) {
-      tvSuraName.text = sura.suraName
-      tvSuraRewaya.text = sura.rewaya
-      tvSuraNumber.text = sura.id.toString()
-      imgPlaySura.setOnClickListener { clickListener.onClickPlaySura(sura, suras) }
-      imgDownloadSura.setOnClickListener { clickListener.onClickDownloadSura(sura) }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SurasVH {
+        val binding = ItemSuraBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+        )
+        return SurasVH(binding)
     }
-  }
 
-  override fun getItemCount(): Int = suras.size
+    override fun onBindViewHolder(holder: SurasVH, position: Int) {
+        holder.bind(suras[position])
+    }
 
-  interface SurasAdapterListener {
-    fun onClickPlaySura(sura: Sura, surasList: ArrayList<Sura>)
-    fun onClickDownloadSura(sura: Sura)
-  }
+    override fun getItemCount(): Int = suras.size
 
-  fun addData(surasList: List<Sura>) {
-    suras.addAll(surasList)
-    notifyDataSetChanged()
-  }
+    fun addData(surasList: List<Sura>) {
+        suras.addAll(surasList)
+        notifyDataSetChanged()
+    }
 
-  class SurasVH(val binding: ItemSuraBinding) : RecyclerView.ViewHolder(binding.root)
+
+    inner class SurasVH(private val binding: ItemSuraBinding) : RecyclerView.ViewHolder(binding
+            .root) {
+        fun bind(suraData: Sura) {
+            binding.run {
+                sura = suraData
+                callback = listener
+                executePendingBindings()
+            }
+        }
+    }
+
+    interface SurasAdapterListener {
+        fun onClickPlaySura(sura: Sura)
+        fun onClickDownloadSura(sura: Sura)
+    }
+
+
 }

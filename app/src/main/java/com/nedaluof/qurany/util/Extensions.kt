@@ -23,19 +23,19 @@ import java.util.*
  */
 
 fun Activity.toast(@StringRes message: Int) =
-  Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 
 
 fun Context.toastyError(@StringRes msg: Int) =
-  Toasty.error(this, msg).show()
+        Toasty.error(this, msg).show()
 
 
 fun Context.toastySuccess(@StringRes msg: Int) =
-  Toasty.success(this, msg).show()
+        Toasty.success(this, msg).show()
 
 
 fun Context.toastyInfo(@StringRes msg: Int) =
-  Toasty.info(this, msg).show()
+        Toasty.info(this, msg).show()
 
 
 /**

@@ -26,109 +26,111 @@ import timber.log.Timber
 @AndroidEntryPoint
 class MyRecitersFragment : Fragment() {
 
-  private var _binding: FragmentMyRecitersBinding? = null
-  private val binding: FragmentMyRecitersBinding
-    get() = _binding!!
+    private var _binding: FragmentMyRecitersBinding? = null
+    private val binding: FragmentMyRecitersBinding
+        get() = _binding!!
 
-  private lateinit var myRecitersAdapter: MyRecitersAdapter
-  private val viewModel: MyRecitersViewModel by viewModels()
+    private lateinit var myRecitersAdapter: MyRecitersAdapter
+    private val viewModel: MyRecitersViewModel by viewModels()
 
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View {
-    _binding = FragmentMyRecitersBinding.inflate(inflater, container, false)
-    return binding.root
-  }
-
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-    initRecyclerView()
-    observeMyRecitersViewModel()
-  }
-
-  private fun observeMyRecitersViewModel() {
-    with(viewModel) {
-      getMyReciters()
-
-      reciters.observe(viewLifecycleOwner) {
-        if (it.isNotEmpty()) {
-          myRecitersAdapter.addReciters(it as ArrayList<Reciter>)
-
-          if (binding.reciterListLayout.visibility == View.GONE) {
-            binding.reciterListLayout.visibility = View.VISIBLE
-            binding.noRecitersLayout.visibility = View.GONE
-          }
-        } else {
-          binding.reciterListLayout.visibility = View.GONE
-          binding.noRecitersLayout.visibility = View.VISIBLE
-        }
-      }
-
-      loading.observe(viewLifecycleOwner) { show ->
-        if (show) {
-          binding.proReciters.visibility = View.VISIBLE
-        } else {
-          binding.proReciters.visibility = View.GONE
-        }
-      }
-
-      error.observe(viewLifecycleOwner) {
-        Timber.d(it)
-        activity?.toastyError(R.string.alrt_err_occur_msg)
-      }
-
-      resultOfDeleteReciter.observe(viewLifecycleOwner) { success ->
-        if (success) {
-          activity?.toastySuccess(R.string.alrt_delete_success)
-        } else {
-          activity?.toastyError(R.string.alrt_delete_fail)
-        }
-      }
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?,
+    ): View {
+        _binding = FragmentMyRecitersBinding.inflate(inflater, container, false)
+        return binding.root
     }
-  }
 
-  private fun initRecyclerView() {
-    myRecitersAdapter = MyRecitersAdapter(requireContext()).apply {
-      listener = object : MyRecitersAdapter.MyRecitersAdapterListener {
-        override fun onReciterClicked(reciter: Reciter) {
-          startActivity(
-            Intent(activity, SurasActivity::class.java)
-              .putExtra(RECITER_KEY, reciter)
-          )
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initRecyclerView()
+        observeMyRecitersViewModel()
+    }
 
-        override fun onDeleteFromMyReciter(reciter: Reciter) {
-          val msg1 = resources.getString(R.string.alrt_delete_msg1)
-          val msg2 = resources.getString(R.string.alrt_delete_msg2)
-          Alerter.create(activity)
-            .setTitle(R.string.alrt_delete_title)
-            .setText(msg1 + reciter.name + msg2)
-            .addButton(resources.getString(R.string.alrt_delete_btn_ok), R.style.AlertButton) {
-              viewModel.deleteFromMyReciters(reciter)
-              Alerter.hide()
+    private fun observeMyRecitersViewModel() {
+        with(viewModel) {
+            getMyReciters()
+
+            reciters.observe(viewLifecycleOwner) {
+                if (it.isNotEmpty()) {
+                    myRecitersAdapter.addReciters(it as ArrayList<Reciter>)
+
+                    if (binding.reciterListLayout.visibility == View.GONE) {
+                        binding.reciterListLayout.visibility = View.VISIBLE
+                        binding.noRecitersLayout.visibility = View.GONE
+                    }
+                } else {
+                    binding.reciterListLayout.visibility = View.GONE
+                    binding.noRecitersLayout.visibility = View.VISIBLE
+                }
             }
-            .addButton(resources.getString(R.string.alrt_delete_btn_cancel), R.style.AlertButton) { Alerter.hide() }
-            .enableSwipeToDismiss()
-            .show()
+
+            loading.observe(viewLifecycleOwner) { show ->
+                if (show) {
+                    binding.proReciters.visibility = View.VISIBLE
+                } else {
+                    binding.proReciters.visibility = View.GONE
+                }
+            }
+
+            error.observe(viewLifecycleOwner) {
+                Timber.d(it)
+                activity?.toastyError(R.string.alrt_err_occur_msg)
+            }
+
+            resultOfDeleteReciter.observe(viewLifecycleOwner) { success ->
+                if (success) {
+                    activity?.toastySuccess(R.string.alrt_delete_success)
+                } else {
+                    activity?.toastyError(R.string.alrt_delete_fail)
+                }
+            }
         }
-      }
     }
-    binding.recitersRecyclerView.apply {
-      setHasFixedSize(true)
-      adapter = ScaleInAnimationAdapter(myRecitersAdapter).apply {
-        setFirstOnly(false)
-      }
+
+    private fun initRecyclerView() {
+        myRecitersAdapter = MyRecitersAdapter().apply {
+            listener = object : MyRecitersAdapter.MyRecitersAdapterListener {
+                override fun onReciterClicked(reciter: Reciter) {
+                    startActivity(
+                            Intent(activity, SurasActivity::class.java)
+                                    .putExtra(RECITER_KEY, reciter)
+                    )
+                }
+
+                override fun onDeleteFromMyReciter(view: View, reciter: Reciter) {
+                    val msg1 = resources.getString(R.string.alrt_delete_msg1)
+                    val msg2 = resources.getString(R.string.alrt_delete_msg2)
+
+                    Alerter.create(activity)
+                            .setTitle(R.string.alrt_delete_title)
+                            .setText(msg1 + reciter.name + msg2)
+                            .addButton(resources.getString(R.string.alrt_delete_btn_ok), R.style.AlertButton) {
+                                viewModel.deleteFromMyReciters(reciter)
+                                //view.setImageResource(R.drawable.ic_favorite_selected)
+                                Alerter.hide()
+                            }
+                            .addButton(resources.getString(R.string.alrt_delete_btn_cancel), R.style.AlertButton) { Alerter.hide() }
+                            .enableSwipeToDismiss()
+                            .show()
+                }
+            }
+        }
+        binding.recitersRecyclerView.apply {
+            setHasFixedSize(true)
+            adapter = ScaleInAnimationAdapter(myRecitersAdapter).apply {
+                setFirstOnly(false)
+            }
+        }
     }
-  }
 
-  override fun onDestroyView() {
-    _binding = null
-    super.onDestroyView()
-  }
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
 
-  companion object {
-    const val RECITER_KEY = "RECITER_KEY"
-  }
+    companion object {
+        const val RECITER_KEY = "RECITER_KEY"
+    }
 }

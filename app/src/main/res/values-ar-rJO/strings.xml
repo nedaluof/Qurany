@@ -11,6 +11,8 @@
     <string name="no_reciters">لم تقم بإضافة أي قارئ لقائمتك,إذهب الى قائمة القرائ وأضف واحدا لتراه هنا </string>
 
     <string name="sura_count">عدد السور : </string>
+    <string name="sura_number">رقم السورة : </string>
+
 
     <string name="alrt_add_success_title">تم إضافته بنجاح </string>
     <string name="alrt_add_success_msg">تم إضافة القارئ بنجاح لقائمة القرائ المفضلين</string>

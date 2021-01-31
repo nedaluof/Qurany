@@ -116,15 +116,15 @@ class SurasActivity : AppCompatActivity() {
   private fun initRecyclerView() {
     sheetBehavior = BottomSheetBehavior.from<View>(binding.playerBottomSheet.bottomSheet)
     surasAdapter = SurasAdapter().apply {
-      clickListener = object : SurasAdapter.SurasAdapterListener {
-        override fun onClickPlaySura(sura: Sura, surasList: ArrayList<Sura>) {
-          onClickPlay(sura)
-        }
+        listener = object : SurasAdapter.SurasAdapterListener {
+            override fun onClickPlaySura(sura: Sura) {
+                onClickPlay(sura)
+            }
 
-        override fun onClickDownloadSura(sura: Sura) {
-          downloadSura(sura)
+            override fun onClickDownloadSura(sura: Sura) {
+                downloadSura(sura)
+            }
         }
-      }
     }
     binding.surasRecyclerView.apply {
       setHasFixedSize(true)

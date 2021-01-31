@@ -19,6 +19,13 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
+        <activity android:name=".TestActivity">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
         <activity android:name=".ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,12 +33,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".ui.main.MainActivity" />
-
-        <activity android:name=".ui.suras.SurasActivity"
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.suras.SurasActivity"
             android:launchMode="singleInstance"
-            android:parentActivityName=".ui.main.MainActivity"/>
+            android:parentActivityName=".ui.main.MainActivity" />
 
         <service
             android:name=".service.QuranyPlayerService"
@@ -39,21 +47,19 @@
             android:foregroundServiceType="mediaPlayback"
             android:icon="@mipmap/ic_qurany"
             android:roundIcon="@mipmap/ic_qurany" />
-
         <service
             android:name=".service.QuranyDownloadService"
             android:exported="false" />
-
 
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="com.nedaluof.qurany.androidx-startup"
             android:exported="false"
             tools:node="merge">
-
             <meta-data
                 android:name="com.nedaluof.qurany.util.timber.TimberInitializer"
                 android:value="androidx.startup" />
         </provider>
     </application>
+
 </manifest>
