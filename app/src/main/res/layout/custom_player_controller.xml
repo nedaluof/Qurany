@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="#CC000000"
+    android:layoutDirection="ltr"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/dp_40">
+
+        <TextView
+            android:id="@id/exo_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_4"
+            android:layout_marginEnd="@dimen/dp_4"
+            android:textColor="@color/white" />
+
+        <com.google.android.exoplayer2.ui.DefaultTimeBar
+            android:id="@id/exo_progress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:buffered_color="@color/green_200" />
+
+
+        <TextView
+            android:id="@id/exo_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_4"
+            android:layout_marginEnd="@dimen/dp_4"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="4dp">
+
+        <ImageButton
+            android:id="@+id/exo_rew"
+            style="@style/ExoMediaButton.Rewind"
+            android:contentDescription="@string/controller_rew" />
+
+        <ImageButton
+            android:id="@+id/exo_play"
+            style="@style/ExoMediaButton.Play"
+            android:contentDescription="@string/controller_play"
+            android:tint="@color/green_200" />
+
+        <ImageButton
+            android:id="@+id/exo_pause"
+            style="@style/ExoMediaButton.Pause"
+            android:contentDescription="@string/controller_pause" />
+
+        <ImageButton
+            android:id="@+id/exo_ffwd"
+            style="@style/ExoMediaButton.FastForward"
+            android:contentDescription="@string/controller_ffwd" />
+    </LinearLayout>
+</LinearLayout>
