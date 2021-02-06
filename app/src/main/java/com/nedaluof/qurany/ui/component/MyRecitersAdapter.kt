@@ -26,7 +26,7 @@ class MyRecitersAdapter
 
     override fun getItemCount(): Int = recitersData.size
 
-    fun addReciters(reciters: ArrayList<Reciter>) {
+    fun addReciters(reciters: List<Reciter>) {
         recitersData.apply {
             clear()
             addAll(reciters)

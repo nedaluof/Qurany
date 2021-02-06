@@ -55,8 +55,5 @@
         android:layout_marginTop="6dp"
         app:controller_layout_id="@layout/custom_player_controller"
         app:show_timeout="0" />
-    <!--android:background="@color/green_200"
-    android:backgroundTint="@color/green_200"
-    android:backgroundTintMode="add"-->
 
 </LinearLayout>

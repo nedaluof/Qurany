@@ -2,9 +2,7 @@ package com.nedaluof.qurany.ui.reciters
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -12,13 +10,11 @@ import com.nedaluof.qurany.R
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.databinding.FragmentRecitersBinding
 import com.nedaluof.qurany.ui.component.RecitersAdapter
+import com.nedaluof.qurany.ui.component.RecitersAdapter.ReciterAdapterListener
 import com.nedaluof.qurany.ui.suras.SurasActivity
-import com.nedaluof.qurany.util.getLanguage
 import com.nedaluof.qurany.util.toastyError
 import com.nedaluof.qurany.util.toastySuccess
 import dagger.hilt.android.AndroidEntryPoint
-import io.reactivex.disposables.Disposable
-import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 /**
@@ -26,57 +22,40 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
  */
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class RecitersFragment : Fragment() {
+class RecitersFragment : Fragment(R.layout.fragment_reciters) {
+
     private var _binding: FragmentRecitersBinding? = null
     private val binding: FragmentRecitersBinding
         get() = _binding!!
-
-    private var networkDisposable: Disposable? = null
 
     private lateinit var reciterAdapter: RecitersAdapter
 
     private val viewModel: RecitersViewModel by viewModels()
 
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?,
-    ): View {
-        _binding = FragmentRecitersBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        /*networkDisposable = ReactiveNetwork
-                .observeNetworkConnectivity(context)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { available ->
-                            if (available.available()) {*/
-        initComponents()
-        //     } else {
-        binding.reciterListLayout.visibility = View.GONE
-        binding.noInternetLayout.visibility = View.VISIBLE
-        /*       }
-           },
-           { Timber.d("onViewCreated: ${it.message}") }
-   )*/
-
+        _binding = FragmentRecitersBinding.bind(view)
+        //to not re-handle set adapter to recycler view in each reconnection
+        initRecyclerViewAdapter()
+        //to not re-handle set OnQueryTextListener in each reconnection
+        initSearchOfReciters()
+        //Todo need efficient solution
+        viewModel.observeConnectivity(requireActivity())
+        viewModel.connected.observe(viewLifecycleOwner) { available ->
+            if (available) {
+                initComponents()
+            }
+        }
     }
 
     private fun initComponents() {
-        if (binding.reciterListLayout.visibility == View.GONE) {
-            binding.reciterListLayout.visibility = View.VISIBLE
-        }
+        observeViewModel()
+        initBindingWithValues()
+    }
 
-        if (binding.noInternetLayout.visibility == View.VISIBLE) {
-            binding.noInternetLayout.visibility = View.GONE
-        }
-
-        reciterAdapter = RecitersAdapter().apply {
-            listener = object : RecitersAdapter.ReciterAdapterListener {
+    private fun initRecyclerViewAdapter() {
+        binding.recitersRecyclerView.adapter = RecitersAdapter().apply {
+            listener = object : ReciterAdapterListener {
                 override fun onReciterClicked(reciter: Reciter) {
                     startActivity(
                             Intent(context, SurasActivity::class.java)
@@ -87,38 +66,12 @@ class RecitersFragment : Fragment() {
                 override fun onAddToFavoriteClicked(view: View, reciter: Reciter) {
                     view.visibility = View.GONE
                     viewModel.addReciterToMyReciters(reciter)
-
                 }
             }
         }
-        binding.recitersRecyclerView.adapter = ScaleInAnimationAdapter(reciterAdapter).apply {
-            setFirstOnly(false)
-        }
-        with(viewModel) {
-            getReciters(getLanguage())
-            reciters.observe(viewLifecycleOwner) {
-                reciterAdapter.addReciters(it as ArrayList<Reciter>)
-            }
+    }
 
-            error.observe(viewLifecycleOwner) { (_, _) ->
-                activity?.toastyError(R.string.alrt_err_occur_msg)
-            }
-
-            loading.observe(viewLifecycleOwner) { show ->
-                if (show) {
-                    binding.proReciters.visibility = View.VISIBLE
-                } else {
-                    binding.proReciters.visibility = View.GONE
-                }
-            }
-
-            resultOfAddReciter.observe(viewLifecycleOwner) {
-                if (it) {
-                    activity?.toastySuccess(R.string.alrt_add_success_msg)
-                }
-            }
-        }
-
+    private fun initSearchOfReciters() {
         binding.recitersSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 reciterAdapter.filter.filter(query)
@@ -132,16 +85,36 @@ class RecitersFragment : Fragment() {
         })
     }
 
+    private fun observeViewModel() {
+        with(viewModel) {
+            getReciters()
+            //Todo show text view rather than toast
+            error.observe(viewLifecycleOwner) { (_, _) ->
+                activity?.toastyError(R.string.alrt_err_occur_msg)
+            }
+            resultOfAddReciter.observe(viewLifecycleOwner) {
+                if (it) {
+                    activity?.toastySuccess(R.string.alrt_add_success_msg)
+                }
+            }
+        }
+    }
+
+    private fun initBindingWithValues() {
+        binding.run {
+            viewmodel = viewModel
+            lifecycleOwner = viewLifecycleOwner
+            executePendingBindings()
+        }
+    }
+
     override fun onDestroyView() {
         _binding = null
-        if (networkDisposable != null && !networkDisposable?.isDisposed!!) {
-            networkDisposable?.dispose()
-        }
         super.onDestroyView()
     }
 
     companion object {
-        private const val TAG = "RecitersFragmentNew"
         const val RECITER_KEY = "RECITER_KEY"
     }
+
 }

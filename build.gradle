@@ -3,10 +3,10 @@
  */
 buildscript {
     ext {
-        kotlin_version = '1.4.21'
+        kotlin_version = '1.4.30'
         lifecycle_version = '2.2.0'
-        hilt_version = '2.29.1-alpha'
-        ext.hilt_vm = "1.0.0-alpha02"
+        hilt_version = '2.30-alpha'
+        hilt_vm = "1.0.0-alpha03"
         room_version = "2.2.6"
         startup_version = "1.0.0"
         timber_version = "4.7.1"
@@ -18,7 +18,7 @@ buildscript {
 
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath 'com.android.tools.build:gradle:4.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
         classpath "com.diffplug.spotless:spotless-plugin-gradle:5.6.1"

@@ -248,7 +248,8 @@ class SurasActivity : AppCompatActivity() {
   override fun onDestroy() {
     super.onDestroy()
     if (bound) {
-      stopService()
+        //Todo: if user close the Activity need efficient Nav System
+        //stopService()
     }
   }
 

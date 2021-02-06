@@ -2,9 +2,7 @@ package com.nedaluof.qurany.ui.myreciters
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.nedaluof.qurany.R
@@ -16,7 +14,6 @@ import com.nedaluof.qurany.util.toastyError
 import com.nedaluof.qurany.util.toastySuccess
 import com.tapadoo.alerter.Alerter
 import dagger.hilt.android.AndroidEntryPoint
-import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
 import timber.log.Timber
 
 /**
@@ -24,73 +21,29 @@ import timber.log.Timber
  * Created by nedaluof on 12/12/2020. {Kotlin}
  */
 @AndroidEntryPoint
-class MyRecitersFragment : Fragment() {
+class MyRecitersFragment : Fragment(R.layout.fragment_my_reciters) {
 
     private var _binding: FragmentMyRecitersBinding? = null
     private val binding: FragmentMyRecitersBinding
         get() = _binding!!
 
-    private lateinit var myRecitersAdapter: MyRecitersAdapter
     private val viewModel: MyRecitersViewModel by viewModels()
-
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?,
-    ): View {
-        _binding = FragmentMyRecitersBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentMyRecitersBinding.bind(view)
+        initComponents()
+    }
+
+    private fun initComponents() {
         initRecyclerView()
         observeMyRecitersViewModel()
+        bindValues()
     }
 
-    private fun observeMyRecitersViewModel() {
-        with(viewModel) {
-            getMyReciters()
-
-            reciters.observe(viewLifecycleOwner) {
-                if (it.isNotEmpty()) {
-                    myRecitersAdapter.addReciters(it as ArrayList<Reciter>)
-
-                    if (binding.reciterListLayout.visibility == View.GONE) {
-                        binding.reciterListLayout.visibility = View.VISIBLE
-                        binding.noRecitersLayout.visibility = View.GONE
-                    }
-                } else {
-                    binding.reciterListLayout.visibility = View.GONE
-                    binding.noRecitersLayout.visibility = View.VISIBLE
-                }
-            }
-
-            loading.observe(viewLifecycleOwner) { show ->
-                if (show) {
-                    binding.proReciters.visibility = View.VISIBLE
-                } else {
-                    binding.proReciters.visibility = View.GONE
-                }
-            }
-
-            error.observe(viewLifecycleOwner) {
-                Timber.d(it)
-                activity?.toastyError(R.string.alrt_err_occur_msg)
-            }
-
-            resultOfDeleteReciter.observe(viewLifecycleOwner) { success ->
-                if (success) {
-                    activity?.toastySuccess(R.string.alrt_delete_success)
-                } else {
-                    activity?.toastyError(R.string.alrt_delete_fail)
-                }
-            }
-        }
-    }
 
     private fun initRecyclerView() {
-        myRecitersAdapter = MyRecitersAdapter().apply {
+        binding.recitersRecyclerView.adapter = MyRecitersAdapter().apply {
             listener = object : MyRecitersAdapter.MyRecitersAdapterListener {
                 override fun onReciterClicked(reciter: Reciter) {
                     startActivity(
@@ -117,11 +70,39 @@ class MyRecitersFragment : Fragment() {
                 }
             }
         }
-        binding.recitersRecyclerView.apply {
-            setHasFixedSize(true)
-            adapter = ScaleInAnimationAdapter(myRecitersAdapter).apply {
-                setFirstOnly(false)
+
+        //Todo:need solution
+        /* binding.recitersRecyclerView.apply {
+             setHasFixedSize(true)
+             adapter = ScaleInAnimationAdapter(myRecitersAdapter).apply {
+                 setFirstOnly(false)
+             }
+         }*/
+    }
+
+    private fun observeMyRecitersViewModel() {
+        with(viewModel) {
+            getMyReciters()
+            error.observe(viewLifecycleOwner) {
+                Timber.d(it)
+                activity?.toastyError(R.string.alrt_err_occur_msg)
             }
+
+            resultOfDeleteReciter.observe(viewLifecycleOwner) { success ->
+                if (success) {
+                    activity?.toastySuccess(R.string.alrt_delete_success)
+                } else {
+                    activity?.toastyError(R.string.alrt_delete_fail)
+                }
+            }
+        }
+    }
+
+    private fun bindValues() {
+        binding.run {
+            viewmodel = viewModel
+            lifecycleOwner = viewLifecycleOwner
+            executePendingBindings()
         }
     }
 

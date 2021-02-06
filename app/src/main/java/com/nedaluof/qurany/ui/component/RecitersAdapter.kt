@@ -15,7 +15,7 @@ import com.nedaluof.qurany.util.getLanguage
 /**
  * Created by nedaluof on 12/11/2020.
  */
-class RecitersAdapter : RecyclerView.Adapter<RecitersAdapter.RecitersVH>(),
+class RecitersAdapter(/*var listener: ReciterAdapterListener*/) : RecyclerView.Adapter<RecitersAdapter.RecitersVH>(),
         Filterable {
 
     lateinit var listener: ReciterAdapterListener
@@ -34,7 +34,7 @@ class RecitersAdapter : RecyclerView.Adapter<RecitersAdapter.RecitersVH>(),
     override fun getItemCount(): Int = recitersData.size
 
 
-    fun addReciters(reciters: ArrayList<Reciter>) {
+    fun addReciters(reciters: List<Reciter>) {
         recitersData.apply {
             clear()
             addAll(reciters)

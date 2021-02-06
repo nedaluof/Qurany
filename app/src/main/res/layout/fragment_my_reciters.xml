@@ -1,80 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/grey"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white">
+    <data>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/dp_4"
-            android:layout_marginStart="20dp"
-            android:text="@string/my_reciters_appbar_title"
-            android:textColor="@color/green_200"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            app:layout_scrollFlags="scroll|enterAlways|snap" />
-    </com.google.android.material.appbar.AppBarLayout>
+        <import type="android.view.View" />
 
+        <variable
+            name="viewmodel"
+            type="com.nedaluof.qurany.ui.myreciters.MyRecitersViewModel" />
+    </data>
 
-    <RelativeLayout
-        android:id="@+id/reciter_list_layout"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/dp_4"
-        android:visibility="gone"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:background="@color/grey"
+        android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/reciters_recyclerView"
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/dp_4"
+                android:layout_marginStart="20dp"
+                android:text="@string/my_reciters_appbar_title"
+                android:textColor="@color/green_200"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_scrollFlags="scroll|enterAlways|snap" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/reciter_list_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never"
-            android:scrollbars="none"
+            android:layout_marginBottom="@dimen/dp_4"
             android:visibility="visible"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_reciter" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ProgressBar
-            android:id="@+id/pro_reciters"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/reciters_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                android:scrollbars="none"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:myReciters="@{viewmodel.reciters}"
+                tools:listitem="@layout/item_reciter" />
+
+            <ProgressBar
+                android:id="@+id/pro_reciters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="@{viewmodel.loading ? View.VISIBLE : View.GONE}" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/no_reciters_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="gone" />
+            android:layout_gravity="center"
+            android:layout_marginTop="230dp"
+            android:orientation="vertical"
+            android:visibility="@{viewmodel.noReciters? View.VISIBLE : View.GONE}"
+            tools:ignore="UseCompoundDrawables">
 
-    </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@android:color/white"
+                android:padding="15dp"
+                android:text="@string/no_reciters"
+                android:textColor="@color/green_200"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/no_reciters_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="230dp"
-        android:orientation="vertical"
-        android:visibility="gone"
-        tools:ignore="UseCompoundDrawables">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:background="@android:color/white"
-            android:padding="15dp"
-            android:text="@string/no_reciters"
-            android:textColor="@color/green_200"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

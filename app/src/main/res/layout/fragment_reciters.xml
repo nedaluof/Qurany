@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
-            name="viewModel"
+            name="viewmodel"
             type="com.nedaluof.qurany.ui.reciters.RecitersViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/grey">
@@ -59,6 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/dp_4"
+            android:visibility="@{viewmodel.connected ? View.VISIBLE : View.GONE}"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -68,6 +71,8 @@
                 android:layoutAnimation="@anim/recyclerview_animation"
                 android:overScrollMode="never"
                 android:scrollbars="none"
+                android:visibility="visible"
+                app:reciters="@{viewmodel.reciters}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_reciter" />
 
@@ -76,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:visibility="gone" />
+                android:visibility="@{viewmodel.loading ? View.VISIBLE : View.GONE}" />
         </RelativeLayout>
 
         <LinearLayout
@@ -86,7 +91,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="230dp"
             android:orientation="vertical"
-            android:visibility="gone"
+            android:visibility="@{viewmodel.connected ? View.GONE : View.VISIBLE}"
             tools:ignore="UseCompoundDrawables">
 
             <ImageView
