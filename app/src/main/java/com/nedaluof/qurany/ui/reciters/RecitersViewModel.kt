@@ -75,7 +75,7 @@ class RecitersViewModel @ViewModelInject constructor(
         }
     }
 
-    val connected = MutableLiveData<Boolean>(true)
+    val connected = MutableLiveData(true)
     fun observeConnectivity(context: Context) {
         viewModelScope.launch {
             context.connectivityFlow().collect { connectionState ->

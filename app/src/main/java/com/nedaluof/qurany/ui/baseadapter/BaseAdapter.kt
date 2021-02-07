@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * Created by nedaluof on 1/26/2021.
  */
-open abstract class BaseAdapter<T, VH : BaseViewHolder> : RecyclerView.Adapter<VH>() {
+abstract class BaseAdapter<T, VH : BaseViewHolder> : RecyclerView.Adapter<VH>() {
 
     private val itemsList = ArrayList<T>()
 
@@ -23,7 +23,7 @@ open abstract class BaseAdapter<T, VH : BaseViewHolder> : RecyclerView.Adapter<V
         if (itemsList.size > -1) {
             if (listener != null) {
                 onBindBaseViewHolder(holder, position)
-                holder.itemView.setOnClickListener { listener?.OnItemClick(itemsList[position]) }
+                holder.itemView.setOnClickListener { listener?.onItemClick(itemsList[position]) }
             } else {
                 throw IllegalStateException("You must set the listener")
             }
@@ -54,5 +54,5 @@ open class BaseViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
 
 fun interface BaseOnClickListener<T> {
-    fun OnItemClick(t: T)
+    fun onItemClick(t: T)
 }

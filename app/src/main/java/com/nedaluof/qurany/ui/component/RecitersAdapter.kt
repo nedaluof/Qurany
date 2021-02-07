@@ -15,8 +15,7 @@ import com.nedaluof.qurany.util.getLanguage
 /**
  * Created by nedaluof on 12/11/2020.
  */
-class RecitersAdapter(/*var listener: ReciterAdapterListener*/) : RecyclerView.Adapter<RecitersAdapter.RecitersVH>(),
-        Filterable {
+class RecitersAdapter : RecyclerView.Adapter<RecitersAdapter.RecitersVH>(), Filterable {
 
     lateinit var listener: ReciterAdapterListener
     private val recitersData = ArrayList<Reciter>()
@@ -91,7 +90,7 @@ class RecitersAdapter(/*var listener: ReciterAdapterListener*/) : RecyclerView.A
             binding.run {
                 reciter = comingReciter
                 callback = listener
-                binding.executePendingBindings()
+                executePendingBindings()
             }
         }
     }

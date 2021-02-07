@@ -53,5 +53,4 @@ class SurasAdapter : RecyclerView.Adapter<SurasAdapter.SurasVH>() {
         fun onClickDownloadSura(sura: Sura)
     }
 
-
 }

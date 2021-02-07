@@ -11,11 +11,13 @@ import com.nedaluof.qurany.ui.myreciters.MyRecitersFragment
 import com.nedaluof.qurany.ui.reciters.RecitersFragment
 import com.nedaluof.qurany.util.toast
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 /**
  * Created by nedaluof on 6/2020. {Java}
  * Created by nedaluof on 12/13/2020. {Kotlin}
  */
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 

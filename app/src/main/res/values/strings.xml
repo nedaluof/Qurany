@@ -1,7 +1,6 @@
 <!--
   ~ Created By nedaluof  2020.
   -->
-
 <resources>
     <string name="app_name">Qurany</string>
     <string name="notification_channel_des" translatable="false">This is Qurany App Notification Channel</string>
@@ -53,6 +52,6 @@
     <string name="app_version">version : </string>
 
     <string name="exit_app_msg">Please press back again to exit</string>
-    <string name="motionlayout">MotionLayout</string>
+    <string name="motionlayout" translatable="false">MotionLayout</string>
 
 </resources>

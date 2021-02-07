@@ -45,16 +45,10 @@ fun getLanguage() =
         if (Locale.getDefault().displayLanguage == "العربية") "_arabic" else "_english"
 
 fun Context.checkIfSuraExist(subPath: String) =
-        File(
-                this.getExternalFilesDir(null).toString() +
-                        subPath
-        ).exists()
+        File(this.getExternalFilesDir(null).toString() + subPath).exists()
 
 fun Context.getSuraPath(subPath: String): String =
-        File(
-                this.getExternalFilesDir(null).toString() +
-                        subPath
-        ).absolutePath
+        File(this.getExternalFilesDir(null).toString() + subPath).absolutePath
 
 fun Context.getLogoAsBitmap(): Bitmap {
     val width = 200

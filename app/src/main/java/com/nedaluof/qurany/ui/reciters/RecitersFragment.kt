@@ -28,7 +28,7 @@ class RecitersFragment : Fragment(R.layout.fragment_reciters) {
     private val binding: FragmentRecitersBinding
         get() = _binding!!
 
-    private lateinit var reciterAdapter: RecitersAdapter
+    private val reciterAdapter = RecitersAdapter()
 
     private val viewModel: RecitersViewModel by viewModels()
 
@@ -54,7 +54,7 @@ class RecitersFragment : Fragment(R.layout.fragment_reciters) {
     }
 
     private fun initRecyclerViewAdapter() {
-        binding.recitersRecyclerView.adapter = RecitersAdapter().apply {
+        binding.recitersRecyclerView.adapter = reciterAdapter.apply {
             listener = object : ReciterAdapterListener {
                 override fun onReciterClicked(reciter: Reciter) {
                     startActivity(
