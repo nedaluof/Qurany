@@ -9,8 +9,8 @@ import androidx.fragment.app.viewModels
 import com.nedaluof.qurany.R
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.databinding.FragmentRecitersBinding
-import com.nedaluof.qurany.ui.component.RecitersAdapter
-import com.nedaluof.qurany.ui.component.RecitersAdapter.ReciterAdapterListener
+import com.nedaluof.qurany.ui.adapters.RecitersAdapter
+import com.nedaluof.qurany.ui.adapters.RecitersAdapter.ReciterAdapterListener
 import com.nedaluof.qurany.ui.suras.SurasActivity
 import com.nedaluof.qurany.util.toastyError
 import com.nedaluof.qurany.util.toastySuccess
@@ -69,6 +69,7 @@ class RecitersFragment : Fragment(R.layout.fragment_reciters) {
                 }
             }
         }
+
     }
 
     private fun initSearchOfReciters() {

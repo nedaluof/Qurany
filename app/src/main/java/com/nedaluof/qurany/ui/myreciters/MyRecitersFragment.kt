@@ -8,7 +8,7 @@ import androidx.fragment.app.viewModels
 import com.nedaluof.qurany.R
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.databinding.FragmentMyRecitersBinding
-import com.nedaluof.qurany.ui.component.MyRecitersAdapter
+import com.nedaluof.qurany.ui.adapters.MyRecitersAdapter
 import com.nedaluof.qurany.ui.suras.SurasActivity
 import com.nedaluof.qurany.util.toastyError
 import com.nedaluof.qurany.util.toastySuccess

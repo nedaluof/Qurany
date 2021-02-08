@@ -22,7 +22,7 @@ import com.nedaluof.qurany.data.model.Sura
 import com.nedaluof.qurany.databinding.ActivitySurasBinding
 import com.nedaluof.qurany.service.QuranyDownloadService
 import com.nedaluof.qurany.service.QuranyPlayerService
-import com.nedaluof.qurany.ui.component.SurasAdapter
+import com.nedaluof.qurany.ui.adapters.SurasAdapter
 import com.nedaluof.qurany.util.isNetworkOk
 import com.nedaluof.qurany.util.toastyError
 import dagger.hilt.android.AndroidEntryPoint

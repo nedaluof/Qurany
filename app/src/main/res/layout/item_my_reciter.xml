@@ -14,7 +14,7 @@
 
         <variable
             name="callback"
-            type="com.nedaluof.qurany.ui.component.MyRecitersAdapter.MyRecitersAdapterListener" />
+            type="com.nedaluof.qurany.ui.adapters.MyRecitersAdapter.MyRecitersAdapterListener" />
     </data>
 
     <androidx.cardview.widget.CardView

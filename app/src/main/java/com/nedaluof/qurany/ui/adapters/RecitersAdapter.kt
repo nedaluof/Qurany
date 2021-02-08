@@ -1,4 +1,4 @@
-package com.nedaluof.qurany.ui.component
+package com.nedaluof.qurany.ui.adapters
 
 import android.os.Build
 import android.view.LayoutInflater

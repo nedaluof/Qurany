@@ -1,13 +1,10 @@
 package com.nedaluof.qurany.ui.baseadapter
 
-import android.view.View
-import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
-
 /**
  * Created by nedaluof on 1/26/2021.
  */
-abstract class BaseAdapter<T, VH : BaseViewHolder> : RecyclerView.Adapter<VH>() {
+
+/*abstract class BaseAdapter<T, VH : BaseViewHolder> : RecyclerView.Adapter<VH>() {
 
     private val itemsList = ArrayList<T>()
 
@@ -55,4 +52,4 @@ open class BaseViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
 fun interface BaseOnClickListener<T> {
     fun onItemClick(t: T)
-}
+}*/

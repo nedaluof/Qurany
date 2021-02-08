@@ -4,9 +4,9 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.data.model.Sura
-import com.nedaluof.qurany.ui.component.MyRecitersAdapter
-import com.nedaluof.qurany.ui.component.RecitersAdapter
-import com.nedaluof.qurany.ui.component.SurasAdapter
+import com.nedaluof.qurany.ui.adapters.MyRecitersAdapter
+import com.nedaluof.qurany.ui.adapters.RecitersAdapter
+import com.nedaluof.qurany.ui.adapters.SurasAdapter
 
 class QuranyBindings {
 

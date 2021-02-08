@@ -1,14 +1,8 @@
 package com.nedaluof.qurany.ui.baseadapter
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import com.nedaluof.qurany.data.model.Reciter
-import com.nedaluof.qurany.databinding.ItemReciterBinding
-import java.util.*
-
 /**
  * Created by nedaluof on 1/26/2021.
- */
+ *//*
 class TestAdapter : BaseAdapter<Reciter, TestAdapter.TestVH>() {
 
 
@@ -26,4 +20,4 @@ class TestAdapter : BaseAdapter<Reciter, TestAdapter.TestVH>() {
             tvReciterName.text = reciter.name
         }
     }
-}
+}*/
