@@ -9,6 +9,7 @@ import com.nedaluof.qurany.data.model.Sura
 import com.nedaluof.qurany.data.repos.SurasRepository
 import com.nedaluof.qurany.util.SuraUtil
 import com.nedaluof.qurany.util.getLanguage
+import timber.log.Timber
 
 /**
  * Created by nedaluof on 12/16/2020.
@@ -17,31 +18,25 @@ class SurasViewModel @ViewModelInject constructor(
         private val repository: SurasRepository,
 ) : ViewModel() {
     // Responsibility: provide reciter name
-    private val _reciterName = MutableLiveData<String>()
-    val reciterName: LiveData<String>
-        get() = _reciterName
+    val reciterName = MutableLiveData("")
 
     // Responsibility: provide reciter Suras to the recycler view
-    private val _reciterSuras = MutableLiveData<List<Sura>>()
-    val reciterSuras: LiveData<List<Sura>>
-        get() = _reciterSuras
+    val reciterSuras = MutableLiveData<List<Sura>>(emptyList())
 
     // Responsibility: provide reciter Suras to the recycler view
-    private val _loading = MutableLiveData(true)
-    val loading: LiveData<Boolean>
-        get() = _loading
+    val loading = MutableLiveData(true)
 
     fun loadSurasToUI(reciterData: Reciter) {
-        _reciterName.value = reciterData.name
-        _reciterSuras.value = getMappedReciterSuras(reciterData)
-        _loading.value = false
+        Timber.d("loadSurasToUI: ")
+        reciterName.value = (reciterData.name)
+        reciterSuras.value = getMappedReciterSuras(reciterData)
+        loading.value = false
     }
 
     /**
      * Todo issue:
      *  only show language as user device and handle operations of save and play
      *  in english language
-     *
      *  */
     private fun getMappedReciterSuras(reciterData: Reciter): List<Sura> {
         val currentReciterSuras = listOf(

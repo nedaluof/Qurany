@@ -41,7 +41,7 @@ class TestActivity : AppCompatActivity() {
             list.add(
                     Reciter(
                             count = "$it ${UUID.randomUUID()}",
-                            name = "nkohjjbkbkb $it"
+                            name = "TestTestTest $it"
                     )
             )
         }

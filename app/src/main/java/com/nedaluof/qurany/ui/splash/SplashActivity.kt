@@ -1,4 +1,4 @@
-package com.nedaluof.qurany.ui
+package com.nedaluof.qurany.ui.splash
 
 import android.content.Intent
 import android.os.Bundle

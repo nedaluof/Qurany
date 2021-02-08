@@ -14,10 +14,8 @@
     <string name="sura_number">رقم السورة : </string>
 
 
-    <string name="alrt_add_success_title">تم إضافته بنجاح </string>
     <string name="alrt_add_success_msg">تم إضافة القارئ بنجاح لقائمة القرائ المفضلين</string>
 
-    <string name="alrt_err_occur_title">حدث خطأ</string>
     <string name="alrt_err_occur_msg">حدث خطأ ما !</string>
 
     <string name="alrt_delete_title">حذف القارئ من قائمة قرائي</string>

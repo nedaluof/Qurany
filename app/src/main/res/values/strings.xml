@@ -20,10 +20,8 @@
     <string name="sura_count">Sura Count : </string>
     <string name="sura_number">Sura Count : </string>
 
-    <string name="alrt_add_success_title">Added Successfully</string>
     <string name="alrt_add_success_msg">The Reciter Added Successfully to your Reciters List</string>
 
-    <string name="alrt_err_occur_title">Error Occur</string>
     <string name="alrt_err_occur_msg">Something went Wrong !</string>
 
     <string name="alrt_delete_title">Delete Reciter </string>
@@ -52,6 +50,5 @@
     <string name="app_version">version : </string>
 
     <string name="exit_app_msg">Please press back again to exit</string>
-    <string name="motionlayout" translatable="false">MotionLayout</string>
 
 </resources>

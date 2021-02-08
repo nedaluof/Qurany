@@ -1,57 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.suras.SurasActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/suras_bar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white">
+    <data>
 
-        <TextView
-            android:id="@+id/reciter_name_title_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/dp_4"
-            android:text="@string/reciters_suras_bar_title"
-            android:textColor="@color/green_200"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            app:layout_scrollFlags="scroll|enterAlways|snap" />
-    </com.google.android.material.appbar.AppBarLayout>
+        <import type="android.view.View" />
 
+        <variable
+            name="viewmodel"
+            type="com.nedaluof.qurany.ui.suras.SurasViewModel" />
+    </data>
 
-    <RelativeLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        tools:context=".ui.suras.SurasActivity">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/suras_recyclerView"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/suras_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white">
+
+            <TextView
+                android:id="@+id/reciter_name_title_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/dp_4"
+                android:text="@{viewmodel.reciterName}"
+                android:textColor="@color/green_200"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                tools:text="@string/reciters_suras_bar_title" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never"
-            android:paddingBottom="30dp"
-            android:scrollbars="none"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_sura" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <ProgressBar
-            android:id="@+id/progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="gone" />
-    </RelativeLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/suras_recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                android:paddingBottom="30dp"
+                android:scrollbars="none"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:suras="@{viewmodel.reciterSuras}"
+                tools:listitem="@layout/item_sura" />
 
-    <include
-        android:id="@+id/player_bottom_sheet"
-        layout="@layout/player_bottom_sheet_layout"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="@{viewmodel.loading? View.VISIBLE : View.GONE}" />
+        </RelativeLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <include
+            android:id="@+id/player_bottom_sheet"
+            layout="@layout/player_bottom_sheet_layout"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>
