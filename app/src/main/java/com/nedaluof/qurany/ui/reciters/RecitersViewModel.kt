@@ -19,7 +19,6 @@ import kotlinx.coroutines.launch
 /**
  * Created by nedaluof on 12/11/2020.
  */
-@ExperimentalCoroutinesApi
 class RecitersViewModel @ViewModelInject constructor(
         private val repository: RecitersRepository,
 ) : ViewModel() {
@@ -51,12 +50,10 @@ class RecitersViewModel @ViewModelInject constructor(
 
     //Todo: Future use
     private val _loadingAdd = MutableLiveData<Boolean>()
-    val loadingAdd: LiveData<Boolean>
-        get() = _loadingAdd
+    val loadingAdd: LiveData<Boolean> = _loadingAdd
 
     private val _resultAdd = MutableLiveData<Boolean>()
-    val resultOfAddReciter: LiveData<Boolean>
-        get() = _resultAdd
+    val resultOfAddReciter: LiveData<Boolean> = _resultAdd
 
     fun addReciterToMyReciters(reciter: Reciter) {
         _loadingAdd.value = true
@@ -76,6 +73,8 @@ class RecitersViewModel @ViewModelInject constructor(
     }
 
     val connected = MutableLiveData(true)
+
+    @ExperimentalCoroutinesApi
     fun observeConnectivity(context: Context) {
         viewModelScope.launch {
             context.connectivityFlow().collect { connectionState ->

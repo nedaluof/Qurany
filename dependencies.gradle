@@ -14,7 +14,7 @@ ext.versions = [
 
 
         //jet-pack
-        lifecycle      : '2.2.0',
+        lifecycle      : '2.3.0',
         hilt           : '2.30-alpha',
         hilt_vm        : '1.0.0-alpha03',
         room           : '2.2.6',

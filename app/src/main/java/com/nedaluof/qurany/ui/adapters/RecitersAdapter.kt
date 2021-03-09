@@ -4,10 +4,12 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
+import com.nedaluof.qurany.R
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.databinding.ItemReciterBinding
 import com.nedaluof.qurany.util.getLanguage
@@ -19,18 +21,22 @@ class RecitersAdapter : RecyclerView.Adapter<RecitersAdapter.RecitersVH>(), Filt
 
     lateinit var listener: ReciterAdapterListener
     private val recitersData = ArrayList<Reciter>()
-    private val filterRecitersData = ArrayList<Reciter>()
+    private val filteredList = ArrayList<Reciter>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecitersVH {
-        val binding = ItemReciterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return RecitersVH(binding)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = RecitersVH(
+            ItemReciterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    )
 
     override fun onBindViewHolder(holder: RecitersVH, position: Int) {
-        holder.bind(recitersData[position])
+        holder.apply {
+            itemView.startAnimation(AnimationUtils.loadAnimation(
+                    itemView.context, R.anim.item_scale_animation
+            ))
+            onBind(recitersData[position])
+        }
     }
 
-    override fun getItemCount(): Int = recitersData.size
+    override fun getItemCount() = recitersData.size
 
 
     fun addReciters(reciters: List<Reciter>) {
@@ -38,13 +44,11 @@ class RecitersAdapter : RecyclerView.Adapter<RecitersAdapter.RecitersVH>(), Filt
             clear()
             addAll(reciters)
         }
-
-        notifyDataSetChanged()
-
-        filterRecitersData.apply {
+        filteredList.apply {
             clear()
             addAll(reciters)
         }
+        notifyDataSetChanged()
     }
 
     override fun getFilter(): Filter = searchFilter
@@ -54,15 +58,15 @@ class RecitersAdapter : RecyclerView.Adapter<RecitersAdapter.RecitersVH>(), Filt
         override fun performFiltering(constraint: CharSequence?): FilterResults {
             val filterResults = FilterResults()
             filterResults.values = if (constraint == null || constraint.isEmpty()) {
-                filterRecitersData
+                filteredList
             } else {
                 if (getLanguage() == "_arabic") {
                     val pattern = constraint.toString().trim { it <= ' ' }
-                    filterRecitersData.filter { reciter ->
+                    filteredList.filter { reciter ->
                         reciter.name?.contains(pattern)!!
                     }
                 } else {
-                    filterRecitersData.filter { reciter ->
+                    filteredList.filter { reciter ->
                         reciter.name?.firstName()?.contains(constraint.toString().trim { it <= ' ' })!! ||
                                 reciter.name?.secondName()?.contains(constraint.toString())!!
                     }
@@ -84,9 +88,10 @@ class RecitersAdapter : RecyclerView.Adapter<RecitersAdapter.RecitersVH>(), Filt
     fun String.firstName(): String = this.substring(0, this.indexOf(' '))
     fun String.secondName(): String = this.substring(this.indexOf(' ') + 1)
 
-    inner class RecitersVH(private val binding: ItemReciterBinding) : RecyclerView.ViewHolder(binding
-            .root) {
-        fun bind(comingReciter: Reciter) {
+    inner class RecitersVH(
+            private val binding: ItemReciterBinding,
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun onBind(comingReciter: Reciter) {
             binding.run {
                 reciter = comingReciter
                 callback = listener
@@ -94,7 +99,6 @@ class RecitersAdapter : RecyclerView.Adapter<RecitersAdapter.RecitersVH>(), Filt
             }
         }
     }
-
 
     interface ReciterAdapterListener {
         fun onReciterClicked(reciter: Reciter)

@@ -27,10 +27,9 @@ class RecitersFragment : Fragment(R.layout.fragment_reciters) {
     private var _binding: FragmentRecitersBinding? = null
     private val binding: FragmentRecitersBinding
         get() = _binding!!
-
     private val reciterAdapter = RecitersAdapter()
 
-    private val viewModel: RecitersViewModel by viewModels()
+    private val recitersVM by viewModels<RecitersViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,8 +39,8 @@ class RecitersFragment : Fragment(R.layout.fragment_reciters) {
         //to not re-handle set OnQueryTextListener in each reconnection
         initSearchOfReciters()
         //Todo need efficient solution
-        viewModel.observeConnectivity(requireActivity())
-        viewModel.connected.observe(viewLifecycleOwner) { available ->
+        recitersVM.observeConnectivity(requireActivity())
+        recitersVM.connected.observe(viewLifecycleOwner) { available ->
             if (available) {
                 initComponents()
             }
@@ -65,7 +64,7 @@ class RecitersFragment : Fragment(R.layout.fragment_reciters) {
 
                 override fun onAddToFavoriteClicked(view: View, reciter: Reciter) {
                     view.visibility = View.GONE
-                    viewModel.addReciterToMyReciters(reciter)
+                    recitersVM.addReciterToMyReciters(reciter)
                 }
             }
         }
@@ -87,7 +86,7 @@ class RecitersFragment : Fragment(R.layout.fragment_reciters) {
     }
 
     private fun observeViewModel() {
-        with(viewModel) {
+        with(recitersVM) {
             getReciters()
             //Todo show text view rather than toast
             error.observe(viewLifecycleOwner) { (_, _) ->
@@ -103,7 +102,7 @@ class RecitersFragment : Fragment(R.layout.fragment_reciters) {
 
     private fun initBindingWithValues() {
         binding.run {
-            viewmodel = viewModel
+            viewmodel = recitersVM
             lifecycleOwner = viewLifecycleOwner
             executePendingBindings()
         }

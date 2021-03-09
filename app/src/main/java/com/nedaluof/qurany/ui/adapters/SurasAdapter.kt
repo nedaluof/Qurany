@@ -2,7 +2,9 @@ package com.nedaluof.qurany.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
+import com.nedaluof.qurany.R
 import com.nedaluof.qurany.data.model.Sura
 import com.nedaluof.qurany.databinding.ItemSuraBinding
 
@@ -26,7 +28,12 @@ class SurasAdapter : RecyclerView.Adapter<SurasAdapter.SurasVH>() {
     }
 
     override fun onBindViewHolder(holder: SurasVH, position: Int) {
-        holder.bind(suras[position])
+        holder.apply {
+            itemView.startAnimation(AnimationUtils.loadAnimation(
+                    itemView.context, R.anim.item_scale_animation
+            ))
+            bind(suras[position])
+        }
     }
 
     override fun getItemCount(): Int = suras.size
@@ -37,8 +44,9 @@ class SurasAdapter : RecyclerView.Adapter<SurasAdapter.SurasVH>() {
     }
 
 
-    inner class SurasVH(private val binding: ItemSuraBinding) : RecyclerView.ViewHolder(binding
-            .root) {
+    inner class SurasVH(
+            private val binding: ItemSuraBinding,
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(suraData: Sura) {
             binding.run {
                 sura = suraData

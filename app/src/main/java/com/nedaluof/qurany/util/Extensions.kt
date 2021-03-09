@@ -6,6 +6,8 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
@@ -77,4 +79,9 @@ fun Context.isNetworkOk(): Boolean {
         }
     }
 }
+
+fun Context.getItemAnimation(): Animation = AnimationUtils.loadAnimation(
+        this,
+        R.anim.slide_in_right
+)
 

@@ -11,7 +11,7 @@ import com.nedaluof.qurany.ui.adapters.SurasAdapter
 class QuranyBindings {
 
     companion object {
-        @BindingAdapter("reciters")
+        @BindingAdapter("setReciters")
         @JvmStatic
         fun bindReciters(
                 recycler: RecyclerView,
