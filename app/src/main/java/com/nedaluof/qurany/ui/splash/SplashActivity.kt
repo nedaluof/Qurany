@@ -38,7 +38,6 @@ class SplashActivity : AppCompatActivity() {
         )
     }
 
-
     override fun onBackPressed() { /*Kept empty*/
     }
 }

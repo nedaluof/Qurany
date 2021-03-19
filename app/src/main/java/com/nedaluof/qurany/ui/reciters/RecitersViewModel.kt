@@ -1,7 +1,6 @@
 package com.nedaluof.qurany.ui.reciters
 
 import android.content.Context
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,15 +10,18 @@ import com.nedaluof.qurany.data.model.Status
 import com.nedaluof.qurany.data.repos.RecitersRepository
 import com.nedaluof.qurany.util.ConnectionState
 import com.nedaluof.qurany.util.connectivityFlow
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * Created by nedaluof on 12/11/2020.
  */
-class RecitersViewModel @ViewModelInject constructor(
+@HiltViewModel
+class RecitersViewModel @Inject constructor(
         private val repository: RecitersRepository,
 ) : ViewModel() {
 
@@ -48,7 +50,7 @@ class RecitersViewModel @ViewModelInject constructor(
         }
     }
 
-    //Todo: Future use
+    // Todo: Future use
     private val _loadingAdd = MutableLiveData<Boolean>()
     val loadingAdd: LiveData<Boolean> = _loadingAdd
 

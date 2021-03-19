@@ -1,6 +1,5 @@
 package com.nedaluof.qurany.ui.myreciters
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,14 +7,17 @@ import androidx.lifecycle.viewModelScope
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.data.model.Status
 import com.nedaluof.qurany.data.repos.MyRecitersRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * Created by nedaluof on 12/12/2020.
  */
-class MyRecitersViewModel @ViewModelInject constructor(
+@HiltViewModel
+class MyRecitersViewModel @Inject constructor(
         private val repository: MyRecitersRepository,
 ) : ViewModel() {
 

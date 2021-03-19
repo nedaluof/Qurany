@@ -2,11 +2,10 @@ package com.nedaluof.qurany.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
-import com.nedaluof.qurany.R
 import com.nedaluof.qurany.data.model.Sura
 import com.nedaluof.qurany.databinding.ItemSuraBinding
+import com.nedaluof.qurany.util.getItemAnimation
 
 /**
  * Created by nedaluof on 12/17/2020.
@@ -17,7 +16,7 @@ class SurasAdapter : RecyclerView.Adapter<SurasAdapter.SurasVH>() {
     // coming suras data list
     private val suras = ArrayList<Sura>()
 
-    //listener must be initialized out the adapter in the client side
+    // listener must be initialized out the adapter in the client side
     lateinit var listener: SurasAdapterListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SurasVH {
@@ -29,9 +28,7 @@ class SurasAdapter : RecyclerView.Adapter<SurasAdapter.SurasVH>() {
 
     override fun onBindViewHolder(holder: SurasVH, position: Int) {
         holder.apply {
-            itemView.startAnimation(AnimationUtils.loadAnimation(
-                    itemView.context, R.anim.item_scale_animation
-            ))
+            itemView.startAnimation(itemView.context.getItemAnimation())
             bind(suras[position])
         }
     }
@@ -42,7 +39,6 @@ class SurasAdapter : RecyclerView.Adapter<SurasAdapter.SurasVH>() {
         suras.addAll(surasList)
         notifyDataSetChanged()
     }
-
 
     inner class SurasVH(
             private val binding: ItemSuraBinding,
@@ -60,5 +56,4 @@ class SurasAdapter : RecyclerView.Adapter<SurasAdapter.SurasVH>() {
         fun onClickPlaySura(sura: Sura)
         fun onClickDownloadSura(sura: Sura)
     }
-
 }

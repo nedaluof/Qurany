@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.callbackFlow
  */
 @ExperimentalCoroutinesApi
 fun Context.connectivityFlow() = callbackFlow {
-    val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+  val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     // Create Callback
     val callback = NetworkCallback { connectionState ->

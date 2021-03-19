@@ -1,6 +1,5 @@
 package com.nedaluof.qurany.ui.suras
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,12 +8,15 @@ import com.nedaluof.qurany.data.model.Sura
 import com.nedaluof.qurany.data.repos.SurasRepository
 import com.nedaluof.qurany.util.SuraUtil
 import com.nedaluof.qurany.util.getLanguage
+import dagger.hilt.android.lifecycle.HiltViewModel
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * Created by nedaluof on 12/16/2020.
  */
-class SurasViewModel @ViewModelInject constructor(
+@HiltViewModel
+class SurasViewModel @Inject constructor(
         private val repository: SurasRepository,
 ) : ViewModel() {
     // Responsibility: provide reciter name

@@ -4,14 +4,13 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
-import com.nedaluof.qurany.R
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.databinding.ItemReciterBinding
+import com.nedaluof.qurany.util.getItemAnimation
 import com.nedaluof.qurany.util.getLanguage
 
 /**
@@ -29,15 +28,12 @@ class RecitersAdapter : RecyclerView.Adapter<RecitersAdapter.RecitersVH>(), Filt
 
     override fun onBindViewHolder(holder: RecitersVH, position: Int) {
         holder.apply {
-            itemView.startAnimation(AnimationUtils.loadAnimation(
-                    itemView.context, R.anim.item_scale_animation
-            ))
+            itemView.startAnimation(itemView.context.getItemAnimation())
             onBind(recitersData[position])
         }
     }
 
     override fun getItemCount() = recitersData.size
-
 
     fun addReciters(reciters: List<Reciter>) {
         recitersData.apply {

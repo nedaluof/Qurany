@@ -22,5 +22,4 @@ object AppModule {
     @Provides
     fun providePrefsHelper(@ApplicationContext context: Context) =
             PreferencesHelper(context)
-
 }

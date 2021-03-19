@@ -73,7 +73,6 @@ class SurasActivity : AppCompatActivity() {
             surasAdapter.addData(reciterSuras)
           }*/
 
-
         bindService(myIntent, serviceConnection, Context.BIND_AUTO_CREATE)
         binding.playerBottomSheet.imgBtnClose.setOnClickListener {
             (sheetBehavior as BottomSheetBehavior<*>).state = BottomSheetBehavior.STATE_COLLAPSED
@@ -255,11 +254,10 @@ class SurasActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         if (bound) {
-            //Todo: if user close the Activity need efficient solution
+            // Todo: if user close the Activity need efficient solution
             stopService()
         }
     }
-
 
     companion object {
         const val RECITER_KEY = "RECITER_KEY"

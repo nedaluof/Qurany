@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.nedaluof.qurany.R
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.databinding.FragmentRecitersBinding
@@ -29,16 +29,16 @@ class RecitersFragment : Fragment(R.layout.fragment_reciters) {
         get() = _binding!!
     private val reciterAdapter = RecitersAdapter()
 
-    private val recitersVM by viewModels<RecitersViewModel>()
+    private val recitersVM: RecitersViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentRecitersBinding.bind(view)
-        //to not re-handle set adapter to recycler view in each reconnection
+        // to not re-handle set adapter to recycler view in each reconnection
         initRecyclerViewAdapter()
-        //to not re-handle set OnQueryTextListener in each reconnection
+        // to not re-handle set OnQueryTextListener in each reconnection
         initSearchOfReciters()
-        //Todo need efficient solution
+        // Todo need efficient solution
         recitersVM.observeConnectivity(requireActivity())
         recitersVM.connected.observe(viewLifecycleOwner) { available ->
             if (available) {
@@ -68,7 +68,6 @@ class RecitersFragment : Fragment(R.layout.fragment_reciters) {
                 }
             }
         }
-
     }
 
     private fun initSearchOfReciters() {
@@ -88,7 +87,7 @@ class RecitersFragment : Fragment(R.layout.fragment_reciters) {
     private fun observeViewModel() {
         with(recitersVM) {
             getReciters()
-            //Todo show text view rather than toast
+            // Todo show text view rather than toast
             error.observe(viewLifecycleOwner) { (_, _) ->
                 activity?.toastyError(R.string.alrt_err_occur_msg)
             }
@@ -116,5 +115,4 @@ class RecitersFragment : Fragment(R.layout.fragment_reciters) {
     companion object {
         const val RECITER_KEY = "RECITER_KEY"
     }
-
 }

@@ -52,5 +52,4 @@ data class Reciter(
             textView.text = surasCount
         }
     }
-
 }

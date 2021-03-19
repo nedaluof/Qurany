@@ -10,7 +10,7 @@
 
 
 ### Tech stack 3pr Libs Used in Qurany
-* The entire app re-writen with [Kotlin](https://kotlinlang.org/).
+* The entire app re-written with [Kotlin](https://kotlinlang.org/).
 * [AndroidX](https://developer.android.com/jetpack/androidx).
 * [ExoPlayer](https://github.com/google/ExoPlayer) main audio player. 
 * [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) + [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) for asynchronous tasks.
@@ -39,7 +39,7 @@
 ### Coming changes :-
  - ~~Replace RxJava with Coroutines & Flow.~~
  - Optimize The UI with the Material Component with simple animations.
- - Expand the Functionallity of the player by support play full play-list of sura's.
+ - Expand the Functionality of the player by support play full play-list of sura's.
  - replace Reactive Network lib that depend on RxJava with Coroutines & Flow API Solution.
  
  

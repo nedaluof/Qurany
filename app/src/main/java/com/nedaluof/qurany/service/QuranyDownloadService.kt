@@ -20,75 +20,77 @@ import java.io.File
  */
 class QuranyDownloadService : Service() {
 
-    // unique id for the being sura downloaded
-    var downloadId: Long = 0
-    private lateinit var sura: Sura
-    private lateinit var subPath: String
-    override fun onBind(intent: Intent?): IBinder? = null
+  // unique id for the being sura downloaded
+  var downloadId: Long = 0
+  private lateinit var sura: Sura
+  private lateinit var subPath: String
+  override fun onBind(intent: Intent?): IBinder? = null
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        sura = intent?.getParcelableExtra("sura")!!
-        registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
-        startDownload()
-        return START_NOT_STICKY
-    }
+  override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+    sura = intent?.getParcelableExtra("sura")!!
+    registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+    startDownload()
+    return START_NOT_STICKY
+  }
 
-    private fun startDownload() {
-        if (this::sura.isInitialized) {
-            subPath = "/Qurany/${sura.reciterName}/${SuraUtil.getSuraName(sura.id)}.mp3"
-            if (!this.checkIfSuraExist(subPath)) {
-                if (this.isNetworkOk()) {
-                    toastySuccess(R.string.alrt_download_start_title)
-                    val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
-                    val request = DownloadManager.Request(Uri.parse(sura.suraUrl))
-                    request.setAllowedNetworkTypes(
-                            DownloadManager.Request.NETWORK_WIFI or
-                                    DownloadManager.Request.NETWORK_MOBILE
-                    )
-                            .setAllowedOverRoaming(false)
-                            .setTitle(SuraUtil.getSuraName(sura.id))
-                            .setDescription(SuraUtil.getSuraName(sura.id) + "| " + sura.reciterName)
-                            .setDestinationInExternalFilesDir(this, null, subPath)
-                    downloadId = downloadManager.enqueue(request)
-                } else {
-                    toastyError(R.string.alrt_no_internet_msg)
-                    stopSelf()
-                }
-            } else {
-                toastyInfo(R.string.alrt_sura_exist_message)
-                stopSelf()
-            }
+  private fun startDownload() {
+    if (this::sura.isInitialized) {
+      subPath = "/Qurany/${sura.reciterName}/${SuraUtil.getSuraName(sura.id)}.mp3"
+      if (!this.checkIfSuraExist(subPath)) {
+        if (this.isNetworkOk()) {
+          toastySuccess(R.string.alrt_download_start_title)
+          val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
+          val request = DownloadManager.Request(Uri.parse(sura.suraUrl))
+          request.setAllowedNetworkTypes(
+                  DownloadManager.Request.NETWORK_WIFI or
+                          DownloadManager.Request.NETWORK_MOBILE
+          )
+                  .setAllowedOverRoaming(false)
+                  .setTitle(SuraUtil.getSuraName(sura.id))
+                  .setDescription(SuraUtil.getSuraName(sura.id) + "| " + sura.reciterName)
+                  .setDestinationInExternalFilesDir(this, null, subPath)
+          downloadId = downloadManager.enqueue(request)
         } else {
-            Timber.d("startDownload: sura not initialized")
-            stopSelf()
+          toastyError(R.string.alrt_no_internet_msg)
+          stopSelf()
         }
+      } else {
+        toastyInfo(R.string.alrt_sura_exist_message)
+        stopSelf()
+      }
+    } else {
+      Timber.d("startDownload: sura not initialized")
+      stopSelf()
     }
+  }
 
-    private val onComplete: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
-            // Checking if the received broadcast is for our enqueued download by matching download id
-            if (downloadId == id) {
-                toastySuccess(R.string.alrt_download_completed_msg)
-                scan()
-            } else {
-                Timber.d(TAG, "onReceive: download id not match")
-            }
-        }
+  private val onComplete: BroadcastReceiver = object : BroadcastReceiver() {
+    override fun onReceive(context: Context, intent: Intent) {
+      val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
+      // Checking if the received broadcast is for our enqueued download by matching download id
+      if (downloadId == id) {
+        toastySuccess(R.string.alrt_download_completed_msg)
+        scan()
+      } else {
+        Timber.d(TAG, "onReceive: download id not match")
+      }
     }
+  }
 
-    fun scan() {
-        val file = File(this.getSuraPath(subPath))
-        MediaScannerConnection.scanFile(this, arrayOf(file.toString()),
-                arrayOf(file.name), null)
-    }
+  fun scan() {
+    val file = File(this.getSuraPath(subPath))
+    MediaScannerConnection.scanFile(
+            this, arrayOf(file.toString()),
+            arrayOf(file.name), null
+    )
+  }
 
-    override fun onDestroy() {
-        unregisterReceiver(onComplete)
-        super.onDestroy()
-    }
+  override fun onDestroy() {
+    unregisterReceiver(onComplete)
+    super.onDestroy()
+  }
 
-    companion object {
-        private val TAG = QuranyDownloadService::class.java.name
-    }
+  companion object {
+    private val TAG = QuranyDownloadService::class.java.name
+  }
 }

@@ -41,7 +41,6 @@ class MyRecitersFragment : Fragment(R.layout.fragment_my_reciters) {
         bindValues()
     }
 
-
     private fun initRecyclerView() {
         binding.recitersRecyclerView.adapter = MyRecitersAdapter().apply {
             listener = object : MyRecitersAdapter.MyRecitersAdapterListener {
@@ -61,7 +60,7 @@ class MyRecitersFragment : Fragment(R.layout.fragment_my_reciters) {
                             .setText(msg1 + reciter.name + msg2)
                             .addButton(resources.getString(R.string.alrt_delete_btn_ok), R.style.AlertButton) {
                                 viewModel.deleteFromMyReciters(reciter)
-                                //view.setImageResource(R.drawable.ic_favorite_selected)
+                                // view.setImageResource(R.drawable.ic_favorite_selected)
                                 Alerter.hide()
                             }
                             .addButton(resources.getString(R.string.alrt_delete_btn_cancel), R.style.AlertButton) { Alerter.hide() }
@@ -71,7 +70,7 @@ class MyRecitersFragment : Fragment(R.layout.fragment_my_reciters) {
             }
         }
 
-        //Todo:need solution
+        // Todo:need solution
         /* binding.recitersRecyclerView.apply {
              setHasFixedSize(true)
              adapter = ScaleInAnimationAdapter(myRecitersAdapter).apply {
