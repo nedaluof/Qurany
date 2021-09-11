@@ -21,29 +21,32 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
+        android:layout_margin="6dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:onClick="@{()->callback.onReciterClicked(reciter)}"
-        app:cardCornerRadius="3dp"
+        app:cardCornerRadius="@dimen/dp_8"
+        app:cardElevation="2dp"
         app:cardPreventCornerOverlap="false">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="50dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center"
-                android:layout_margin="4dp"
-                android:contentDescription="@string/app_name"
+                android:layout_height="match_parent"
+                android:paddingTop="@dimen/dp_4"
+                android:background="@color/green_200"
+                android:contentDescription="@string/reciters_bar_title"
                 android:src="@drawable/ic_reciter" />
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/green_200" />
+                android:layout_marginStart="2dp"
+                android:layout_margin="2dp"
+                android:background="@color/grey" />
 
             <LinearLayout
                 android:id="@+id/reciter_data_layout"
@@ -54,7 +57,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:orientation="vertical">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_reciter_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -65,7 +68,7 @@
                     android:textStyle="bold"
                     tools:text="Maher Al-Mueqle" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_reciter_rewaya"
                     style="@style/TextAppearance.MaterialComponents.Caption"
                     android:layout_width="wrap_content"
@@ -77,7 +80,7 @@
                     android:textStyle="italic"
                     tools:text="Hafs An Asem" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_reciter_sura_count"
                     style="@style/TextAppearance.MaterialComponents.Caption"
                     android:layout_width="wrap_content"
@@ -87,12 +90,13 @@
                     tools:text="There 70 Suras" />
             </LinearLayout>
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/green_200" />
+            <!--  <View
+                  android:layout_width="1dp"
+                  android:layout_height="match_parent"
+                  android:background="@color/green_200" />-->
 
-            <androidx.cardview.widget.CardView
+            <RelativeLayout
+                android:layout_margin="@dimen/dp_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -100,10 +104,11 @@
                 app:cardPreventCornerOverlap="false">
 
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/img_favorite"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:layout_centerInParent="true"
                     android:contentDescription="@string/app_name"
                     android:onClick="@{(view)-> callback.onAddToFavoriteClicked(view,reciter)}"
                     android:src="@{@drawable/ic_favorite_navigation}"
@@ -114,11 +119,11 @@
                     style="@style/Widget.AppCompat.ProgressBar"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:visibility="gone"
                     tools:visibility="visible" />
-            </androidx.cardview.widget.CardView>
+            </RelativeLayout>
         </LinearLayout>
-
     </androidx.cardview.widget.CardView>
 </layout>

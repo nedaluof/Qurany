@@ -18,9 +18,10 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
+        android:layout_margin="@dimen/dp_8"
         android:background="?attr/selectableItemBackgroundBorderless"
-        app:cardCornerRadius="3dp"
+        app:cardCornerRadius="@dimen/dp_8"
+        app:cardElevation="@dimen/dp_4"
         app:cardPreventCornerOverlap="false">
 
         <LinearLayout
@@ -29,78 +30,76 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:orientation="horizontal">
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="50dp"
-                android:layout_height="60dp"
+                android:layout_height="50dp"
                 android:layout_gravity="center"
-                android:layout_margin="4dp"
+                android:layout_margin="@dimen/dp_8"
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/ic_sura" />
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/green_200" />
+                android:background="@color/grey" />
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/dp_4"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:orientation="vertical">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_sura_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="2dp"
+                    android:layout_gravity="start"
+                    android:layout_margin="6dp"
                     android:text="@{sura.suraName}"
                     android:textColor="@color/green_200"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     tools:text="AL-Fatiha" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_sura_rewaya"
                     style="@style/TextAppearance.MaterialComponents.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="2dp"
+                    android:layout_gravity="start"
+                    android:layout_margin="6dp"
                     android:text="@{sura.rewaya}"
                     android:textColor="@color/green_200"
                     android:textSize="12sp"
                     android:textStyle="italic"
                     tools:text="Hafs An Asem" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_sura_number"
                     style="@style/TextAppearance.MaterialComponents.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="2dp"
+                    android:layout_gravity="start"
+                    android:layout_margin="6dp"
                     app:suraNumber="@{sura.id}"
                     tools:text="1" />
             </LinearLayout>
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/green_200" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:background="@color/green_200"
+                android:layout_gravity="center"
+                android:padding="@dimen/dp_8"
                 android:orientation="vertical">
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/img_play_sura"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="1dp"
                     android:layout_marginStart="@dimen/dp_8"
@@ -113,7 +112,7 @@
                     android:onClick="@{()->callback.onClickPlaySura(sura)}"
                     android:src="@drawable/ic_play" />
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/img_download_sura"
                     android:layout_width="30dp"
                     android:layout_height="30dp"

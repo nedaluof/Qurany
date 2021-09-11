@@ -20,7 +20,9 @@
         android:usesCleartextTraffic="true"
         tools:replace="allowBackup"
         tools:targetApi="m">
-        <activity android:name=".ui.splash.SplashActivity">
+        <activity
+            android:name=".ui.splash.SplashActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -2,9 +2,13 @@ package com.nedaluof.qurany.ui.myreciters
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.nedaluof.qurany.BR
 import com.nedaluof.qurany.R
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.databinding.FragmentMyRecitersBinding
@@ -21,17 +25,27 @@ import timber.log.Timber
  * Created by nedaluof on 12/12/2020. {Kotlin}
  */
 @AndroidEntryPoint
-class MyRecitersFragment : Fragment(R.layout.fragment_my_reciters) {
+class MyRecitersFragment : Fragment() {
 
-    private var _binding: FragmentMyRecitersBinding? = null
-    private val binding: FragmentMyRecitersBinding
-        get() = _binding!!
+    private lateinit var binding: FragmentMyRecitersBinding
+    private val myRecitersViewModel: MyRecitersViewModel by viewModels()
 
-    private val viewModel: MyRecitersViewModel by viewModels()
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_my_reciters, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentMyRecitersBinding.bind(view)
+        binding.apply {
+            setVariable(BR.viewmodel, myRecitersViewModel)
+            lifecycleOwner = viewLifecycleOwner
+            executePendingBindings()
+        }
         initComponents()
     }
 
@@ -59,7 +73,7 @@ class MyRecitersFragment : Fragment(R.layout.fragment_my_reciters) {
                             .setTitle(R.string.alrt_delete_title)
                             .setText(msg1 + reciter.name + msg2)
                             .addButton(resources.getString(R.string.alrt_delete_btn_ok), R.style.AlertButton) {
-                                viewModel.deleteFromMyReciters(reciter)
+                                myRecitersViewModel.deleteFromMyReciters(reciter)
                                 // view.setImageResource(R.drawable.ic_favorite_selected)
                                 Alerter.hide()
                             }
@@ -80,7 +94,7 @@ class MyRecitersFragment : Fragment(R.layout.fragment_my_reciters) {
     }
 
     private fun observeMyRecitersViewModel() {
-        with(viewModel) {
+        with(myRecitersViewModel) {
             getMyReciters()
             error.observe(viewLifecycleOwner) {
                 Timber.d(it)
@@ -99,16 +113,16 @@ class MyRecitersFragment : Fragment(R.layout.fragment_my_reciters) {
 
     private fun bindValues() {
         binding.run {
-            viewmodel = viewModel
+            viewmodel = myRecitersViewModel
             lifecycleOwner = viewLifecycleOwner
             executePendingBindings()
         }
     }
 
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
-    }
+    /* override fun onDestroyView() {
+         _binding = null
+         super.onDestroyView()
+     }*/
 
     companion object {
         const val RECITER_KEY = "RECITER_KEY"

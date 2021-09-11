@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.data.model.Status
-import com.nedaluof.qurany.data.repos.RecitersRepository
+import com.nedaluof.qurany.domain.repositories.RecitersRepository
 import com.nedaluof.qurany.util.ConnectionState
 import com.nedaluof.qurany.util.connectivityFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,12 +28,15 @@ class RecitersViewModel @Inject constructor(
     val reciters = MutableLiveData<List<Reciter>>()
 
     private val _error = MutableLiveData<Pair<String, Boolean>>()
-    val error: LiveData<Pair<String, Boolean>>
-        get() = _error
+    val error: LiveData<Pair<String, Boolean>> = _error
 
     val loading = MutableLiveData<Boolean>()
 
-    fun getReciters() {
+    init {
+        getReciters()
+    }
+
+    private fun getReciters() {
         loading.value = true
         viewModelScope.launch(Dispatchers.IO) {
             val result = repository.getReciters()
@@ -73,6 +76,7 @@ class RecitersViewModel @Inject constructor(
             }
         }
     }
+
 
     val connected = MutableLiveData(true)
 

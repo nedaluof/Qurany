@@ -10,7 +10,6 @@ import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.databinding.ItemReciterBinding
-import com.nedaluof.qurany.util.getItemAnimation
 import com.nedaluof.qurany.util.getLanguage
 
 /**
@@ -27,10 +26,7 @@ class RecitersAdapter : RecyclerView.Adapter<RecitersAdapter.RecitersVH>(), Filt
     )
 
     override fun onBindViewHolder(holder: RecitersVH, position: Int) {
-        holder.apply {
-            itemView.startAnimation(itemView.context.getItemAnimation())
-            onBind(recitersData[position])
-        }
+        holder.onBind(recitersData[position])
     }
 
     override fun getItemCount() = recitersData.size

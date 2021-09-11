@@ -16,23 +16,23 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grey"
         android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white">
+            android:background="@drawable/app_bar_rounded_bg"
+            app:elevation="0dp">
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/dp_4"
+                android:layout_margin="@dimen/dp_10"
                 android:layout_marginStart="20dp"
                 android:text="@string/my_reciters_appbar_title"
-                android:textColor="@color/green_200"
+                android:textColor="@color/white"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_scrollFlags="scroll|enterAlways|snap" />
@@ -51,6 +51,7 @@
                 android:id="@+id/reciters_recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layoutAnimation="@anim/recycler_view_items_animation"
                 android:overScrollMode="never"
                 android:scrollbars="none"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -66,27 +67,20 @@
 
         </RelativeLayout>
 
-        <LinearLayout
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/no_reciters_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="230dp"
-            android:orientation="vertical"
-            android:visibility="@{viewmodel.noReciters? View.VISIBLE : View.GONE}"
-            tools:ignore="UseCompoundDrawables">
+            android:layout_margin="20dp"
+            android:padding="15dp"
+            android:text="@string/no_reciters"
+            android:textAlignment="center"
+            android:textColor="@color/green_200"
+            android:textSize="18sp"
+            android:visibility="@{viewmodel.noReciters? View.VISIBLE : View.GONE}" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:background="@android:color/white"
-                android:padding="15dp"
-                android:text="@string/no_reciters"
-                android:textColor="@color/green_200"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </LinearLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

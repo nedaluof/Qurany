@@ -1,7 +1,7 @@
 package com.nedaluof.qurany.di
 
 import android.content.Context
-import com.nedaluof.qurany.data.prefs.PreferencesHelper
+import com.nedaluof.qurany.data.localsource.prefs.PreferencesHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

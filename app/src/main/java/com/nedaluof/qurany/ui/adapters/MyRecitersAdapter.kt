@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.databinding.ItemMyReciterBinding
-import com.nedaluof.qurany.util.getItemAnimation
 
 /**
  * Created by nedaluof on 12/12/2020.
@@ -24,10 +23,7 @@ class MyRecitersAdapter :
     }
 
     override fun onBindViewHolder(holder: MyRecitersVH, position: Int) {
-        holder.apply {
-            itemView.startAnimation(itemView.context.getItemAnimation())
-            bind(recitersData[position])
-        }
+        holder.bind(recitersData[position])
     }
 
     override fun getItemCount(): Int = recitersData.size

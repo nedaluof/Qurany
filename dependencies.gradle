@@ -3,10 +3,10 @@
  * */
 ext.versions = [
         minSdk         : 23,
-        compileSdk     : 30,
-        versionCode    : 1,
+        compileSdk     : 31,
+        versionCode    : 2,
         versionName    : '1.0',
-        buildTools     : '29.0.3',
+        buildTools     : '30.0.0',
 
         toasty         : '1.5.0',
         alerter        : '6.1.0',
@@ -14,19 +14,18 @@ ext.versions = [
 
 
         //jet-pack
-        lifecycle      : '2.3.0',
-        hilt           : '2.33-beta',
-        hilt_vm        : '1.0.0-alpha03',
-        room           : '2.2.6',
+        lifecycle      : '2.3.1',
+        hilt           : '2.38.1',
+        room           : '2.3.0',
         //
         preference     : '1.1.1',
-        startup        : '1.0.0',
+        startup        : '1.1.0',
         timber         : '4.7.1',
 
         //kotlin
-        kotlin         : '1.4.31',
+        kotlin         : '1.5.30',
         coroutines     : '1.4.0',
-        reflect        : '1.4.30',
+        reflect        : '1.4.32',
 
         //exo-player
         exoPlayer      : '2.11.4',

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.data.model.Status
-import com.nedaluof.qurany.data.repos.MyRecitersRepository
+import com.nedaluof.qurany.domain.repositories.MyRecitersRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -33,7 +33,7 @@ class MyRecitersViewModel @Inject constructor(
 
     fun getMyReciters() {
         viewModelScope.launch {
-            repository.getMyReciters
+            repository.getMyReciters()
                     .catch { cause -> _error.postValue(cause.message!!) }
                     .collect {
                         if (it.isNotEmpty()) {

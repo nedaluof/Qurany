@@ -2,7 +2,7 @@ package com.nedaluof.qurany.di
 
 import android.content.Context
 import androidx.room.Room
-import com.nedaluof.qurany.data.room.QuranyDatabase
+import com.nedaluof.qurany.data.localsource.room.QuranyDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

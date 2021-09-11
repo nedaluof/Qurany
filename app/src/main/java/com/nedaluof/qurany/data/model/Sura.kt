@@ -21,7 +21,7 @@ data class Sura(
         var playingType: Int = 0,
 ) : Parcelable {
     companion object {
-        // Data Binding for text view for sura number
+        // used in data binding for text view for sura number
         @JvmStatic
         @BindingAdapter("suraNumber")
         fun suraNumber(textView: TextView, number: Int) {

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -22,8 +21,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:background="?attr/selectableItemBackgroundBorderless"
+        android:elevation="3dp"
         android:onClick="@{()->callback.onReciterClicked(reciter)}"
-        app:cardCornerRadius="3dp"
+        app:cardCornerRadius="4dp"
         app:cardPreventCornerOverlap="false">
 
         <LinearLayout
@@ -36,13 +36,14 @@
                 android:layout_height="60dp"
                 android:layout_gravity="center"
                 android:layout_margin="4dp"
+                android:background="@color/green_200"
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/ic_reciter" />
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/green_200" />
+                android:background="@color/grey" />
 
             <LinearLayout
                 android:id="@+id/reciter_data_layout"
@@ -86,23 +87,18 @@
                     tools:text="There 70 Suras" />
             </LinearLayout>
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="@color/green_200" />
 
-            <androidx.cardview.widget.CardView
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                app:cardCornerRadius="3dp"
-                app:cardPreventCornerOverlap="false">
-
+                android:layout_margin="@dimen/dp_4">
 
                 <ImageView
                     android:id="@+id/img_favorite"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
+                    android:layout_centerInParent="true"
                     android:contentDescription="@string/app_name"
                     android:onClick="@{(view)-> callback.onDeleteFromMyReciter(view,reciter)}"
                     android:src="@drawable/ic_favorite_selected"
@@ -113,10 +109,11 @@
                     style="@style/Widget.AppCompat.ProgressBar"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:visibility="gone"
                     tools:visibility="visible" />
-            </androidx.cardview.widget.CardView>
+            </RelativeLayout>
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

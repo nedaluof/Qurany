@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.nedaluof.qurany.data.model.Sura
 import com.nedaluof.qurany.databinding.ItemSuraBinding
-import com.nedaluof.qurany.util.getItemAnimation
 
 /**
  * Created by nedaluof on 12/17/2020.
@@ -27,10 +26,8 @@ class SurasAdapter : RecyclerView.Adapter<SurasAdapter.SurasVH>() {
     }
 
     override fun onBindViewHolder(holder: SurasVH, position: Int) {
-        holder.apply {
-            itemView.startAnimation(itemView.context.getItemAnimation())
-            bind(suras[position])
-        }
+        holder.bind(suras[position])
+
     }
 
     override fun getItemCount(): Int = suras.size

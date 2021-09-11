@@ -22,16 +22,17 @@
             android:id="@+id/suras_bar_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white">
+            android:background="@drawable/app_bar_rounded_bg"
+            app:elevation="0dp">
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/reciter_name_title_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/dp_4"
                 android:text="@{viewmodel.reciterName}"
-                android:textColor="@color/green_200"
+                android:textColor="@color/white"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
@@ -50,6 +51,7 @@
                 android:layout_height="match_parent"
                 android:overScrollMode="never"
                 android:paddingBottom="30dp"
+                android:layoutAnimation="@anim/recycler_view_items_animation"
                 android:scrollbars="none"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:suras="@{viewmodel.reciterSuras}"
