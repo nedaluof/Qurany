@@ -2,19 +2,16 @@ package com.nedaluof.qurany.ui.reciters
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.nedaluof.qurany.BR
 import com.nedaluof.qurany.R
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.databinding.FragmentRecitersBinding
 import com.nedaluof.qurany.ui.adapters.RecitersAdapter
 import com.nedaluof.qurany.ui.adapters.RecitersAdapter.ReciterAdapterListener
+import com.nedaluof.qurany.ui.base.BaseFragment
 import com.nedaluof.qurany.ui.suras.SurasActivity
 import com.nedaluof.qurany.util.toastyError
 import com.nedaluof.qurany.util.toastySuccess
@@ -26,45 +23,25 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
  */
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class RecitersFragment : Fragment() {
+class RecitersFragment : BaseFragment<FragmentRecitersBinding>() {
 
-    private lateinit var binding: FragmentRecitersBinding
+    override val layoutId = R.layout.fragment_reciters
+    override val bindingVariable = BR.viewmodel
+    private val recitersViewModel by viewModels<RecitersViewModel>()
+    override fun getViewModel() = recitersViewModel
     private val reciterAdapter = RecitersAdapter()
-    private val recitersVM: RecitersViewModel by activityViewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_reciters, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.apply {
-            setVariable(BR.viewmodel, recitersVM)
-            lifecycleOwner = viewLifecycleOwner
-            executePendingBindings()
-        }
         // to not re-handle set adapter to recycler view in each reconnection
         initRecyclerViewAdapter()
         // to not re-handle set OnQueryTextListener in each reconnection
         initSearchOfReciters()
-        // Todo need efficient solution
-        recitersVM.observeConnectivity(requireActivity())
-        recitersVM.connected.observe(viewLifecycleOwner) { available ->
-            if (available) {
-                initComponents()
-            }
-        }
+        //observe viewModel
+        observeViewModel()
     }
 
-    private fun initComponents() {
-        observeViewModel()
-        initBindingWithValues()
-    }
 
     private fun initRecyclerViewAdapter() {
         binding.recitersRecyclerView.adapter = reciterAdapter.apply {
@@ -78,7 +55,7 @@ class RecitersFragment : Fragment() {
 
                 override fun onAddToFavoriteClicked(view: View, reciter: Reciter) {
                     view.visibility = View.GONE
-                    recitersVM.addReciterToMyReciters(reciter)
+                    recitersViewModel.addReciterToMyReciters(reciter)
                 }
             }
         }
@@ -99,8 +76,7 @@ class RecitersFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        with(recitersVM) {
-            //getReciters()
+        with(recitersViewModel) {
             error.observe(viewLifecycleOwner) { (_, _) ->
                 activity?.toastyError(R.string.alrt_err_occur_msg)
             }
@@ -109,14 +85,6 @@ class RecitersFragment : Fragment() {
                     activity?.toastySuccess(R.string.alrt_add_success_msg)
                 }
             }
-        }
-    }
-
-    private fun initBindingWithValues() {
-        binding.run {
-            viewmodel = recitersVM
-            lifecycleOwner = viewLifecycleOwner
-            executePendingBindings()
         }
     }
 

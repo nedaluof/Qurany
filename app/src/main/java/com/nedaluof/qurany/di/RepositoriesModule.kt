@@ -32,10 +32,13 @@ object RepositoriesModule {
         apiService: ApiService,
         preferences: PreferencesHelper,
         reciterDao: ReciterDao,
+        @ApplicationContext
+        context: Context
     ): RecitersRepository = RecitersRepositoryImpl(
         apiService,
         preferences,
-        reciterDao
+        reciterDao,
+        context
     )
 
     @ViewModelScoped

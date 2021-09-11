@@ -1,18 +1,15 @@
 package com.nedaluof.qurany.ui.reciters
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.data.model.Status
 import com.nedaluof.qurany.domain.repositories.RecitersRepository
-import com.nedaluof.qurany.util.ConnectionState
-import com.nedaluof.qurany.util.connectivityFlow
+import com.nedaluof.qurany.ui.base.BaseViewModel
+import com.nedaluof.qurany.util.ConnectivityStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,19 +19,32 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class RecitersViewModel @Inject constructor(
-        private val repository: RecitersRepository,
-) : ViewModel() {
+    private val repository: RecitersRepository,
+) : BaseViewModel() {
 
+
+    /**reciters list view control**/
+    //reciters list from API
     val reciters = MutableLiveData<List<Reciter>>()
 
+    //reciters list loading
+    val loading = MutableLiveData<Boolean>()
+
+    //reciters list error from API
     private val _error = MutableLiveData<Pair<String, Boolean>>()
     val error: LiveData<Pair<String, Boolean>> = _error
 
-    val loading = MutableLiveData<Boolean>()
+    //connectivity status
+    val connected = MutableLiveData(true)
 
-    init {
-        getReciters()
-    }
+    /**add reciter**/
+    // Todo: Future use
+    private val _loadingAdd = MutableLiveData<Boolean>()
+    val loadingAdd: LiveData<Boolean> = _loadingAdd
+
+    //result of adding reciter to the My Reciters List
+    private val _resultAdd = MutableLiveData<Boolean>()
+    val resultOfAddReciter: LiveData<Boolean> = _resultAdd
 
     private fun getReciters() {
         loading.value = true
@@ -52,13 +62,6 @@ class RecitersViewModel @Inject constructor(
             }
         }
     }
-
-    // Todo: Future use
-    private val _loadingAdd = MutableLiveData<Boolean>()
-    val loadingAdd: LiveData<Boolean> = _loadingAdd
-
-    private val _resultAdd = MutableLiveData<Boolean>()
-    val resultOfAddReciter: LiveData<Boolean> = _resultAdd
 
     fun addReciterToMyReciters(reciter: Reciter) {
         _loadingAdd.value = true
@@ -78,17 +81,19 @@ class RecitersViewModel @Inject constructor(
     }
 
 
-    val connected = MutableLiveData(true)
-
-    @ExperimentalCoroutinesApi
-    fun observeConnectivity(context: Context) {
+    private fun observeConnectivity() {
         viewModelScope.launch {
-            context.connectivityFlow().collect { connectionState ->
+            repository.observeConnectivity().collect { connectionState ->
                 when (connectionState) {
-                    ConnectionState.CONNECTED -> connected.value = true
-                    ConnectionState.NOT_CONNECTED -> connected.value = false
+                    ConnectivityStatus.CONNECTED -> connected.value = true
+                    ConnectivityStatus.NOT_CONNECTED -> connected.value = false
                 }
             }
         }
+    }
+
+    init {
+        observeConnectivity()
+        getReciters()
     }
 }

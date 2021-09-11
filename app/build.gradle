@@ -6,7 +6,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
-
 apply from: '../spotless.gradle'
 apply from: "$rootDir/dependencies.gradle"
 
@@ -48,26 +47,37 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
-    implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.core:core-ktx:1.6.0'
-    implementation "androidx.fragment:fragment-ktx:1.3.6"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
-    implementation 'com.yanzhikai:TextPathView:0.2.1'
+    //app compat
+    implementation "androidx.appcompat:appcompat:$versions.appCompat"
+    //constraint layout
+    implementation "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
+    //recyclerView
+    implementation "androidx.recyclerview:recyclerview:$versions.recyclerView"
+    //MDC
+    implementation "com.google.android.material:material:$versions.material"
+    //Swipe Refresh Layout
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$versions.swipeRefreshLayout"
+    //layouts design sizes helper
+    implementation "com.intuit.sdp:sdp-android:$versions.intuit"
+    implementation "com.intuit.ssp:ssp-android:$versions.intuit"
+    //Text painter animation
+    implementation "com.yanzhikai:TextPathView:$versions.painter"
     //chips navigation
     implementation "com.ismaeldivita.chipnavigation:chip-navigation-bar:$versions.chipNavigation"
     //alerter
     implementation "com.tapadoo.android:alerter:$versions.alerter"
     //Toasty
     implementation "com.github.GrenderG:Toasty:$versions.toasty"
-    // jet-pack Components
+    //fragment extensions
+    implementation "androidx.fragment:fragment-ktx:$versions.fragmentKtx"
+    //ExoPlayer
+    implementation "com.google.android.exoplayer:exoplayer:$versions.exoPlayer"
+
+    /**jet-pack Components**/
+    //lifecycle
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycle"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$versions.lifecycle"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$versions.lifecycle"
@@ -75,27 +85,28 @@ dependencies {
     implementation "androidx.room:room-runtime:$versions.room"
     kapt "androidx.room:room-compiler:$versions.room"
     implementation "androidx.room:room-ktx:$versions.room"
+    // Hilt dependencies injection
+    implementation "com.google.dagger:hilt-android:$versions.hilt"
+    kapt "com.google.dagger:hilt-android-compiler:$versions.hilt"
+    //Preference
+    implementation "androidx.preference:preference-ktx:$versions.preference"
+    // startup
+    implementation "androidx.startup:startup-runtime:$versions.startup"
 
     //Network Layer
     implementation("com.squareup.retrofit2:retrofit:$versions.retrofit") { exclude module: 'okhttp' }
     implementation "com.squareup.retrofit2:converter-gson:$versions.converter"
     implementation "com.squareup.okhttp3:logging-interceptor:$versions.interceptor"
 
-    // Hilt dependencies injection
-    implementation "com.google.dagger:hilt-android:$versions.hilt"
-    kapt "com.google.dagger:hilt-android-compiler:$versions.hilt"
-
-    //Player
-    implementation "com.google.android.exoplayer:exoplayer:$versions.exoPlayer"
-
+    /** kotlin **/
+    //kotlin extensions
+    implementation "androidx.core:core-ktx:$versions.coreKtx"
     //Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines"
-    //Preference
-    implementation "androidx.preference:preference-ktx:$versions.preference"
-    // startup
-    implementation "androidx.startup:startup-runtime:$versions.startup"
     //kotlin reflect
     implementation "org.jetbrains.kotlin:kotlin-reflect:$versions.reflect"
+
+
     // debugging
     implementation "com.jakewharton.timber:timber:$versions.timber"
 

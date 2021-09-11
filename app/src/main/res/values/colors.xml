@@ -9,4 +9,6 @@
     <color name="white">@android:color/white</color>
     <color name="white_200">#90FFFFFF</color>
     <color name="player_background">#CC000000</color>
+    <color name="transparent">@android:color/transparent</color>
+
 </resources>

@@ -14,17 +14,17 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layoutDirection="ltr">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ic_quran"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="96dp"
+            android:layout_marginTop="@dimen/_90sdp"
             android:contentDescription="@string/app_name"
-            android:layoutDirection="ltr"
             android:src="@drawable/ic_qurany"
-            app:layout_constraintBottom_toTopOf="@+id/tv_version"
+            app:layout_constraintBottom_toTopOf="@+id/details_lyt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
@@ -33,12 +33,12 @@
 
         <yanzhikai.textpath.SyncTextPathView
             android:id="@+id/stpv_qurany"
-            android:layout_width="331dp"
-            android:layout_height="92dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="96dp"
+            android:layout_width="@dimen/_250sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:layout_marginBottom="@dimen/_70sdp"
             app:duration="2000"
-            app:layout_constraintBottom_toTopOf="@+id/tv_version"
+            app:layout_constraintBottom_toTopOf="@+id/details_lyt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ic_quran"
@@ -49,18 +49,37 @@
             app:textInCenter="true"
             app:textSize="40sp" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/details_lyt"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="164dp"
-            android:text="@{viewmodel.versionName}"
-            android:textColor="@color/green_200"
-            android:textSize="20sp"
-            android:textStyle="italic"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:background="@drawable/splash_app_details_bg"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingBottom="@dimen/_10sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="V 0.1" />
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/app_powered_by"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12ssp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@{viewmodel.versionName}"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="italic"
+                tools:text="V 0.1" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

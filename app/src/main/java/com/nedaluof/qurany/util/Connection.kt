@@ -17,7 +17,7 @@ fun Context.connectivityFlow() = callbackFlow {
   val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     // Create Callback
-    val callback = NetworkCallback { connectionState ->
+    val callback = networkCallback { connectionState ->
         offer(connectionState)
     }
 
@@ -35,8 +35,8 @@ fun Context.connectivityFlow() = callbackFlow {
     }
 }
 
-private fun getCurrentConnectivityState(connectivityManager: ConnectivityManager): ConnectionState {
-    var currentState = ConnectionState.NOT_CONNECTED
+private fun getCurrentConnectivityState(connectivityManager: ConnectivityManager): ConnectivityStatus {
+    var currentState = ConnectivityStatus.NOT_CONNECTED
 
     // Retrieve current status of connectivity
     connectivityManager.allNetworks.forEach { network ->
@@ -44,7 +44,7 @@ private fun getCurrentConnectivityState(connectivityManager: ConnectivityManager
 
         networkCapability?.let {
             if (it.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
-                currentState = ConnectionState.CONNECTED
+                currentState = ConnectivityStatus.CONNECTED
                 return@forEach
             }
         }
@@ -52,19 +52,18 @@ private fun getCurrentConnectivityState(connectivityManager: ConnectivityManager
     return currentState
 }
 
-@Suppress("FunctionName")
-fun NetworkCallback(callback: (ConnectionState) -> Unit): ConnectivityManager.NetworkCallback {
+fun networkCallback(callback: (ConnectivityStatus) -> Unit): ConnectivityManager.NetworkCallback {
     return object : ConnectivityManager.NetworkCallback() {
         override fun onAvailable(network: Network) {
-            callback(ConnectionState.CONNECTED)
+            callback(ConnectivityStatus.CONNECTED)
         }
 
         override fun onLost(network: Network) {
-            callback(ConnectionState.NOT_CONNECTED)
+            callback(ConnectivityStatus.NOT_CONNECTED)
         }
     }
 }
 
-enum class ConnectionState {
+enum class ConnectivityStatus {
     CONNECTED, NOT_CONNECTED
 }
