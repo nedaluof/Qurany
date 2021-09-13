@@ -29,12 +29,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/dp_10"
-                android:layout_marginStart="20dp"
+                android:layout_margin="@dimen/_8sdp"
                 android:text="@string/my_reciters_appbar_title"
                 android:textColor="@color/white"
-                android:textSize="22sp"
-                android:textStyle="bold"
+                android:textSize="@dimen/_15ssp"
                 app:layout_scrollFlags="scroll|enterAlways|snap" />
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -43,7 +41,7 @@
             android:id="@+id/reciter_list_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/dp_4"
+            android:layout_marginBottom="@dimen/_4sdp"
             android:visibility="visible"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -51,11 +49,13 @@
                 android:id="@+id/reciters_recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:clipToPadding="false"
                 android:layoutAnimation="@anim/recycler_view_items_animation"
                 android:overScrollMode="never"
+                android:paddingBottom="@dimen/_50sdp"
                 android:scrollbars="none"
+                app:items="@{viewmodel.reciters}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:myReciters="@{viewmodel.reciters}"
                 tools:listitem="@layout/item_reciter" />
 
             <ProgressBar
@@ -73,14 +73,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_margin="20dp"
-            android:padding="15dp"
+            android:layout_margin="@dimen/_18sdp"
+            android:padding="@dimen/_12sdp"
             android:text="@string/no_reciters"
             android:textAlignment="center"
             android:textColor="@color/green_200"
-            android:textSize="18sp"
+            android:textSize="@dimen/_14ssp"
             android:visibility="@{viewmodel.noReciters? View.VISIBLE : View.GONE}" />
-
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

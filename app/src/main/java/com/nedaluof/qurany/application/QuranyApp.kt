@@ -1,4 +1,4 @@
-package com.nedaluof.qurany
+package com.nedaluof.qurany.application
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

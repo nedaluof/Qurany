@@ -5,23 +5,20 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.nedaluof.qurany.BR
 import com.nedaluof.qurany.R
-import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.databinding.FragmentRecitersBinding
-import com.nedaluof.qurany.ui.adapters.RecitersAdapter
-import com.nedaluof.qurany.ui.adapters.RecitersAdapter.ReciterAdapterListener
 import com.nedaluof.qurany.ui.base.BaseFragment
 import com.nedaluof.qurany.ui.suras.SurasActivity
-import com.nedaluof.qurany.util.toastyError
-import com.nedaluof.qurany.util.toastySuccess
+import com.nedaluof.qurany.util.AppConstants
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 /**
  * Created by nedaluof on 12/11/2020.
  */
-@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class RecitersFragment : BaseFragment<FragmentRecitersBinding>() {
 
@@ -29,36 +26,30 @@ class RecitersFragment : BaseFragment<FragmentRecitersBinding>() {
     override val bindingVariable = BR.viewmodel
     private val recitersViewModel by viewModels<RecitersViewModel>()
     override fun getViewModel() = recitersViewModel
-    private val reciterAdapter = RecitersAdapter()
+    private lateinit var reciterAdapter: RecitersAdapter
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // to not re-handle set adapter to recycler view in each reconnection
         initRecyclerViewAdapter()
-        // to not re-handle set OnQueryTextListener in each reconnection
         initSearchOfReciters()
-        //observe viewModel
         observeViewModel()
     }
 
 
     private fun initRecyclerViewAdapter() {
-        binding.recitersRecyclerView.adapter = reciterAdapter.apply {
-            listener = object : ReciterAdapterListener {
-                override fun onReciterClicked(reciter: Reciter) {
-                    startActivity(
-                        Intent(context, SurasActivity::class.java)
-                            .putExtra(RECITER_KEY, reciter)
-                    )
-                }
-
-                override fun onAddToFavoriteClicked(view: View, reciter: Reciter) {
-                    view.visibility = View.GONE
-                    recitersViewModel.addReciterToMyReciters(reciter)
-                }
-            }
-        }
+        reciterAdapter = RecitersAdapter(
+            { reciter ->
+                startActivity(
+                    Intent(context, SurasActivity::class.java)
+                        .putExtra(AppConstants.RECITER_KEY, reciter)
+                )
+            },
+            { pair ->
+                pair.first.visibility = View.GONE
+                recitersViewModel.addReciterToMyReciters(pair.second)
+            })
+        binding.recitersRecyclerView.adapter = reciterAdapter
     }
 
     private fun initSearchOfReciters() {
@@ -77,18 +68,14 @@ class RecitersFragment : BaseFragment<FragmentRecitersBinding>() {
 
     private fun observeViewModel() {
         with(recitersViewModel) {
-            error.observe(viewLifecycleOwner) { (_, _) ->
-                activity?.toastyError(R.string.alrt_err_occur_msg)
-            }
-            resultOfAddReciter.observe(viewLifecycleOwner) {
-                if (it) {
-                    activity?.toastySuccess(R.string.alrt_add_success_msg)
+            lifecycleScope.launch {
+                error.collect { (_, showError) ->
+                    if (showError) toastyError(R.string.alrt_err_occur_msg)
+                }
+                resultOfAddReciter.collect { success ->
+                    if (success) toastySuccess(R.string.alrt_add_success_msg)
                 }
             }
         }
-    }
-
-    companion object {
-        const val RECITER_KEY = "RECITER_KEY"
     }
 }

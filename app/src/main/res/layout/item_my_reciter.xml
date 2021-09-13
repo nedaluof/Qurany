@@ -13,16 +13,16 @@
 
         <variable
             name="callback"
-            type="com.nedaluof.qurany.ui.adapters.MyRecitersAdapter.MyRecitersAdapterListener" />
+            type="com.nedaluof.qurany.ui.myreciters.MyRecitersAdapter" />
     </data>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/my_reciters_item_lyt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:elevation="3dp"
-        android:onClick="@{()->callback.onReciterClicked(reciter)}"
         app:cardCornerRadius="4dp"
         app:cardPreventCornerOverlap="false">
 
@@ -95,12 +95,11 @@
                 android:layout_margin="@dimen/dp_4">
 
                 <ImageView
-                    android:id="@+id/img_favorite"
+                    android:id="@+id/delete_reciter_from_favorite"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_centerInParent="true"
                     android:contentDescription="@string/app_name"
-                    android:onClick="@{(view)-> callback.onDeleteFromMyReciter(view,reciter)}"
                     android:src="@drawable/ic_favorite_selected"
                     android:visibility="@{reciter.inMyReciters ? View.GONE:View.VISIBLE }" />
 

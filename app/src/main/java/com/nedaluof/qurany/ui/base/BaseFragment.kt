@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.nedaluof.qurany.util.toastyError
+import com.nedaluof.qurany.util.toastySuccess
 
 /**
  * Created by NedaluOf on 9/11/2021.
@@ -24,21 +26,24 @@ abstract class BaseFragment<DB : ViewDataBinding> : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
-        with(binding) {
-            setVariable(bindingVariable, getViewModel())
-            lifecycleOwner = viewLifecycleOwner
-            executePendingBindings()
-        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        /* with(binding) {
-             setVariable(bindingVariable, getViewModel())
-             lifecycleOwner = viewLifecycleOwner
-             executePendingBindings()
-         }*/
+        with(binding) {
+            setVariable(bindingVariable, getViewModel())
+            lifecycleOwner = viewLifecycleOwner
+            executePendingBindings()
+        }
+    }
+
+    fun toastyError(stringId: Int) {
+        requireActivity().toastyError(stringId)
+    }
+
+    fun toastySuccess(stringId: Int) {
+        requireActivity().toastySuccess(stringId)
     }
 
 }

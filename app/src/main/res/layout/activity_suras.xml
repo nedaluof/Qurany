@@ -30,11 +30,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="@dimen/dp_4"
+                android:layout_margin="@dimen/_8sdp"
                 android:text="@{viewmodel.reciterName}"
                 android:textColor="@color/white"
-                android:textSize="22sp"
-                android:textStyle="bold"
+                android:textSize="@dimen/_15ssp"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 tools:text="@string/reciters_suras_bar_title" />
         </com.google.android.material.appbar.AppBarLayout>
@@ -49,12 +48,13 @@
                 android:id="@+id/suras_recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:overScrollMode="never"
-                android:paddingBottom="30dp"
+                android:clipToPadding="false"
                 android:layoutAnimation="@anim/recycler_view_items_animation"
+                android:overScrollMode="never"
+                android:paddingBottom="@dimen/_50sdp"
                 android:scrollbars="none"
+                app:items="@{viewmodel.reciterSuras}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:suras="@{viewmodel.reciterSuras}"
                 tools:listitem="@layout/item_sura" />
 
             <ProgressBar

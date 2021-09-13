@@ -1,16 +1,17 @@
 package com.nedaluof.qurany.ui.myreciters
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.data.model.Status
 import com.nedaluof.qurany.domain.repositories.MyRecitersRepository
+import com.nedaluof.qurany.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -18,51 +19,49 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class MyRecitersViewModel @Inject constructor(
-        private val repository: MyRecitersRepository,
-) : ViewModel() {
+    private val repository: MyRecitersRepository,
+) : BaseViewModel() {
 
-    val reciters = MutableLiveData<List<Reciter>>()
+    val reciters = MutableStateFlow<List<Reciter>>(emptyList())
+    val loading = MutableStateFlow(true)
+    val noReciters = MutableStateFlow(false)
+    private val _error = MutableStateFlow(false)
+    val error: StateFlow<Boolean> = _error
 
-    private val _error = MutableLiveData<String>()
-    val error: LiveData<String>
-        get() = _error
-
-    val loading = MutableLiveData(true)
-
-    val noReciters = MutableLiveData<Boolean>()
-
-    fun getMyReciters() {
+    private fun getMyReciters() {
         viewModelScope.launch {
             repository.getMyReciters()
-                    .catch { cause -> _error.postValue(cause.message!!) }
-                    .collect {
-                        if (it.isNotEmpty()) {
-                            loading.value = false
-                            reciters.value = it
-                        } else {
-                            reciters.value = emptyList()
-                            loading.value = false
-                            noReciters.postValue(true)
-                        }
+                .catch { cause ->
+                    _error.value = true
+                    Timber.e(cause)
+                }
+                .collect {
+                    if (it.isNotEmpty()) {
+                        loading.value = false
+                        reciters.value = it
+                    } else {
+                        reciters.value = emptyList()
+                        loading.value = false
+                        noReciters.value = true
                     }
+                }
         }
     }
 
-    private val _resultOfDeletion = MutableLiveData<Boolean>()
-    val resultOfDeleteReciter: LiveData<Boolean>
-        get() = _resultOfDeletion
+    private val _resultOfDeletion = MutableStateFlow(false)
+    val resultOfDeleteReciter: StateFlow<Boolean> = _resultOfDeletion
 
     fun deleteFromMyReciters(reciter: Reciter) {
         viewModelScope.launch {
             val result = repository.deleteFromMyReciters(reciter)
             when (result.status) {
-                Status.SUCCESS -> {
-                    _resultOfDeletion.postValue(true)
-                }
-                Status.ERROR -> {
-                    _resultOfDeletion.postValue(false)
-                }
+                Status.SUCCESS -> _resultOfDeletion.value = true
+                Status.ERROR -> _resultOfDeletion.value = false
             }
         }
+    }
+
+    init {
+        getMyReciters()
     }
 }

@@ -20,6 +20,7 @@ abstract class BaseActivity<DB : ViewDataBinding> : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, layoutId)
         binding.apply {
             setVariable(bindingVariable, getViewModel())
+            lifecycleOwner = this@BaseActivity
             executePendingBindings()
         }
     }

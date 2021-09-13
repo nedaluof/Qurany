@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">قُراّني</string>
+    <string name="app_player">مشغل قُراّني</string>
+
     <string name="reciters_bar_title">قائمة القراء</string>
     <string name="reciters_suras_bar_title">السور الخاصة بالقارئ</string>
     <string name="home_nav_title">القُراء</string>

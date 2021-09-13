@@ -4,13 +4,10 @@
     android:id="@+id/bottom_sheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:elevation="4dp"
-    android:gravity="center_horizontal"
+    android:background="@drawable/player_rounded_bg"
     android:orientation="vertical"
-    android:visibility="visible"
     app:behavior_hideable="false"
-    app:behavior_peekHeight="37dp"
+    app:behavior_peekHeight="40dp"
     app:layout_behavior="@string/bottom_sheet_behavior">
 
 
@@ -19,34 +16,25 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/reciter_sura_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+            android:layout_margin="@dimen/_6sdp"
             android:layout_weight="1"
-            android:ellipsize="marquee"
-            android:fadingEdge="horizontal"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:scrollHorizontally="true"
-            android:singleLine="true"
-            android:text="@string/app_name"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:text="@string/app_player"
+            android:textSize="@dimen/_16ssp" />
 
-        <ImageButton
-            android:id="@+id/img_btn_close"
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/close_btn"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_margin="@dimen/_6sdp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_cancel" />
+            android:src="@drawable/ic_close" />
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/green_200" />
 
     <com.google.android.exoplayer2.ui.PlayerControlView
         android:id="@+id/player_controller"

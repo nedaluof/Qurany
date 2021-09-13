@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -11,19 +10,14 @@
         <variable
             name="reciter"
             type="com.nedaluof.qurany.data.model.Reciter" />
-
-        <variable
-            name="callback"
-            type="com.nedaluof.qurany.ui.adapters.RecitersAdapter.ReciterAdapterListener" />
-
     </data>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/reciter_item_lyt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:onClick="@{()->callback.onReciterClicked(reciter)}"
         app:cardCornerRadius="@dimen/dp_8"
         app:cardElevation="2dp"
         app:cardPreventCornerOverlap="false">
@@ -90,10 +84,6 @@
                     tools:text="There 70 Suras" />
             </LinearLayout>
 
-            <!--  <View
-                  android:layout_width="1dp"
-                  android:layout_height="match_parent"
-                  android:background="@color/green_200" />-->
 
             <RelativeLayout
                 android:layout_margin="@dimen/dp_4"
@@ -105,13 +95,12 @@
 
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/img_favorite"
+                    android:id="@+id/add_reciter_to_favorite"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_centerInParent="true"
                     android:contentDescription="@string/app_name"
-                    android:onClick="@{(view)-> callback.onAddToFavoriteClicked(view,reciter)}"
-                    android:src="@{@drawable/ic_favorite_navigation}"
+                    android:src="@drawable/ic_favorite_navigation"
                     android:visibility="@{reciter.inMyReciters ? View.GONE:View.VISIBLE }" />
 
                 <ProgressBar

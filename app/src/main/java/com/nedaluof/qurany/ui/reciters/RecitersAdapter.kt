@@ -1,5 +1,6 @@
-package com.nedaluof.qurany.ui.adapters
+package com.nedaluof.qurany.ui.reciters
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -7,40 +8,59 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.annotation.RequiresApi
-import androidx.recyclerview.widget.RecyclerView
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.databinding.ItemReciterBinding
+import com.nedaluof.qurany.ui.base.BaseRecyclerAdapter
 import com.nedaluof.qurany.util.getLanguage
 
 /**
  * Created by nedaluof on 12/11/2020.
  */
-class RecitersAdapter : RecyclerView.Adapter<RecitersAdapter.RecitersVH>(), Filterable {
+class RecitersAdapter(
+    val onReciterClicked: (Reciter) -> Unit,
+    val onAddReciterToFavoriteClicked: (Pair<View, Reciter>) -> Unit,
+) : BaseRecyclerAdapter<Reciter>(), Filterable {
 
-    lateinit var listener: ReciterAdapterListener
     private val recitersData = ArrayList<Reciter>()
     private val filteredList = ArrayList<Reciter>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = RecitersVH(
-            ItemReciterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        ItemReciterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
 
-    override fun onBindViewHolder(holder: RecitersVH, position: Int) {
-        holder.onBind(recitersData[position])
-    }
 
-    override fun getItemCount() = recitersData.size
-
-    fun addReciters(reciters: List<Reciter>) {
+    override fun submitList(list: MutableList<Reciter>?) {
+        super.submitList(list)
         recitersData.apply {
             clear()
-            addAll(reciters)
+            addAll(list!!)
         }
         filteredList.apply {
             clear()
-            addAll(reciters)
+            addAll(list!!)
         }
-        notifyDataSetChanged()
+    }
+
+    inner class RecitersVH(
+        private val binding: ItemReciterBinding,
+    ) : BaseViewHolder(binding) {
+        override fun onBind(position: Int) {
+            try {
+                val comingReciter = recitersData[position]
+                with(binding) {
+                    reciter = comingReciter
+                    executePendingBindings()
+                    reciterItemLyt.setOnClickListener {
+                        onReciterClicked(comingReciter)
+                    }
+                    addReciterToFavorite.setOnClickListener {
+                        onAddReciterToFavoriteClicked(Pair(it, comingReciter))
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     override fun getFilter(): Filter = searchFilter
@@ -59,7 +79,8 @@ class RecitersAdapter : RecyclerView.Adapter<RecitersAdapter.RecitersVH>(), Filt
                     }
                 } else {
                     filteredList.filter { reciter ->
-                        reciter.name?.firstName()?.contains(constraint.toString().trim { it <= ' ' })!! ||
+                        reciter.name?.firstName()
+                            ?.contains(constraint.toString().trim { it <= ' ' })!! ||
                                 reciter.name?.secondName()?.contains(constraint.toString())!!
                     }
                 }
@@ -67,6 +88,7 @@ class RecitersAdapter : RecyclerView.Adapter<RecitersAdapter.RecitersVH>(), Filt
             return filterResults
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         @Suppress("UNCHECKED_CAST")
         override fun publishResults(p0: CharSequence?, results: FilterResults?) {
             with(recitersData) {
@@ -79,21 +101,4 @@ class RecitersAdapter : RecyclerView.Adapter<RecitersAdapter.RecitersVH>(), Filt
 
     fun String.firstName(): String = this.substring(0, this.indexOf(' '))
     fun String.secondName(): String = this.substring(this.indexOf(' ') + 1)
-
-    inner class RecitersVH(
-            private val binding: ItemReciterBinding,
-    ) : RecyclerView.ViewHolder(binding.root) {
-        fun onBind(comingReciter: Reciter) {
-            binding.run {
-                reciter = comingReciter
-                callback = listener
-                executePendingBindings()
-            }
-        }
-    }
-
-    interface ReciterAdapterListener {
-        fun onReciterClicked(reciter: Reciter)
-        fun onAddToFavoriteClicked(view: View, reciter: Reciter)
-    }
 }

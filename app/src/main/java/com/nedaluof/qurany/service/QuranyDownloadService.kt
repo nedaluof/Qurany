@@ -27,7 +27,7 @@ class QuranyDownloadService : Service() {
   override fun onBind(intent: Intent?): IBinder? = null
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-    sura = intent?.getParcelableExtra("sura")!!
+    sura = intent?.getParcelableExtra(AppConstants.DOWNLOAD_SURA_KEY)!!
     registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
     startDownload()
     return START_NOT_STICKY
