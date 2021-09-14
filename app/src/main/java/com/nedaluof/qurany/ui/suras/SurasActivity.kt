@@ -27,7 +27,6 @@ import com.nedaluof.qurany.service.QuranyPlayerService
 import com.nedaluof.qurany.ui.base.BaseActivity
 import com.nedaluof.qurany.util.AppConstants
 import com.nedaluof.qurany.util.isNetworkOk
-import com.nedaluof.qurany.util.toastyError
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -154,64 +153,19 @@ class SurasActivity : BaseActivity<ActivitySurasBinding>() {
 
     private fun onClickPlay(sura: Sura) {
         with(surasViewModel) {
-            checkSuraExist(sura)
             lifecycleScope.launch {
-                isSuraExist.collect { exist ->
+                checkSuraExist(sura).collect { exist ->
                     if (exist != null) {
-                        if (exist) playLocally(sura) else playOnline(sura)
+                        if (exist) sura.playingType = AppConstants.PLAYING_LOCALLY
+                        playSura(sura)
                     }
                 }
             }
         }
     }
 
-    private fun playOnline(sura: Sura) {
+    private fun playSura(sura: Sura) {
         quranyPlayerServiceIntent.apply {
-            sura.playingType = AppConstants.PLAYING_ONLINE
-            putExtra(AppConstants.SURA_KEY, sura)
-            putExtra(AppConstants.RECITER_KEY, reciterData)
-        }
-        if (this.isNetworkOk()) {
-            if (!this::exoPlayer.isInitialized || !exoPlayer.isPlaying) {
-                bindService(
-                    quranyPlayerServiceIntent,
-                    serviceConnection!!,
-                    Context.BIND_AUTO_CREATE
-                )
-                with(binding.playerBottomSheet) {
-                    bottomSheet.isVisible = true
-                    reciterSuraName.text = sura.playerTitle
-                    sheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
-                }
-                // this startForegroundService if SDK >= 26 or startService(myIntent) for SDK < 26
-                Util.startForegroundService(this@SurasActivity, quranyPlayerServiceIntent)
-                initializePlayer()
-            } else {
-                service?.stopSelf()
-                unbindService(serviceConnection!!)
-                bound = false
-                bindService(
-                    quranyPlayerServiceIntent,
-                    serviceConnection!!,
-                    Context.BIND_ADJUST_WITH_ACTIVITY
-                )
-                with(binding.playerBottomSheet) {
-                    bottomSheet.isVisible = true
-                    reciterSuraName.text = sura.playerTitle
-                    sheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
-                }
-                // this startForegroundService if SDK >= 26 or startService(myIntent) for SDK < 26
-                Util.startForegroundService(this@SurasActivity, quranyPlayerServiceIntent)
-                initializePlayer()
-            }
-        } else {
-            toastyError(R.string.alrt_no_internet_msg)
-        }
-    }
-
-    private fun playLocally(sura: Sura) {
-        quranyPlayerServiceIntent.apply {
-            sura.playingType = AppConstants.PLAYING_LOCALLY
             putExtra(AppConstants.SURA_KEY, sura)
             putExtra(AppConstants.RECITER_KEY, reciterData)
         }
@@ -221,14 +175,6 @@ class SurasActivity : BaseActivity<ActivitySurasBinding>() {
                 serviceConnection!!,
                 Context.BIND_AUTO_CREATE
             )
-
-            with(binding.playerBottomSheet) {
-                bottomSheet.isVisible = true
-                reciterSuraName.text = sura.playerTitle
-                sheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
-            }
-            // this startForegroundService if SDK >= 26 or startService(myIntent) for SDK < 26
-            Util.startForegroundService(this, quranyPlayerServiceIntent)
         } else {
             service?.stopSelf()
             unbindService(serviceConnection!!)
@@ -238,13 +184,25 @@ class SurasActivity : BaseActivity<ActivitySurasBinding>() {
                 serviceConnection!!,
                 Context.BIND_ADJUST_WITH_ACTIVITY
             )
-            with(binding.playerBottomSheet) {
-                bottomSheet.isVisible = true
-                reciterSuraName.text = sura.playerTitle
-                sheetBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+        reInitToPlaySura(sura)
+        // this startForegroundService if SDK >= 26 or startService(myIntent) for SDK < 26
+        Util.startForegroundService(this@SurasActivity, quranyPlayerServiceIntent)
+    }
+
+    private fun reInitToPlaySura(sura: Sura) {
+        with(binding.playerBottomSheet) {
+            bottomSheet.isVisible = true
+            reciterSuraName.text = sura.playerTitle
+            sheetBehavior?.state = if (sura.playingType == AppConstants.PLAYING_ONLINE) {
+                if (this@SurasActivity.isNetworkOk()) {
+                    BottomSheetBehavior.STATE_EXPANDED
+                } else {
+                    BottomSheetBehavior.STATE_COLLAPSED
+                }
+            } else {
+                BottomSheetBehavior.STATE_EXPANDED
             }
-            // this startForegroundService if SDK >= 26 or startService(myIntent) for SDK < 26
-            Util.startForegroundService(this, quranyPlayerServiceIntent)
         }
     }
 

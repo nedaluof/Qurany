@@ -34,4 +34,13 @@ object QuranyViewsBindings {
             }
         }
     }
+
+    @JvmStatic
+    @BindingAdapter("suraNumber")
+    fun suraNumber(textView: TextView, number: Int) {
+        val context = textView.context
+        val suraNumberLabel = context.getString(R.string.sura_number)
+        val suraNum = "$suraNumberLabel $number"
+        textView.text = suraNum
+    }
 }

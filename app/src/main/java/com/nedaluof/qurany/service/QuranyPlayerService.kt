@@ -19,10 +19,7 @@ import com.nedaluof.qurany.R
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.data.model.Sura
 import com.nedaluof.qurany.ui.suras.SurasActivity
-import com.nedaluof.qurany.util.AppConstants
-import com.nedaluof.qurany.util.getLogoAsBitmap
-import com.nedaluof.qurany.util.getSuraPath
-import com.nedaluof.qurany.util.toastySuccess
+import com.nedaluof.qurany.util.*
 
 /**
  * Created by nedaluof on 12/27/2020.
@@ -53,13 +50,17 @@ class QuranyPlayerService : Service() {
         if (this::sura.isInitialized) {
             when (sura.playingType) {
                 AppConstants.PLAYING_ONLINE -> {
-                    val suraURI = Uri.parse(sura.suraUrl)
-                    val suraMediaSource = buildMediaSource(suraURI)
-                    player.apply {
-                        prepare(suraMediaSource)
-                        playWhenReady = true
+                    if (this.isNetworkOk()) {
+                        val suraURI = Uri.parse(sura.suraUrl)
+                        val suraMediaSource = buildMediaSource(suraURI)
+                        player.apply {
+                            prepare(suraMediaSource)
+                            playWhenReady = true
+                        }
+                        this.toastySuccess(R.string.alrt_sura_playing_online)
+                    } else {
+                        toastyError(R.string.alrt_no_internet_msg)
                     }
-                    this@QuranyPlayerService.toastySuccess(R.string.alrt_sura_playing_online)
                 }
                 AppConstants.PLAYING_LOCALLY -> {
                     val localSuraPath = this.getSuraPath(sura.suraSubPath)
@@ -77,12 +78,10 @@ class QuranyPlayerService : Service() {
     }
 
     fun playerIsRunning() = isRunning
-    fun getCurrentSuraRunning(): Sura {
-        return if (this::sura.isInitialized) {
-            sura
-        } else {
-            Sura()
-        }
+    fun getCurrentSuraRunning() = if (this::sura.isInitialized) {
+        sura
+    } else {
+        Sura()
     }
 
     private fun initPlayerNotification() {
@@ -166,8 +165,7 @@ class QuranyPlayerService : Service() {
     }
 
     inner class PlayerBinder : Binder() {
-        val playerService: QuranyPlayerService
-            get() = this@QuranyPlayerService
+        val playerService: QuranyPlayerService = this@QuranyPlayerService
     }
 }
 

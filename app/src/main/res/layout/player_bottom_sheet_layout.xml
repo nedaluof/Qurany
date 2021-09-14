@@ -7,7 +7,7 @@
     android:background="@drawable/player_rounded_bg"
     android:orientation="vertical"
     app:behavior_hideable="false"
-    app:behavior_peekHeight="40dp"
+    app:behavior_peekHeight="60dp"
     app:layout_behavior="@string/bottom_sheet_behavior">
 
 
@@ -20,7 +20,7 @@
             android:id="@+id/reciter_sura_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_6sdp"
+            android:layout_margin="@dimen/_8sdp"
             android:layout_weight="1"
             android:text="@string/app_player"
             android:textSize="@dimen/_16ssp" />
@@ -40,7 +40,7 @@
         android:id="@+id/player_controller"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="15dp"
         app:controller_layout_id="@layout/custom_player_controller"
         app:show_timeout="0" />
 

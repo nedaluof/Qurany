@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="@dimen/dp_40">
+        android:paddingTop="@dimen/_10sdp">
 
         <TextView
             android:id="@id/exo_position"
@@ -43,7 +43,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="@dimen/_5sdp"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="4dp">
