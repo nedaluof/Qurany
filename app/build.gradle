@@ -29,10 +29,7 @@ android {
             }
         }
     }
-    buildFeatures {
-        viewBinding  true
-        dataBinding  true
-    }
+    buildFeatures.dataBinding = true
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -50,30 +47,31 @@ android {
 }
 
 dependencies {
+    /** app **/
     //app compat
     implementation "androidx.appcompat:appcompat:$versions.appCompat"
     //constraint layout
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
-    //recyclerView
+    //recycler view
     implementation "androidx.recyclerview:recyclerview:$versions.recyclerView"
     //MDC
     implementation "com.google.android.material:material:$versions.material"
-    //Swipe Refresh Layout
+    //swipe refresh layout
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$versions.swipeRefreshLayout"
     //layouts design sizes helper
     implementation "com.intuit.sdp:sdp-android:$versions.intuit"
     implementation "com.intuit.ssp:ssp-android:$versions.intuit"
-    //Text painter animation
+    //text painter animation
     implementation "com.yanzhikai:TextPathView:$versions.painter"
     //chips navigation
     implementation "com.ismaeldivita.chipnavigation:chip-navigation-bar:$versions.chipNavigation"
     //alerter
     implementation "com.tapadoo.android:alerter:$versions.alerter"
-    //Toasty
+    //toasty
     implementation "com.github.GrenderG:Toasty:$versions.toasty"
     //fragment extensions
     implementation "androidx.fragment:fragment-ktx:$versions.fragmentKtx"
-    //ExoPlayer
+    //exoPlayer
     implementation "com.google.android.exoplayer:exoplayer:$versions.exoPlayer"
 
     /**jet-pack Components**/
@@ -85,15 +83,17 @@ dependencies {
     implementation "androidx.room:room-runtime:$versions.room"
     kapt "androidx.room:room-compiler:$versions.room"
     implementation "androidx.room:room-ktx:$versions.room"
-    // Hilt dependencies injection
+    //hilt dependencies injection
     implementation "com.google.dagger:hilt-android:$versions.hilt"
     kapt "com.google.dagger:hilt-android-compiler:$versions.hilt"
-    //Preference
+    //DataStore
+    implementation "androidx.datastore:datastore-preferences:$versions.dataStore"
+    //preference
     implementation "androidx.preference:preference-ktx:$versions.preference"
-    // startup
+    //startup
     implementation "androidx.startup:startup-runtime:$versions.startup"
 
-    //Network Layer
+    /** remote **/
     implementation("com.squareup.retrofit2:retrofit:$versions.retrofit") { exclude module: 'okhttp' }
     implementation "com.squareup.retrofit2:converter-gson:$versions.converter"
     implementation "com.squareup.okhttp3:logging-interceptor:$versions.interceptor"

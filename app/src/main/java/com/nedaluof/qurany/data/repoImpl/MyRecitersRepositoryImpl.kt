@@ -1,6 +1,6 @@
 package com.nedaluof.qurany.data.repoImpl
 
-import com.nedaluof.qurany.data.localsource.prefs.PreferencesHelper
+import com.nedaluof.qurany.data.localsource.prefs.PreferencesManager
 import com.nedaluof.qurany.data.localsource.room.ReciterDao
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.data.model.Result
@@ -13,7 +13,7 @@ import javax.inject.Inject
  */
 class MyRecitersRepositoryImpl @Inject constructor(
     private val recitersDao: ReciterDao,
-    private val preferences: PreferencesHelper,
+    private val preferences: PreferencesManager,
 ) : MyRecitersRepository {
 
     override fun getMyReciters() = recitersDao.getMyReciters()
@@ -23,7 +23,8 @@ class MyRecitersRepositoryImpl @Inject constructor(
         return try {
             recitersDao.deleteReciter(reciter)
             // remove from preferences
-            preferences.removeFromPrefs(reciter.id!!)
+            //preferences.removeFromPrefs(reciter.id!!)
+            preferences.removeFromDataStore(reciter.id!!)
             // now inform  deletion successfully
             Result.success(true)
         } catch (exception: Exception) {

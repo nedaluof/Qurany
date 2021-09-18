@@ -3,9 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Qurany/app/src/main/res/drawable-xhdpi/ic_search_2.xml" value="0.27314814814814814" />
         <entry key="..\:/Qurany/app/src/main/res/drawable/app_bar_rounded_bg.xml" value="0.28974358974358977" />
         <entry key="..\:/Qurany/app/src/main/res/drawable/bar_rounded_bg.xml" value="0.14635416666666667" />
         <entry key="..\:/Qurany/app/src/main/res/drawable/ic_close.xml" value="0.27314814814814814" />
+        <entry key="..\:/Qurany/app/src/main/res/drawable/ic_search.xml" value="0.27314814814814814" />
         <entry key="..\:/Qurany/app/src/main/res/drawable/player_rounded_bg.xml" value="0.27314814814814814" />
         <entry key="..\:/Qurany/app/src/main/res/drawable/splash_app_details_bg.xml" value="0.21851851851851853" />
         <entry key="..\:/Qurany/app/src/main/res/layout/activity_main.xml" value="0.33" />

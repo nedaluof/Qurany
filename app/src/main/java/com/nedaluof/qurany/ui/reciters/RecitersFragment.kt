@@ -67,8 +67,8 @@ class RecitersFragment : BaseFragment<FragmentRecitersBinding>() {
     }
 
     private fun observeViewModel() {
-        with(recitersViewModel) {
-            lifecycleScope.launch {
+        lifecycleScope.launch {
+            with(recitersViewModel) {
                 error.collect { (_, showError) ->
                     if (showError) toastyError(R.string.alrt_err_occur_msg)
                 }

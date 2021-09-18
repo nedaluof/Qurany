@@ -7,11 +7,11 @@ import com.nedaluof.qurany.domain.repositories.RecitersRepository
 import com.nedaluof.qurany.ui.base.BaseViewModel
 import com.nedaluof.qurany.util.ConnectivityStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -22,10 +22,9 @@ class RecitersViewModel @Inject constructor(
     private val repository: RecitersRepository,
 ) : BaseViewModel() {
 
-
     /**reciters list view control**/
     //reciters list from API
-    val reciters = MutableStateFlow<List<Reciter>>(emptyList())
+    val recitersList = MutableStateFlow<List<Reciter>>(emptyList())
 
     //reciters list loading
     val loading = MutableStateFlow(false)
@@ -46,18 +45,28 @@ class RecitersViewModel @Inject constructor(
     private val _resultAdd = MutableStateFlow(false)
     val resultOfAddReciter: StateFlow<Boolean> = _resultAdd
 
+    init {
+        observeConnectivity()
+        getReciters()
+    }
+
     private fun getReciters() {
         loading.value = true
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = repository.getReciters()
-            when (result.status) {
-                Status.SUCCESS -> {
-                    reciters.value = result.data!!
-                    loading.value = false
-                }
-                Status.ERROR -> {
-                    _error.value = Pair(result.message!!, false)
-                    loading.value = false
+        viewModelScope.launch {
+            repository.loadReciters { result ->
+                when (result.status) {
+                    Status.SUCCESS -> {
+                        recitersList.value = result.data!!
+                        Timber.e("ffffffffffffff data set now ")
+                        recitersList.value.forEach {
+                            Timber.e("ffffffffffffff ${it.count!!}")
+                        }
+                        loading.value = false
+                    }
+                    Status.ERROR -> {
+                        _error.value = Pair(result.message!!, false)
+                        loading.value = false
+                    }
                 }
             }
         }
@@ -65,16 +74,11 @@ class RecitersViewModel @Inject constructor(
 
     fun addReciterToMyReciters(reciter: Reciter) {
         _loadingAdd.value = true
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = repository.addReciterToDatabase(reciter)
-            when (result.status) {
-                Status.SUCCESS -> {
-                    _resultAdd.value = true
-                    _loadingAdd.value = false
-                }
-                Status.ERROR -> {
-                    _resultAdd.value = false
-                    _loadingAdd.value = false
+        viewModelScope.launch {
+            repository.addReciterToDatabase(reciter) { result ->
+                when (result.status) {
+                    Status.SUCCESS -> _resultAdd.value = true
+                    Status.ERROR -> _resultAdd.value = false
                 }
             }
         }
@@ -90,10 +94,5 @@ class RecitersViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    init {
-        observeConnectivity()
-        getReciters()
     }
 }

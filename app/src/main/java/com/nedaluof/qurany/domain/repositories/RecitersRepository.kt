@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
  * Created by NedaluOf on 8/16/2021.
  */
 interface RecitersRepository {
-    suspend fun getReciters(): Result<List<Reciter>>
-    suspend fun addReciterToDatabase(reciter: Reciter): Result<Boolean>
+    suspend fun loadReciters(result: (Result<List<Reciter>>) -> Unit)
+    suspend fun addReciterToDatabase(reciter: Reciter, result: (Result<Boolean>) -> Unit)
     suspend fun observeConnectivity(): Flow<ConnectivityStatus>
 }

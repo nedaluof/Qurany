@@ -26,16 +26,12 @@ abstract class BaseFragment<DB : ViewDataBinding> : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         with(binding) {
             setVariable(bindingVariable, getViewModel())
             lifecycleOwner = viewLifecycleOwner
             executePendingBindings()
         }
+        return binding.root
     }
 
     fun toastyError(stringId: Int) {
@@ -45,5 +41,4 @@ abstract class BaseFragment<DB : ViewDataBinding> : Fragment() {
     fun toastySuccess(stringId: Int) {
         requireActivity().toastySuccess(stringId)
     }
-
 }
