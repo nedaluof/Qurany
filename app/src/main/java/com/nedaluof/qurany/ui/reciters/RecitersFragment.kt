@@ -28,14 +28,12 @@ class RecitersFragment : BaseFragment<FragmentRecitersBinding>() {
     override fun getViewModel() = recitersViewModel
     private lateinit var reciterAdapter: RecitersAdapter
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerViewAdapter()
         initSearchOfReciters()
         observeViewModel()
     }
-
 
     private fun initRecyclerViewAdapter() {
         reciterAdapter = RecitersAdapter(
@@ -48,7 +46,8 @@ class RecitersFragment : BaseFragment<FragmentRecitersBinding>() {
             { pair ->
                 pair.first.visibility = View.GONE
                 recitersViewModel.addReciterToMyReciters(pair.second)
-            })
+            }
+        )
         binding.recitersRecyclerView.adapter = reciterAdapter
     }
 

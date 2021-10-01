@@ -2,7 +2,7 @@ package com.nedaluof.qurany.ui.suras
 
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.data.model.Sura
-import com.nedaluof.qurany.domain.repositories.SurasRepository
+import com.nedaluof.qurany.data.repository.SurasRepository
 import com.nedaluof.qurany.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

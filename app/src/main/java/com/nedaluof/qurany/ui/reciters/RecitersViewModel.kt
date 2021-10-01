@@ -3,7 +3,7 @@ package com.nedaluof.qurany.ui.reciters
 import androidx.lifecycle.viewModelScope
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.data.model.Status
-import com.nedaluof.qurany.domain.repositories.RecitersRepository
+import com.nedaluof.qurany.data.repository.RecitersRepository
 import com.nedaluof.qurany.ui.base.BaseViewModel
 import com.nedaluof.qurany.util.ConnectivityStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,17 +23,17 @@ class RecitersViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     /**reciters list view control**/
-    //reciters list from API
+    // reciters list from API
     val recitersList = MutableStateFlow<List<Reciter>>(emptyList())
 
-    //reciters list loading
+    // reciters list loading
     val loading = MutableStateFlow(false)
 
-    //reciters list error from API
+    // reciters list error from API
     private val _error = MutableStateFlow(Pair("", false))
     val error: StateFlow<Pair<String, Boolean>> = _error
 
-    //connectivity status
+    // connectivity status
     val connected = MutableStateFlow(true)
 
     /**add reciter**/
@@ -41,7 +41,7 @@ class RecitersViewModel @Inject constructor(
     private val _loadingAdd = MutableStateFlow(false)
     val loadingAdd: StateFlow<Boolean> = _loadingAdd
 
-    //result of adding reciter to the My Reciters List
+    // result of adding reciter to the My Reciters List
     private val _resultAdd = MutableStateFlow(false)
     val resultOfAddReciter: StateFlow<Boolean> = _resultAdd
 
@@ -83,7 +83,6 @@ class RecitersViewModel @Inject constructor(
             }
         }
     }
-
 
     private fun observeConnectivity() {
         viewModelScope.launch {

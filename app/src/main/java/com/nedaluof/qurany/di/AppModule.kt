@@ -4,6 +4,9 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import com.nedaluof.qurany.data.source.localsource.preferences.PreferencesManager
+import com.nedaluof.qurany.data.source.localsource.preferences.PreferencesManagerImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,17 +19,22 @@ import dagger.hilt.components.SingletonComponent
  */
 @InstallIn(SingletonComponent::class)
 @Module
-object AppModule {
+abstract class AppModule {
 
-    private const val QURANY_PREFERENCES = "QURANY_PREFERENCES"
-    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = QURANY_PREFERENCES)
+    @Binds
+    abstract fun providePreferencesManager(
+        preferencesManager: PreferencesManagerImpl
+    ): PreferencesManager
 
-    @Provides
-    fun provideDataStore(
-        @ApplicationContext
-        context: Context
-    ): DataStore<Preferences> = context.dataStore
+    @InstallIn(SingletonComponent::class)
+    @Module
+    internal object DataStoreModule {
+        private val Context.dataStore by preferencesDataStore(name = "QURANY_PREFERENCES")
 
-
-    // TODO: inject firebase
+        @Provides
+        fun provideDataStore(
+            @ApplicationContext
+            context: Context
+        ): DataStore<Preferences> = context.dataStore
+    }
 }

@@ -21,7 +21,6 @@ class SurasAdapter(
         )
     )
 
-
     inner class SurasVH(
         private val binding: ItemSuraBinding,
     ) : BaseViewHolder(binding) {

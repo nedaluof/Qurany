@@ -22,25 +22,25 @@ fun Activity.toast(@StringRes message: Int) =
   Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 
 fun Context.toastyError(@StringRes msg: Int) =
-        Toasty.error(this, msg).show()
+  Toasty.error(this, msg).show()
 
 fun Context.toastySuccess(@StringRes msg: Int) =
-        Toasty.success(this, msg).show()
+  Toasty.success(this, msg).show()
 
 fun Context.toastyInfo(@StringRes msg: Int) =
-        Toasty.info(this, msg).show()
+  Toasty.info(this, msg).show()
 
 /**
  * @return user device language
  */
 fun getLanguage() =
-        if (Locale.getDefault().displayLanguage == "العربية") "_arabic" else "_english"
+  if (Locale.getDefault().displayLanguage == "العربية") "_arabic" else "_english"
 
 fun Context.checkIfSuraExist(subPath: String) =
-        File(this.getExternalFilesDir(null).toString() + subPath).exists()
+  File(this.getExternalFilesDir(null).toString() + subPath).exists()
 
 fun Context.getSuraPath(subPath: String): String =
-        File(this.getExternalFilesDir(null).toString() + subPath).absolutePath
+  File(this.getExternalFilesDir(null).toString() + subPath).absolutePath
 
 fun Context.getLogoAsBitmap(): Bitmap {
   val width = 200

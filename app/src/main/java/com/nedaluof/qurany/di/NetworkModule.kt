@@ -2,8 +2,8 @@ package com.nedaluof.qurany.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.nedaluof.qurany.data.remotesource.api.ApiService
-import com.nedaluof.qurany.data.remotesource.api.ApiService.Companion.BASE_URL
+import com.nedaluof.qurany.data.source.remotesource.api.ApiService
+import com.nedaluof.qurany.data.source.remotesource.api.ApiService.Companion.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

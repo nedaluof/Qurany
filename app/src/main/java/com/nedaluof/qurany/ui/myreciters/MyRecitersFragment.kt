@@ -29,7 +29,6 @@ class MyRecitersFragment : BaseFragment<FragmentMyRecitersBinding>() {
     private val myRecitersViewModel: MyRecitersViewModel by viewModels()
     override fun getViewModel() = myRecitersViewModel
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
@@ -65,7 +64,8 @@ class MyRecitersFragment : BaseFragment<FragmentMyRecitersBinding>() {
                     ) { Alerter.hide() }
                     .enableSwipeToDismiss()
                     .show()
-            })
+            }
+        )
     }
 
     private fun observeMyRecitersViewModel() {

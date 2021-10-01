@@ -1,7 +1,7 @@
 package com.nedaluof.qurany.ui.splash
 
 import androidx.lifecycle.ViewModel
-import com.nedaluof.qurany.domain.repositories.SplashRepository
+import com.nedaluof.qurany.data.repository.SplashRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject

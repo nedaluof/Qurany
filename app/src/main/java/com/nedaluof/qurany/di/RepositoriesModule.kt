@@ -1,13 +1,13 @@
 package com.nedaluof.qurany.di
 
-import com.nedaluof.qurany.data.repoImpl.MyRecitersRepositoryImpl
-import com.nedaluof.qurany.data.repoImpl.RecitersRepositoryImpl
-import com.nedaluof.qurany.data.repoImpl.SplashRepositoryImpl
-import com.nedaluof.qurany.data.repoImpl.SurasRepositoryImpl
-import com.nedaluof.qurany.domain.repositories.MyRecitersRepository
-import com.nedaluof.qurany.domain.repositories.RecitersRepository
-import com.nedaluof.qurany.domain.repositories.SplashRepository
-import com.nedaluof.qurany.domain.repositories.SurasRepository
+import com.nedaluof.qurany.data.repository.MyRecitersRepository
+import com.nedaluof.qurany.data.repository.RecitersRepository
+import com.nedaluof.qurany.data.repository.SplashRepository
+import com.nedaluof.qurany.data.repository.SurasRepository
+import com.nedaluof.qurany.data.repositoryImpl.MyRecitersRepositoryImpl
+import com.nedaluof.qurany.data.repositoryImpl.RecitersRepositoryImpl
+import com.nedaluof.qurany.data.repositoryImpl.SplashRepositoryImpl
+import com.nedaluof.qurany.data.repositoryImpl.SurasRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

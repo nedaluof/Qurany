@@ -3,7 +3,7 @@ package com.nedaluof.qurany.ui.myreciters
 import androidx.lifecycle.viewModelScope
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.data.model.Status
-import com.nedaluof.qurany.domain.repositories.MyRecitersRepository
+import com.nedaluof.qurany.data.repository.MyRecitersRepository
 import com.nedaluof.qurany.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +25,7 @@ class MyRecitersViewModel @Inject constructor(
     val reciters = MutableStateFlow<List<Reciter>>(emptyList())
     val loading = MutableStateFlow(true)
     val noReciters = MutableStateFlow(false)
+
     private val _error = MutableStateFlow(false)
     val error: StateFlow<Boolean> = _error
 
@@ -53,10 +54,11 @@ class MyRecitersViewModel @Inject constructor(
 
     fun deleteFromMyReciters(reciter: Reciter) {
         viewModelScope.launch {
-            val result = repository.deleteFromMyReciters(reciter)
-            when (result.status) {
-                Status.SUCCESS -> _resultOfDeletion.value = true
-                Status.ERROR -> _resultOfDeletion.value = false
+            repository.deleteFromMyReciters(reciter) { result ->
+                when (result.status) {
+                    Status.SUCCESS -> _resultOfDeletion.value = true
+                    Status.ERROR -> _resultOfDeletion.value = false
+                }
             }
         }
     }

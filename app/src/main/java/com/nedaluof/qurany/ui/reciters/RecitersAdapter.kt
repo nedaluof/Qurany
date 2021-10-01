@@ -28,7 +28,6 @@ class RecitersAdapter(
         ItemReciterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
 
-
     override fun submitList(list: MutableList<Reciter>?) {
         super.submitList(list)
         recitersData.apply {

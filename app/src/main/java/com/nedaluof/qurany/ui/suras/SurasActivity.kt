@@ -78,7 +78,6 @@ class SurasActivity : BaseActivity<ActivitySurasBinding>() {
             closeBtn.setOnClickListener {
                 resetPlayerView()
                 stopService()
-                binding.playerBottomSheet.playerController.player = null
             }
         }
     }
@@ -89,9 +88,12 @@ class SurasActivity : BaseActivity<ActivitySurasBinding>() {
             reciterSuraName.text = getString(R.string.app_player)
             sheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
         }
-        Handler(Looper.getMainLooper()).postDelayed({
-            binding.playerBottomSheet.bottomSheet.isVisible = true
-        }, 750)
+        Handler(Looper.getMainLooper()).postDelayed(
+            {
+                binding.playerBottomSheet.bottomSheet.isVisible = true
+            },
+            750
+        )
     }
 
     private fun initServiceConnection() {
@@ -218,9 +220,12 @@ class SurasActivity : BaseActivity<ActivitySurasBinding>() {
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
                 if (playbackState == Player.STATE_ENDED) {
                     sheetBehavior?.state = BottomSheetBehavior.STATE_COLLAPSED
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        binding.playerBottomSheet.bottomSheet.isVisible = false
-                    }, 1500)
+                    Handler(Looper.getMainLooper()).postDelayed(
+                        {
+                            binding.playerBottomSheet.bottomSheet.isVisible = false
+                        },
+                        1500
+                    )
                     // stopService()
                 }
             }
@@ -228,16 +233,17 @@ class SurasActivity : BaseActivity<ActivitySurasBinding>() {
     }
 
     private fun stopService() {
-        service?.stop()
-        unbindService(serviceConnection!!)
-        bound = false
+        if (bound) {
+            service?.stop()
+            unbindService(serviceConnection!!)
+            bound = false
+            binding.playerBottomSheet.playerController.player = null
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        if (bound) {
-            // Todo: if user close the Activity need efficient solution
-            stopService()
-        }
+        // Todo: if user close the Activity need efficient solution
+        stopService()
     }
 }

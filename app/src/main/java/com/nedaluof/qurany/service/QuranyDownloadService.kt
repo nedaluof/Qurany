@@ -42,13 +42,13 @@ class QuranyDownloadService : Service() {
           val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
           val request = DownloadManager.Request(Uri.parse(sura.suraUrl))
           request.setAllowedNetworkTypes(
-                  DownloadManager.Request.NETWORK_WIFI or
-                          DownloadManager.Request.NETWORK_MOBILE
+            DownloadManager.Request.NETWORK_WIFI or
+                    DownloadManager.Request.NETWORK_MOBILE
           )
-                  .setAllowedOverRoaming(false)
-                  .setTitle(SuraUtil.getSuraName(sura.id))
-                  .setDescription(SuraUtil.getSuraName(sura.id) + "| " + sura.reciterName)
-                  .setDestinationInExternalFilesDir(this, null, subPath)
+            .setAllowedOverRoaming(false)
+            .setTitle(SuraUtil.getSuraName(sura.id))
+            .setDescription(SuraUtil.getSuraName(sura.id) + "| " + sura.reciterName)
+            .setDestinationInExternalFilesDir(this, null, subPath)
           downloadId = downloadManager.enqueue(request)
         } else {
           toastyError(R.string.alrt_no_internet_msg)
@@ -80,8 +80,8 @@ class QuranyDownloadService : Service() {
   fun scan() {
     val file = File(this.getSuraPath(subPath))
     MediaScannerConnection.scanFile(
-            this, arrayOf(file.toString()),
-            arrayOf(file.name), null
+      this, arrayOf(file.toString()),
+      arrayOf(file.name), null
     )
   }
 

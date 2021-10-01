@@ -27,36 +27,39 @@ import yanzhikai.textpath.painter.FireworksPainter
 @AndroidEntryPoint
 class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
-    override val layoutId = R.layout.activity_splash
-    override val bindingVariable = BR.viewmodel
+  override val layoutId = R.layout.activity_splash
+  override val bindingVariable = BR.viewmodel
 
-    override fun getViewModel(): ViewModel {
-        val viewModel by viewModels<SplashViewModel>()
-        return viewModel
-    }
+  override fun getViewModel(): ViewModel {
+    val viewModel by viewModels<SplashViewModel>()
+    return viewModel
+  }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setupPathPainter()
-        goToMainActivity()
-    }
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setupPathPainter()
+    goToMainActivity()
+  }
 
-    private fun goToMainActivity() {
-        Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-            finish()
-        }, 2200)
-    }
+  private fun goToMainActivity() {
+    Handler(Looper.getMainLooper()).postDelayed(
+      {
+        startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+        finish()
+      },
+      2200
+    )
+  }
 
-    private fun setupPathPainter() {
-        binding.stpvQurany.apply {
-            setPathPainter(FireworksPainter())
-            setCalculator(AroundCalculator())
-            startAnimation(0F, 1F)
-            setFillColor(true)
-        }
+  private fun setupPathPainter() {
+    binding.stpvQurany.apply {
+      setPathPainter(FireworksPainter())
+      setCalculator(AroundCalculator())
+      startAnimation(0F, 1F)
+      setFillColor(true)
     }
+  }
 
-    override fun onBackPressed() { /*Kept empty*/
-    }
+  override fun onBackPressed() { /*Kept empty*/
+  }
 }

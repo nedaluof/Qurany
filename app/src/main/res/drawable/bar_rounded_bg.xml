@@ -7,5 +7,5 @@
         android:topRightRadius="50dp" />
     <stroke
         android:color="@color/green_200"
-        android:width="@dimen/_1sdp" />
+        android:width="0.5dp" />
 </shape>

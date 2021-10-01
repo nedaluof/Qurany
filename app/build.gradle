@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-parcelize'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 apply from: '../spotless.gradle'
 apply from: "$rootDir/dependencies.gradle"
 
@@ -97,7 +99,12 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:$versions.retrofit") { exclude module: 'okhttp' }
     implementation "com.squareup.retrofit2:converter-gson:$versions.converter"
     implementation "com.squareup.okhttp3:logging-interceptor:$versions.interceptor"
-
+    implementation "com.google.code.gson:gson:$versions.gson"
+    /**Firebase**/
+    implementation platform("com.google.firebase:firebase-bom:$versions.firebase_bom")
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-inappmessaging-display-ktx'
     /** kotlin **/
     //kotlin extensions
     implementation "androidx.core:core-ktx:$versions.coreKtx"
@@ -109,7 +116,6 @@ dependencies {
 
     // debugging
     implementation "com.jakewharton.timber:timber:$versions.timber"
-
     //Test libs
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

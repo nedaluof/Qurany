@@ -66,9 +66,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             if (doubleBackToExitPressedOnce) {
                 doubleBackToExitPressedOnce = false
                 toast(R.string.exit_app_msg)
-                Handler(Looper.myLooper()!!).postDelayed({
-                    doubleBackToExitPressedOnce = true
-                }, 2000)
+                Handler(Looper.myLooper()!!).postDelayed(
+                    {
+                        doubleBackToExitPressedOnce = true
+                    },
+                    2000
+                )
             } else {
                 finish()
             }

@@ -21,7 +21,6 @@ abstract class BaseRecyclerAdapter<T> :
         abstract fun onBind(position: Int)
     }
 
-
     companion object {
         private fun <T> modelComparator() = object : DiffUtil.ItemCallback<T>() {
 
