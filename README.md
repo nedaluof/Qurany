@@ -38,10 +38,9 @@
 
 ### Coming changes :-
  - ~~Replace RxJava with Coroutines & Flow.~~
- - Optimize The UI with the Material Component with simple animations.
+ -~~Optimize The UI with the Material Component with simple animations.~~
  - Expand the Functionality of the player by support play full play-list of sura's.
- - replace Reactive Network lib that depend on RxJava with Coroutines & Flow API Solution.
- 
+ - ~~Replace Reactive Network lib that depend on RxJava with Coroutines & Flow API Solution.~~
  
  
  
