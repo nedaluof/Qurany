@@ -50,7 +50,8 @@
                     app:closeIcon="@drawable/ic_close"
                     app:queryHint="Search in reciters"
                     app:searchHintIcon="@drawable/ic_search_2"
-                    app:searchIcon="@drawable/ic_search" />
+                    app:searchIcon="@drawable/ic_search"
+                    app:setEmptyQuery="@{viewmodel.emptying}" />
 
             </LinearLayout>
 
@@ -67,8 +68,11 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/refresh_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                app:OnRefreshListener="@{()->viewmodel.refreshData()}"
+                app:refreshing="@{viewmodel.loading}">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/reciters_recyclerView"
@@ -103,7 +107,7 @@
             android:visibility="@{viewmodel.connected ? View.GONE : View.VISIBLE}"
             tools:ignore="UseCompoundDrawables">
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="@dimen/_80sdp"
                 android:layout_height="@dimen/_80sdp"
                 android:layout_gravity="center"

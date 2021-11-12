@@ -13,6 +13,7 @@ class MyRecitersAdapter(
     val onReciterClicked: (Reciter) -> Unit,
     val onDeleteFromMyRecitersClicked: (Reciter) -> Unit,
 ) : BaseRecyclerAdapter<Reciter>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         MyRecitersVH(
             ItemMyReciterBinding.inflate(
@@ -25,8 +26,8 @@ class MyRecitersAdapter(
         val binding: ItemMyReciterBinding,
     ) : BaseRecyclerAdapter.BaseViewHolder(binding) {
         override fun onBind(position: Int) {
-            val reciterData = getItem(position)
-            binding.run {
+            val reciterData = items[position]
+            with(binding) {
                 myRecitersItemLyt.setOnClickListener { onReciterClicked(reciterData) }
                 deleteReciterFromFavorite.setOnClickListener {
                     onDeleteFromMyRecitersClicked(

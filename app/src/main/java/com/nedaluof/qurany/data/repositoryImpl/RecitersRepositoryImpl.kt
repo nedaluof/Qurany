@@ -40,7 +40,8 @@ class RecitersRepositoryImpl @Inject constructor(
                 result(Result.error(null, response.message()))
             }
         } catch (exception: Exception) {
-            result(Result.error(null, exception.message!!))
+            //result(Result.error(null, exception.message!!))
+            //Timber.e(exception)
         }
     }
 

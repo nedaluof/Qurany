@@ -1,5 +1,6 @@
 package com.nedaluof.qurany.ui.reciters
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.data.model.Status
@@ -11,7 +12,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -36,6 +36,9 @@ class RecitersViewModel @Inject constructor(
     // connectivity status
     val connected = MutableStateFlow(true)
 
+    //tell the search view to empty the text if refreshData() triggered
+    val emptying = MutableLiveData(false)
+
     /**add reciter**/
     // Todo: Future use
     private val _loadingAdd = MutableStateFlow(false)
@@ -52,15 +55,12 @@ class RecitersViewModel @Inject constructor(
 
     private fun getReciters() {
         loading.value = true
+        recitersList.value = emptyList()
         viewModelScope.launch {
             repository.loadReciters { result ->
                 when (result.status) {
                     Status.SUCCESS -> {
                         recitersList.value = result.data!!
-                        Timber.e("ffffffffffffff data set now ")
-                        recitersList.value.forEach {
-                            Timber.e("ffffffffffffff ${it.count!!}")
-                        }
                         loading.value = false
                     }
                     Status.ERROR -> {
@@ -92,6 +92,13 @@ class RecitersViewModel @Inject constructor(
                     ConnectivityStatus.NOT_CONNECTED -> connected.value = false
                 }
             }
+        }
+    }
+
+    fun refreshData() {
+        if (connected.value) {
+            emptying.value = true
+            getReciters()
         }
     }
 }

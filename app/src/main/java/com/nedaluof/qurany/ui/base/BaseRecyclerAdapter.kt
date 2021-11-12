@@ -1,15 +1,25 @@
 package com.nedaluof.qurany.ui.base
 
 import androidx.databinding.ViewDataBinding
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 /**
  * Created by NedaluOf on 9/12/2021.
  */
 abstract class BaseRecyclerAdapter<T> :
-    ListAdapter<T, BaseRecyclerAdapter.BaseViewHolder>(modelComparator<T>()) {
+    RecyclerView.Adapter<BaseRecyclerAdapter.BaseViewHolder>() {
+
+    val items = ArrayList<T>()
+
+    open fun addItems(items: List<T>) {
+        with(this.items) {
+            clear()
+            addAll(items)
+        }
+        notifyDataSetChanged()
+    }
+
+    override fun getItemCount() = items.size
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         holder.onBind(position)
@@ -21,14 +31,4 @@ abstract class BaseRecyclerAdapter<T> :
         abstract fun onBind(position: Int)
     }
 
-    companion object {
-        private fun <T> modelComparator() = object : DiffUtil.ItemCallback<T>() {
-
-            override fun areItemsTheSame(oldItem: T, newItem: T) =
-                oldItem.hashCode() == newItem.hashCode()
-
-            override fun areContentsTheSame(oldItem: T, newItem: T) =
-                oldItem.toString() == newItem.toString()
-        }
-    }
 }

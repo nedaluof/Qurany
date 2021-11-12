@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.nedaluof.qurany.BR
@@ -30,9 +31,16 @@ class RecitersFragment : BaseFragment<FragmentRecitersBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initRefresh()
         initRecyclerViewAdapter()
         initSearchOfReciters()
         observeViewModel()
+    }
+
+    private fun initRefresh() {
+        binding.refreshLayout.setColorSchemeColors(
+            ContextCompat.getColor(requireActivity(), R.color.green_200)
+        )
     }
 
     private fun initRecyclerViewAdapter() {
@@ -54,16 +62,21 @@ class RecitersFragment : BaseFragment<FragmentRecitersBinding>() {
     private fun initSearchOfReciters() {
         binding.recitersSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                reciterAdapter.filter.filter(query)
+                doSearch(query)
                 return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                reciterAdapter.filter.filter(newText)
+                doSearch(newText)
                 return false
+            }
+
+            private fun doSearch(text: String) {
+                reciterAdapter.filter.filter(text)
             }
         })
     }
+
 
     private fun observeViewModel() {
         lifecycleScope.launch {

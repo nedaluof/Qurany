@@ -21,23 +21,18 @@ class RecitersAdapter(
     val onAddReciterToFavoriteClicked: (Pair<View, Reciter>) -> Unit,
 ) : BaseRecyclerAdapter<Reciter>(), Filterable {
 
-    private val recitersData = ArrayList<Reciter>()
     private val filteredList = ArrayList<Reciter>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = RecitersVH(
         ItemReciterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
 
-    override fun submitList(list: MutableList<Reciter>?) {
-        super.submitList(list)
-        recitersData.apply {
+    override fun addItems(items: List<Reciter>) {
+        with(filteredList) {
             clear()
-            addAll(list!!)
+            addAll(items)
         }
-        filteredList.apply {
-            clear()
-            addAll(list!!)
-        }
+        super.addItems(items)
     }
 
     inner class RecitersVH(
@@ -45,7 +40,7 @@ class RecitersAdapter(
     ) : BaseViewHolder(binding) {
         override fun onBind(position: Int) {
             try {
-                val comingReciter = recitersData[position]
+                val comingReciter = items[position]
                 with(binding) {
                     reciter = comingReciter
                     executePendingBindings()
@@ -90,9 +85,14 @@ class RecitersAdapter(
         @SuppressLint("NotifyDataSetChanged")
         @Suppress("UNCHECKED_CAST")
         override fun publishResults(p0: CharSequence?, results: FilterResults?) {
-            with(recitersData) {
-                clear()
-                addAll(results?.values as List<Reciter>)
+            with(items) {
+                if (results == null) {
+                    clear()
+                    addAll(ArrayList())
+                } else {
+                    clear()
+                    addAll(results.values as List<Reciter>)
+                }
             }
             notifyDataSetChanged()
         }

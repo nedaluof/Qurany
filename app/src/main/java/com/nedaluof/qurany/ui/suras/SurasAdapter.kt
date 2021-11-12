@@ -25,8 +25,8 @@ class SurasAdapter(
         private val binding: ItemSuraBinding,
     ) : BaseViewHolder(binding) {
         override fun onBind(position: Int) {
-            val suraData = getItem(position)!!
-            binding.run {
+            val suraData = items[position]
+            with(binding) {
                 sura = suraData
                 executePendingBindings()
                 playSuraBtn.setOnClickListener { onPlaySuraClicked(suraData) }

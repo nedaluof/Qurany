@@ -3,6 +3,7 @@
 package com.nedaluof.qurany.util
 
 import android.widget.TextView
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.nedaluof.qurany.R
@@ -15,7 +16,7 @@ object QuranyViewsBindings {
     @JvmStatic
     fun <Any> addItems(recyclerView: RecyclerView?, items: List<Any>?) {
         if (recyclerView != null && items != null) {
-            (recyclerView.adapter as? BaseRecyclerAdapter<Any>)?.submitList(items)
+            (recyclerView.adapter as? BaseRecyclerAdapter<Any>)?.addItems(items)
         }
     }
 
@@ -42,5 +43,14 @@ object QuranyViewsBindings {
         val suraNumberLabel = context.getString(R.string.sura_number)
         val suraNum = "$suraNumberLabel $number"
         textView.text = suraNum
+    }
+
+    @JvmStatic
+    @BindingAdapter("setEmptyQuery")
+    fun setEmptyQuery(view: SearchView, emptying: Boolean?) {
+        if (emptying != null && emptying) {
+            view.setQuery("", false)
+            view.clearFocus()
+        }
     }
 }
