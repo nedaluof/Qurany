@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.nedaluof.qurany"
     android:installLocation="preferExternal">
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -19,7 +19,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="allowBackup"
-        tools:targetApi="m">
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        tools:targetApi="s">
         <activity
             android:name=".ui.splash.SplashActivity"
             android:exported="true">
@@ -29,11 +30,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.main.MainActivity"
             android:launchMode="singleTask" />
+
         <activity
-            android:name=".ui.suras.SurasActivity"
+            android:name=".ui.main.suras.SurasActivity"
             android:launchMode="singleInstance"
             android:parentActivityName=".ui.main.MainActivity" />
 
@@ -43,6 +46,7 @@
             android:foregroundServiceType="mediaPlayback"
             android:icon="@mipmap/ic_qurany"
             android:roundIcon="@mipmap/ic_qurany" />
+
         <service
             android:name=".service.QuranyDownloadService"
             android:exported="false" />

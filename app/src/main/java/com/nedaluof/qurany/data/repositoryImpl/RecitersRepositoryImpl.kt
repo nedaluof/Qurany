@@ -1,12 +1,12 @@
 package com.nedaluof.qurany.data.repositoryImpl
 
 import android.content.Context
+import com.nedaluof.qurany.data.datasource.localsource.preferences.PreferencesManager
+import com.nedaluof.qurany.data.datasource.localsource.room.ReciterDao
+import com.nedaluof.qurany.data.datasource.remotesource.api.ApiService
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.data.model.Result
 import com.nedaluof.qurany.data.repository.RecitersRepository
-import com.nedaluof.qurany.data.source.localsource.preferences.PreferencesManager
-import com.nedaluof.qurany.data.source.localsource.room.ReciterDao
-import com.nedaluof.qurany.data.source.remotesource.api.ApiService
 import com.nedaluof.qurany.util.connectivityFlow
 import com.nedaluof.qurany.util.getLanguage
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -31,7 +31,7 @@ class RecitersRepositoryImpl @Inject constructor(
             val response = apiService.getReciters(getLanguage())
             if (response.isSuccessful) {
                 response.body()?.reciters?.map { reciter ->
-                    preferences.hasKeyInDataStore(reciter.id!!) { result ->
+                    preferences.hasKeyInPreferences(reciter.id!!) { result ->
                         reciter.inMyReciters = result
                     }
                 }
@@ -48,7 +48,7 @@ class RecitersRepositoryImpl @Inject constructor(
     override suspend fun addReciterToDatabase(reciter: Reciter, result: (Result<Boolean>) -> Unit) {
         try {
             reciterDao.insertReciter(reciter)
-            preferences.saveToDataStore(reciter.id!!, reciter.id!!)
+            preferences.addToPreferences(reciter.id!!, reciter.id!!)
             // inform user that reciter added to My Reciters List
             result(Result.success(true))
         } catch (exception: Exception) {

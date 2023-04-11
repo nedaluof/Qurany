@@ -2,19 +2,20 @@
  * Created By nedaluof 6/13/2020.
  */
 buildscript {
-    apply from: "$rootDir/dependencies.gradle"
+    apply from: "$rootDir/versions.gradle"
     repositories {
         google()
+        mavenCentral()
+        //noinspection JcenterRepositoryObsolete
         jcenter()
         maven { url "https://jitpack.io" }
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:7.0.2"
+        classpath 'com.android.tools.build:gradle:7.4.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$versions.hilt"
-        classpath "com.diffplug.spotless:spotless-plugin-gradle:$versions.spotlessGradle"
-        classpath "com.google.gms:google-services:4.3.8"
+        classpath "com.google.gms:google-services:$versions.gms"
         classpath "com.google.firebase:firebase-crashlytics-gradle:$versions.crashlytics_plugin"
     }
 }
@@ -22,6 +23,8 @@ buildscript {
 allprojects {
     repositories {
         google()
+        mavenCentral()
+        //noinspection JcenterRepositoryObsolete
         jcenter()
         maven { url "https://jitpack.io" }
     }

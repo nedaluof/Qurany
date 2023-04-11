@@ -10,7 +10,7 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.IBinder
 import com.nedaluof.qurany.R
-import com.nedaluof.qurany.data.model.Sura
+import com.nedaluof.qurany.data.model.SuraModel
 import com.nedaluof.qurany.util.*
 import timber.log.Timber
 import java.io.File
@@ -22,12 +22,12 @@ class QuranyDownloadService : Service() {
 
   // unique id for the being sura downloaded
   var downloadId: Long = 0
-  private lateinit var sura: Sura
+  private lateinit var sura: SuraModel
   private lateinit var subPath: String
   override fun onBind(intent: Intent?): IBinder? = null
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-    sura = intent?.getParcelableExtra(AppConstants.DOWNLOAD_SURA_KEY)!!
+    sura = intent?.getParcelableExtraT(AppConstants.DOWNLOAD_SURA_KEY)!!
     registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
     startDownload()
     return START_NOT_STICKY

@@ -30,17 +30,17 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:paddingTop="@dimen/dp_4"
                 android:background="@color/green_200"
                 android:contentDescription="@string/reciters_bar_title"
+                android:paddingTop="@dimen/dp_4"
                 android:src="@drawable/ic_reciter" />
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="2dp"
                 android:layout_margin="2dp"
-                android:background="@color/grey" />
+                android:layout_marginStart="2dp"
+                android:background="@color/gray" />
 
             <LinearLayout
                 android:id="@+id/reciter_data_layout"
@@ -86,10 +86,10 @@
 
 
             <RelativeLayout
-                android:layout_margin="@dimen/dp_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_margin="@dimen/dp_4"
                 app:cardCornerRadius="3dp"
                 app:cardPreventCornerOverlap="false">
 

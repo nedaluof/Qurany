@@ -1,5 +1,6 @@
 package com.nedaluof.qurany.util
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
@@ -12,13 +13,14 @@ import kotlinx.coroutines.flow.callbackFlow
 /**
  * Created by nedaluof on 1/31/2021.
  */
+@SuppressLint("MissingPermission")
 @ExperimentalCoroutinesApi
 fun Context.connectivityFlow() = callbackFlow {
   val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     // Create Callback
     val callback = networkCallback { connectionState ->
-        offer(connectionState)
+      trySend(connectionState)
     }
 
     // Register Callback
@@ -26,7 +28,7 @@ fun Context.connectivityFlow() = callbackFlow {
 
     // Set current state
     val currentState = getCurrentConnectivityState(connectivityManager)
-    offer(currentState)
+  trySend(currentState)
 
     // Remove callback when not used
     awaitClose {
@@ -35,21 +37,22 @@ fun Context.connectivityFlow() = callbackFlow {
     }
 }
 
+@SuppressLint("MissingPermission")
 private fun getCurrentConnectivityState(connectivityManager: ConnectivityManager): ConnectivityStatus {
-    var currentState = ConnectivityStatus.NOT_CONNECTED
+  var currentState = ConnectivityStatus.NOT_CONNECTED
 
-    // Retrieve current status of connectivity
-    connectivityManager.allNetworks.forEach { network ->
-        val networkCapability = connectivityManager.getNetworkCapabilities(network)
+  // Retrieve current status of connectivity
+  connectivityManager.allNetworks.forEach { network ->
+    val networkCapability = connectivityManager.getNetworkCapabilities(network)
 
-        networkCapability?.let {
-            if (it.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
-                currentState = ConnectivityStatus.CONNECTED
-                return@forEach
-            }
-        }
+    networkCapability?.let {
+      if (it.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
+        currentState = ConnectivityStatus.CONNECTED
+        return@forEach
+      }
     }
-    return currentState
+  }
+  return currentState
 }
 
 fun networkCallback(callback: (ConnectivityStatus) -> Unit): ConnectivityManager.NetworkCallback {

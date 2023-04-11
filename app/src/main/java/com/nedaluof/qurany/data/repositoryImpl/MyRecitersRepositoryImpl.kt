@@ -1,10 +1,10 @@
 package com.nedaluof.qurany.data.repositoryImpl
 
+import com.nedaluof.qurany.data.datasource.localsource.preferences.PreferencesManager
+import com.nedaluof.qurany.data.datasource.localsource.room.ReciterDao
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.data.model.Result
 import com.nedaluof.qurany.data.repository.MyRecitersRepository
-import com.nedaluof.qurany.data.source.localsource.preferences.PreferencesManager
-import com.nedaluof.qurany.data.source.localsource.room.ReciterDao
 import kotlinx.coroutines.flow.distinctUntilChanged
 import javax.inject.Inject
 
@@ -23,7 +23,7 @@ class MyRecitersRepositoryImpl @Inject constructor(
         try {
             recitersDao.deleteReciter(reciter)
             // remove from preferences
-            preferences.removeFromDataStore(reciter.id!!)
+            preferences.removeFromPreferences(reciter.id!!)
             // now inform  deletion successfully
             result(Result.success(true))
         } catch (exception: Exception) {

@@ -13,7 +13,7 @@
 
         <variable
             name="callback"
-            type="com.nedaluof.qurany.ui.myreciters.MyRecitersAdapter" />
+            type="com.nedaluof.qurany.ui.main.myreciters.MyRecitersAdapter" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -43,7 +43,7 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/grey" />
+                android:background="@color/gray" />
 
             <LinearLayout
                 android:id="@+id/reciter_data_layout"
