@@ -7,7 +7,7 @@
 
         <variable
             name="sura"
-            type="com.nedaluof.qurany.data.model.Sura" />
+            type="com.nedaluof.qurany.data.model.SuraModel" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -36,7 +36,7 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/grey" />
+                android:background="@color/gray" />
 
             <LinearLayout
                 android:layout_width="0dp"

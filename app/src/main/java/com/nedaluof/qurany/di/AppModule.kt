@@ -1,16 +1,12 @@
 package com.nedaluof.qurany.di
 
-import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import com.nedaluof.qurany.data.source.localsource.preferences.PreferencesManager
-import com.nedaluof.qurany.data.source.localsource.preferences.PreferencesManagerImpl
+import com.nedaluof.qurany.data.repository.SettingsRepository
+import com.nedaluof.qurany.data.repositoryImpl.SettingsRepositoryImpl
+import com.nedaluof.qurany.util.LocaleManager
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
+import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 
 /**
@@ -21,20 +17,18 @@ import dagger.hilt.components.SingletonComponent
 @Module
 abstract class AppModule {
 
-    @Binds
-    abstract fun providePreferencesManager(
-        preferencesManager: PreferencesManagerImpl
-    ): PreferencesManager
+  @Binds
+  abstract fun bindSettingsRepository(
+    impl: SettingsRepositoryImpl
+  ): SettingsRepository
+}
 
-    @InstallIn(SingletonComponent::class)
-    @Module
-    internal object DataStoreModule {
-        private val Context.dataStore by preferencesDataStore(name = "QURANY_PREFERENCES")
-
-        @Provides
-        fun provideDataStore(
-            @ApplicationContext
-            context: Context
-        ): DataStore<Preferences> = context.dataStore
-    }
+/**
+ * Inject LocaleManager instance in classes that
+ * processed before the Hilt inject them with right instances
+ * */
+@EntryPoint
+@InstallIn(SingletonComponent::class)
+interface LocaleManagerEntryPoint {
+  val localeManager: LocaleManager
 }
