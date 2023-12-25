@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -14,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/settings_bar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
@@ -27,24 +28,19 @@
                 android:id="@+id/language_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:layout_marginEnd="@dimen/_8sdp"
-                android:layout_marginBottom="@dimen/_8sdp"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_18sdp"
+                android:layout_marginEnd="@dimen/_13sdp"
                 android:clickable="true"
                 android:focusable="true"
-                android:text="@{viewmodel.isAppLanguageEnglish ? @string/app_language_ar : @string/app_language_en}"
-                android:textColor="@color/white" />
+                android:text="@{viewmodel.appLanguageEnglish}"
+                android:textColor="@color/white"
+                tools:text="AR" />
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/app_light_night_button"
                 android:layout_width="@dimen/_25sdp"
                 android:layout_height="@dimen/_25sdp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentBottom="true"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/_8sdp"
                 android:layout_marginEnd="@dimen/_8sdp"
@@ -52,7 +48,7 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_light_mode" />
 
-        </RelativeLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <FrameLayout
             android:id="@+id/container"

@@ -1,6 +1,10 @@
 package com.nedaluof.qurany.data.datasource.localsource.room
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.nedaluof.qurany.data.model.Reciter
 import kotlinx.coroutines.flow.Flow
 
@@ -8,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
  * Created by nedaluof on 12/11/2020.
  */
 @Dao
-interface ReciterDao {
+interface RecitersDao {
   /*For Future use Todo (Caching) */
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insertReciters(list: List<Reciter>)
@@ -30,5 +34,5 @@ interface ReciterDao {
 
   /* Used in MyReciters */
   @Delete
-  suspend fun deleteReciter(reciter: Reciter?)
+  suspend fun deleteReciter(reciter: Reciter)
 }

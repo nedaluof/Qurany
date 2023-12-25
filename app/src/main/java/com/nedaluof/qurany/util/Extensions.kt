@@ -15,7 +15,7 @@ import androidx.core.content.ContextCompat
 import com.nedaluof.qurany.R
 import es.dmoral.toasty.Toasty
 import java.io.File
-import java.util.*
+import java.util.Locale
 
 /**
  * Created by nedaluof on 12/13/2020.
@@ -82,6 +82,7 @@ fun Context.isNetworkOk(): Boolean {
   }
 }
 
+@Suppress("DEPRECATION")
 inline fun <reified CLASS> Intent?.getParcelableExtraT(key: String): CLASS {
   return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
     this?.getParcelableExtra(key, CLASS::class.java)!!

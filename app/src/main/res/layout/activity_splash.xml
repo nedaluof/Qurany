@@ -49,7 +49,7 @@
             app:textInCenter="true"
             app:textSize="40sp" />
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/details_lyt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -80,6 +80,6 @@
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="italic"
                 tools:text="V 0.1" />
-        </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

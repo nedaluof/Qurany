@@ -1,9 +1,11 @@
 package com.nedaluof.qurany.ui.splash
 
 import androidx.lifecycle.ViewModel
+import com.nedaluof.qurany.data.repository.SettingsRepository
 import com.nedaluof.qurany.data.repository.SplashRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 /**
@@ -11,11 +13,17 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val repository: SplashRepository
+  settingsRepository: SettingsRepository,
+  repository: SplashRepository
 ) : ViewModel() {
-    val versionName = MutableStateFlow("")
+  val versionName = MutableStateFlow("")
 
-    init {
-        versionName.value = repository.getAppVersionName()
-    }
+  //night mode
+  private val _isNightModeEnabled = MutableStateFlow<Boolean?>(null)
+  val isNightModeEnabled = _isNightModeEnabled.asStateFlow()
+
+  init {
+    versionName.value = repository.getAppVersionName()
+    _isNightModeEnabled.value = settingsRepository.isNightModeEnabled()
+  }
 }

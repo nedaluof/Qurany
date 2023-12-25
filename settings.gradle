@@ -1,2 +1,25 @@
+/*
+ * Created By nedaluof  12/6/2023.
+ */
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+        maven { url 'https://jitpack.io' }
+        //noinspection JcenterRepositoryObsolete
+        jcenter()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+        //noinspection JcenterRepositoryObsolete
+        jcenter()
+    }
+}
 include ':app'
-rootProject.name='Qurany'
+rootProject.name = 'Qurany'

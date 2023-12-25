@@ -1,9 +1,8 @@
 package com.nedaluof.qurany.util
 
 import android.content.Context
-import android.os.Build
 import com.nedaluof.qurany.data.repository.SettingsRepository
-import java.util.*
+import java.util.Locale
 import javax.inject.Inject
 
 /**
@@ -20,10 +19,7 @@ class LocaleManager @Inject constructor(
   private fun configureAppResources(context: Context): Context {
     val locale = Locale(getLanguage())
     Locale.setDefault(locale)
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-      return updateResources(context, locale)
-    }
-    return updateResourcesLegacy(context, locale)
+    return updateResources(context, locale)
   }
 
   private fun updateResources(context: Context, locale: Locale): Context {
@@ -32,17 +28,6 @@ class LocaleManager @Inject constructor(
       setLayoutDirection(locale)
     }
     return context.createConfigurationContext(configuration)
-  }
-
-  @Suppress("DEPRECATION")
-  private fun updateResourcesLegacy(context: Context, locale: Locale): Context {
-    val resources = context.resources
-    with(resources.configuration) {
-      this.locale = locale
-      setLayoutDirection(locale)
-      resources.updateConfiguration(this, resources.displayMetrics)
-    }
-    return context
   }
 
   private fun getLanguage() = if (settingsRepository.isCurrentLanguageEnglish()) "en" else "ar"

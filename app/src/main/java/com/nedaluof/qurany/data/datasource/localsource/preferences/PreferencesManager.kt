@@ -30,8 +30,8 @@ class PreferencesManager @Inject constructor(
     MiHawk.put(key, value)
   }
 
-  inline fun <reified T> getFromPreferences(key: String): T? {
-    return MiHawk.get(key)
+  inline fun <reified T> getFromPreferences(key: String, default: T? = null): T? {
+    return MiHawk.get(key, default)
   }
 
   fun removeFromPreferences(key: String) {

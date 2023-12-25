@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.nedaluof.qurany.BR
 import com.nedaluof.qurany.R
 import com.nedaluof.qurany.databinding.ActivityMainBinding
 import com.nedaluof.qurany.ui.base.BaseActivity
@@ -28,7 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
   override val layoutId = R.layout.activity_main
-  override val bindingVariable = 0
+  override val bindingVariable = BR.viewmodel
   private val mainViewModel by viewModels<MainViewModel>()
   override fun getViewModel() = mainViewModel
 
@@ -36,6 +37,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    mainViewModel.loadAppLanguage()
     observeViewModel()
     initNavigation()
     initClicks()
@@ -113,7 +115,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
           2000
         )
       } else {
-        finish()
+        super.onBackPressed()
       }
     } else if (fragment is MyRecitersFragment) {
       loadFragment(RecitersFragment())

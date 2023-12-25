@@ -26,6 +26,8 @@ import com.nedaluof.qurany.service.QuranyDownloadService
 import com.nedaluof.qurany.service.QuranyPlayerService
 import com.nedaluof.qurany.ui.base.BaseActivity
 import com.nedaluof.qurany.util.AppConstants
+import com.nedaluof.qurany.util.click
+import com.nedaluof.qurany.util.getParcelableExtraT
 import com.nedaluof.qurany.util.isNetworkOk
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -57,11 +59,12 @@ class SurasActivity : BaseActivity<ActivitySurasBinding>() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    binding.backButton.click(::finish)
     loadComingIntent()
   }
 
   private fun loadComingIntent() {
-    reciterData = intent?.getParcelableExtra(AppConstants.RECITER_KEY)!!
+    reciterData = intent?.getParcelableExtraT(AppConstants.RECITER_KEY)!!
     surasViewModel.loadSurasToUI(reciterData)
     initComponents()
   }

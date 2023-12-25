@@ -12,16 +12,11 @@ class SettingsRepositoryImpl @Inject constructor(
 ) : SettingsRepository {
 
   override fun isNightModeEnabled(): Boolean {
-    return preferencesManager.getFromPreferences(NIGHT_MODE_KEY) as? Boolean ?: false
+    return preferencesManager.getFromPreferences(NIGHT_MODE_KEY, false) ?: false
   }
 
   override fun isCurrentLanguageEnglish(): Boolean {
-    val result = preferencesManager.getFromPreferences<String>(LANGUAGE_KEY)
-    return if (result != null) {
-      result == "en"
-    } else {
-      true
-    }
+    return (preferencesManager.getFromPreferences<String>(LANGUAGE_KEY, "en") ?: "en") == "en"
   }
 
   override fun updateNightMode(isEnabled: Boolean) {
@@ -30,7 +25,6 @@ class SettingsRepositoryImpl @Inject constructor(
 
   override fun updateCurrentLanguage() {
     val newLocale = if (isCurrentLanguageEnglish()) "ar" else "en"
-    preferencesManager.removeFromPreferences(LANGUAGE_KEY)
     preferencesManager.addToPreferences(LANGUAGE_KEY, newLocale)
   }
 

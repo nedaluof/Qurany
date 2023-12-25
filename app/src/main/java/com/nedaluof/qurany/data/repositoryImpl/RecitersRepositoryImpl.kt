@@ -2,7 +2,7 @@ package com.nedaluof.qurany.data.repositoryImpl
 
 import android.content.Context
 import com.nedaluof.qurany.data.datasource.localsource.preferences.PreferencesManager
-import com.nedaluof.qurany.data.datasource.localsource.room.ReciterDao
+import com.nedaluof.qurany.data.datasource.localsource.room.RecitersDao
 import com.nedaluof.qurany.data.datasource.remotesource.api.ApiService
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.data.model.Result
@@ -19,11 +19,11 @@ import javax.inject.Inject
  */
 @ExperimentalCoroutinesApi
 class RecitersRepositoryImpl @Inject constructor(
-    private val apiService: ApiService,
-    private val preferences: PreferencesManager,
-    private val reciterDao: ReciterDao,
-    @ApplicationContext
-    private val context: Context
+  private val apiService: ApiService,
+  private val preferences: PreferencesManager,
+  private val recitersDao: RecitersDao,
+  @ApplicationContext
+  private val context: Context
 ) : RecitersRepository {
 
     override suspend fun loadReciters(result: (Result<List<Reciter>>) -> Unit) {
@@ -47,8 +47,8 @@ class RecitersRepositoryImpl @Inject constructor(
 
     override suspend fun addReciterToDatabase(reciter: Reciter, result: (Result<Boolean>) -> Unit) {
         try {
-            reciterDao.insertReciter(reciter)
-            preferences.addToPreferences(reciter.id!!, reciter.id!!)
+          recitersDao.insertReciter(reciter)
+          preferences.addToPreferences(reciter.id!!, reciter.id!!)
             // inform user that reciter added to My Reciters List
             result(Result.success(true))
         } catch (exception: Exception) {

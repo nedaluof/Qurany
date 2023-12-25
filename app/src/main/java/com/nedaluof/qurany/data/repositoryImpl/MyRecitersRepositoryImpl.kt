@@ -1,7 +1,7 @@
 package com.nedaluof.qurany.data.repositoryImpl
 
 import com.nedaluof.qurany.data.datasource.localsource.preferences.PreferencesManager
-import com.nedaluof.qurany.data.datasource.localsource.room.ReciterDao
+import com.nedaluof.qurany.data.datasource.localsource.room.RecitersDao
 import com.nedaluof.qurany.data.model.Reciter
 import com.nedaluof.qurany.data.model.Result
 import com.nedaluof.qurany.data.repository.MyRecitersRepository
@@ -12,8 +12,8 @@ import javax.inject.Inject
  * Created by nedaluof on 12/12/2020.
  */
 class MyRecitersRepositoryImpl @Inject constructor(
-    private val recitersDao: ReciterDao,
-    private val preferences: PreferencesManager,
+  private val recitersDao: RecitersDao,
+  private val preferences: PreferencesManager,
 ) : MyRecitersRepository {
 
     override fun getMyReciters() = recitersDao.getMyReciters()

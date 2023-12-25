@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.nedaluof.qurany.BR
 import com.nedaluof.qurany.R
@@ -28,16 +27,9 @@ class RecitersFragment : BaseFragment<FragmentRecitersBinding>() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    initRefresh()
     initRecyclerViewAdapter()
     initSearchOfReciters()
     observeViewModel()
-  }
-
-  private fun initRefresh() {
-    binding.refreshLayout.setColorSchemeColors(
-      ContextCompat.getColor(requireActivity(), R.color.green_200)
-    )
   }
 
   private fun initRecyclerViewAdapter() {

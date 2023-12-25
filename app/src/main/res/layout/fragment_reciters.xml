@@ -69,26 +69,18 @@
             android:visibility="@{viewmodel.connected ? View.VISIBLE : View.GONE}"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/refresh_layout"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/reciters_recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:OnRefreshListener="@{()->viewmodel.refreshData()}"
-                app:refreshing="@{viewmodel.loading}">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/reciters_recyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:clipToPadding="false"
-                    android:layoutAnimation="@anim/recycler_view_items_animation"
-                    android:overScrollMode="never"
-                    android:paddingBottom="@dimen/_50sdp"
-                    android:scrollbars="none"
-                    app:items="@{viewmodel.recitersList}"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_reciter" />
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                android:clipToPadding="false"
+                android:layoutAnimation="@anim/recycler_view_items_animation"
+                android:overScrollMode="never"
+                android:paddingBottom="@dimen/_50sdp"
+                android:scrollbars="none"
+                app:items="@{viewmodel.recitersList}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_reciter" />
 
             <ProgressBar
                 android:id="@+id/pro_reciters"
