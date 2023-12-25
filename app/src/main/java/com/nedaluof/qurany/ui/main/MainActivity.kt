@@ -123,6 +123,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
   }
 
+
   companion object {
     fun getIntent(
       context: Context
