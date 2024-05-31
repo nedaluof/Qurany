@@ -4,6 +4,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.devtools.ksp'
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'com.google.dagger.hilt.android'
@@ -19,7 +20,7 @@ android {
             enableSplit = false
         }
     }
-
+    namespace 'com.nedaluof.qurany'
     compileSdkVersion versions.compileSdk
 
     defaultConfig {
@@ -54,7 +55,6 @@ android {
     }
     kapt { correctErrorTypes = true }
     buildFeatures.dataBinding = true
-    namespace 'com.nedaluof.qurany'
 }
 
 dependencies {
@@ -92,10 +92,10 @@ dependencies {
     //room database
     implementation "androidx.room:room-runtime:$versions.room"
     implementation "androidx.room:room-ktx:$versions.room"
-    kapt "androidx.room:room-compiler:$versions.room_compiler"
+    ksp "androidx.room:room-compiler:$versions.room_compiler"
     //hilt dependencies injection
     implementation "com.google.dagger:hilt-android:$versions.hilt"
-    kapt "com.google.dagger:hilt-android-compiler:$versions.hilt"
+    ksp "com.google.dagger:hilt-android-compiler:$versions.hilt"
     //DataStore
     implementation "com.github.nedaluof:MiHawk:$versions.mihawk"
     //startup
@@ -127,6 +127,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.5.1'
     androidTestImplementation 'androidx.test:rules:1.5.0'
     //testImplementation "io.mockk:mockk:$mockk_version"
-    testImplementation 'org.mockito:mockito-core:3.9.0'
+    testImplementation 'org.mockito:mockito-core:5.11.0'
     testImplementation 'org.mockito:mockito-inline:3.9.0'
 }
